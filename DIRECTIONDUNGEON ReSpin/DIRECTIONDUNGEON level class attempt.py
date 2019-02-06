@@ -300,7 +300,6 @@ for file in os.listdir("levels\\"):   # goes through each level file
         levelFile[x] = eval(levelFile[x])
 
     # FIRST THING IS THE LEVEL'S TILESET
-    # test
     buildSet = levelFile.pop(0)
 
     # BUILDS THE LEVEL BY POPPING OFF THE NUMBERS IN ORDER
