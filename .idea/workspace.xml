@@ -5,224 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b473aad1-d247-4772-a8e5-fe79a4a57641" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/ZIP.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/.idea/DIRECTIONDUNGEON ReSpin.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/.vs/DIRECTIONDUNGEON ReSpin/v15/.suo" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/.vs/ProjectSettings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/.vs/VSWorkspaceState.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/.vs/slnx.sqlite" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON level class attempt.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/empty.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/goal.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/moveLeft.gal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/playDown.gal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/playDown.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/playIdle.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/playLeft.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/playRight.gal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/playRight.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/playUp.gal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/playUp.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/swirl.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/wallSide.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/wallTop.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro00.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro01.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro02.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy (10).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy (11).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy (12).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy (13).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy (14).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy (15).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy (16).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy (17).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy (18).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy (19).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy (2).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy (3).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy (4).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy (5).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy (6).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy (7).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy (8).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy (9).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03 - Copy.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro03.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/0intro03.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/0intro04.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/0intro04A.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/0intro05.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/0intro06.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/0intro06A.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/0intro07.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/0intro08.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/0intro09.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/0intro10.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/0intro11.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/0intro12.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/0intro13.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/0intro14.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/0intro15.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/1swirl00.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/1swirl01.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/1swirl02.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/2restrict00.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/2restrict01.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/3dizzy00.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/non-included levels/3dizzy01.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/test.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/.idea/DIRECTIONDUNGEON.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveDown/00.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveDown/01.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveDown/02.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveDown/03.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveDown/04.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveDown/05.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveDown/06.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveDown/07.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveDown/08.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveDown/09.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveDown/10.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveDown/11.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveDown/12.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveDown/13.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveDown/14.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveDown/15.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveUp/00.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveUp/01.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveUp/02.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveUp/03.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveUp/04.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveUp/05.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveUp/06.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveUp/07.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveUp/08.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveUp/09.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveUp/10.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveUp/11.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveUp/12.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveUp/13.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveUp/14.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/moveUp/15.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/old win animation attempt.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/oldlevels/0.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/oldlevels/1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/oldlevels/2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/oldlevels/3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/oldlevels/4.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/Scrapped/oldlevels/5.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/centerDown.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/centerDownSide.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/centerLeft.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/centerLeftSide.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/centerPillar.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/centerRight.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/centerRightSide.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/centerUp.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/centerUpSide.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/centerpiece.mdp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/cubeAnimAttempt.mdp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/empty.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/goal.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveDown.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveDown/00.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveDown/01.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveDown/02.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveDown/03.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveDown/04.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveDown/05.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveDown/06.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveDown/07.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveDownLarge.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveLeft.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveLeft/00.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveLeft/01.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveLeft/02.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveLeft/03.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveLeft/04.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveLeft/05.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveLeft/06.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveLeft/07.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveLeftLarge.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveRight.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveRight/00.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveRight/01.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveRight/02.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveRight/03.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveRight/04.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveRight/05.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveRight/06.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveRight/07.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveRightLarge.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveUp.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveUp/00.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveUp/01.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveUp/02.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveUp/03.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveUp/04.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveUp/05.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveUp/06.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveUp/07.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/moveUpLarge.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/playerGhost.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/playerLarge.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/swirl.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/template moving object.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/template stationary object.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/images/wall.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/0intro00.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/0intro01.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/0intro02.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/0intro03.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/0intro04.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/0intro04A.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/0intro05.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/0intro06.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/0intro06A.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/0intro07.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/0intro08.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/0intro09.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/0intro10.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/0intro11.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/0intro12.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/0intro13.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/0intro14.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/0intro15.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/1swirl00.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/1swirl01.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/1swirl02.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/2restrict00.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/2restrict01.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/3dizzy00.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/levels/3dizzy01.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/old DIRECTIONDUNGEON.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/test.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/test/0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/test/1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/test/2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/test/3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/test/4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/test/5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/test/6.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/test/7.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/test/8.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON/ye olde DIRECTIONDUNGEON.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON level class attempt.py" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON level class attempt.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -235,8 +18,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON level class attempt.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="301" column="40" selection-start-line="301" selection-start-column="40" selection-end-line="301" selection-end-column="40" />
+            <state relative-caret-position="227">
+              <caret line="302" column="10" selection-start-line="302" selection-start-column="10" selection-end-line="302" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -391,8 +174,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON level class attempt.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="301" column="40" selection-start-line="301" selection-start-column="40" selection-end-line="301" selection-end-column="40" />
+        <state relative-caret-position="227">
+          <caret line="302" column="10" selection-start-line="302" selection-start-column="10" selection-end-line="302" selection-end-column="10" />
         </state>
       </provider>
     </entry>
