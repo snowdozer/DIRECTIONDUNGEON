@@ -1,0 +1,19 @@
+TILEBLUE
+            W W W W W W
+            W E E W W W
+            W E S E W W
+            W E E E W W
+            W W W W W W
+	        W W W W W W
+W W W W W W             W W W W W W
+W E E E W W             W E E E W W
+W G E E W W             W E E E W W
+W W W W W W             W E E E W W
+W W W W W W             W E E E W W
+W W W W W W             W W W W W W
+            W W W W W W
+            W E E E W W
+            W E E E W W
+            W E W E W W
+            W E E E W W
+            W W W W W W
