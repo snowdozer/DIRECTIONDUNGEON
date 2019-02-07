@@ -20,12 +20,6 @@
 
 
 
-#!!!!!!!!!!!!!!!! OKAY TODAY YOU'RE GOING TO REMOVE ANIMBYPASS BY
-# ADDING A "TIED" ANIMATION FEATURE, THAT ASSOCIATES AN ANIMATION TO ANOTHER
-# ANIMATION AND PLAYS BOTH AT ONCE
-
-
-
 ################################################################################
 ###                    STUFF THAT IS ONLY LOADED ONCE                        ###
 ################################################################################
@@ -46,7 +40,7 @@ pygame.init()
 pygame.display.set_caption('DIRECTIONDUNGEON!')  # window title
 
 # CREATES THE INITIAL SCREEN BASED ON DESKTOP SIZE
-mult = 7
+mult = 6
 
 # PIXEL SIZE CONSTANTS
 TILE = 4 * mult   # pixel size of a tile
@@ -278,7 +272,7 @@ tiles = [None, tileEmpty, tileWall, tileGoal, tileSwirl]
 
 # LEVEL
 animRotate = Animation(18, QUADRATIC, 90)
-ROTATERADIUS = DUNGW + MARG + 1
+ROTATERADIUS = DUNGW + MARG
 ROTATEMIDX = DUNGW + MARG*3
 ROTATEMIDY = DUNGH + MARG*2
 
@@ -610,10 +604,15 @@ while True:
                     playAnim = playIdle  # reset the sprite to idle
                     ghostAnim = ghostIdle
 
+
+
                 # SPECIFIC TO DUNGEON ROTATION
                 elif animCur == animRotate:
-                    playDung = (playDung + 1) % 4 # puts player in new dung
-                    curLvl.layout.insert(0, curLvl.layout[3]) # rotates dungs
+                    # put player in new dung
+                    playDung = (playDung + 1) % 4
+
+                    # update layour
+                    curLvl.layout.insert(0, curLvl.layout[3])
                     del curLvl.layout[4]
 
                     # REDRAW THE DUNGEONS IN THEIR NEW POSITIONS
@@ -625,17 +624,20 @@ while True:
 
 
 
+                # SPECIFIC TO PLAYER DROP DURING NEXT LEVEL TRANSITION
+                elif animCur == animPlayDrop:
+                    # skips a frame of animation
+                    animQueue.remove(animCur)
+                    continue
+
                 # SPECIFIC TO NEXT LEVEL TRANSITION
                 elif animCur == animCurLvlUp:
                     levelNum += 1
                     nextLevel = True
 
-                    # blits next dungeon one last time before it gets removed
-                    nexLayY = animNexLvlUp.value
-                    preDisplay.blit(nexLay, (0, nexLayY + SIDE))
+                    # exits game loop and goes to the next level
                     animQueue.remove(animCur)
-                    animCur = None
-                    break  # prevents an extra frame from being drawn
+                    break
 
                 animQueue.remove(animCur) # deletes animation from queue
 
@@ -828,7 +830,7 @@ while True:
 
         ### DEBUGGING ###
         #print(animNextLevel.frame, dungLayer.get_alpha())
-        fps = TAHOMA.render(str(animPlayDrop.frame), False, (255, 255, 255))
+        fps = TAHOMA.render(str(clock.get_fps()), False, (255, 255, 255))
         debug1 = TAHOMA.render(str(playY), False, (255, 255, 255))
         postDisplay.blit(fps, (10, 10))
         postDisplay.blit(debug1, (10, 20))
