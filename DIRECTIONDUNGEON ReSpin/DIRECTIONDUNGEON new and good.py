@@ -24,8 +24,6 @@
 # ADDING A "TIED" ANIMATION FEATURE, THAT ASSOCIATES AN ANIMATION TO ANOTHER
 # ANIMATION AND PLAYS BOTH AT ONCE
 
-# TEST COMMIT FROM MY LAPTOP
-
 
 
 ################################################################################
@@ -48,7 +46,7 @@ pygame.init()
 pygame.display.set_caption('DIRECTIONDUNGEON!')  # window title
 
 # CREATES THE INITIAL SCREEN BASED ON DESKTOP SIZE
-mult = 6
+mult = 7
 
 # PIXEL SIZE CONSTANTS
 TILE = 4 * mult   # pixel size of a tile
@@ -98,8 +96,6 @@ for i in range(4):
 ##############################
 ### ANIMATION QUEUES ###
 animQueue = []
-animBypass = []
-animLoop = []
 
 ### STATIC SPRITES ###
 def loadSprite(path, mult):
@@ -116,17 +112,19 @@ def loadSprite(path, mult):
     return sprite
 
 
-# whoops nothing here
 
-
-
-SPRITE = 1
-COUNTER = 2
-LINEAR = 3
-QUADRATIC = 4
 ### ANIMATIONS ###
+
+# ANIMATION KINDS
+SPRITE     = 1 # counts by ones, also has a spritesheet tied to it
+COUNTER    = 2 # counts by ones
+LINEAR     = 3 # counts by a defined value
+QUADRATIC  = 4 # counts by a changing value, slow then speeds up
+RQUADRATIC = 5 # counts by a changing value, fast then slows down
+
 class Animation:
-    def __init__ (self, lastFrame, kind, arg0 = None, arg1 = None, arg2 = None, arg3 = None):
+    def __init__ (self, lastFrame, kind, arg0 = None, arg1 = None,
+                  arg2 = None, arg3 = None, arg4 = ()):
         self.frame = 0
         self.lastFrame = lastFrame
         self.kind = kind
@@ -135,30 +133,57 @@ class Animation:
 
         # SPRITE-BASED ANIMATION
         if kind == SPRITE:
+            self.tied = arg4
+
+            # define what the arguments mean
             filePath = arg0
             width = arg1
             height = arg2
             mult = arg3
+
+            # apply the width, height, and spritesheet of the animation
             self.width = width * mult
             self.height = height * mult
 
             self.surface = loadSprite(filePath, mult)
 
-        if kind == LINEAR:
-            lastValue = arg0
-            self.lastValue = lastValue
-            self.value = 0
-            self.DIFF = lastValue / lastFrame
+        # VALUE-BASED ANIMATION
+        else:
+            # define what the arguments mean
+            peakValue = arg0
 
-        elif kind == QUADRATIC:
-            lastValue = arg0
-            h = lastFrame
-            k = lastValue
-            a = (0 + k) / ((0 - h)**2)
-            self.value = 0
-            self.diff1 = a
-            self.DIFF2 = a * 2
+            if arg1:
+                self.tied = arg1
+            else:
+                self.tied = ()
 
+            # create a counter based on the kind of animation
+            if kind == LINEAR:
+                self.lastValue = peakValue
+                self.value = 0
+                self.DIFF = peakValue / lastFrame
+
+            elif kind == QUADRATIC or kind == RQUADRATIC:
+                h = lastFrame
+                k = peakValue
+                a = k / h**2
+                self.value = 0
+                self.DIFF2 = a * 2
+
+                if kind == QUADRATIC:
+                    self.lastValue = peakValue
+                    self.diff1 = a
+
+                elif kind == RQUADRATIC:
+                    # GOES THROUGH THE PARABOLA AND RECORDS THE PRE-VERTEX VALUE
+                    # INEFFICIENT BUT I SPENT FOREVER TRYING SOMETHING ELSE
+                    diff1 = a
+
+                    for x in range (lastFrame - 1):
+                        diff1 += self.DIFF2
+
+                    self.firstDiff1 = diff1
+                    self.diff1 = diff1
 
 
     # DRAWS A SPECIFIC FRAME, BY CUTTING IT OUT FROM THE SURFACE
@@ -168,7 +193,6 @@ class Animation:
 
         frameRect = (0, self.height * frameNum, self.width, self.height)
         dest.blit(self.surface, position, frameRect)
-
 
 
     # ADVANCES THE FRAME BY 1
@@ -182,20 +206,51 @@ class Animation:
             self.value += self.diff1
             self.diff1 += self.DIFF2
 
+        elif self.kind == RQUADRATIC:
+            self.value += self.diff1
+            self.diff1 -= self.DIFF2
+
+        # forwards all tied animations
+        for anim in self.tied:
+            anim.nextFrame()
+
+
+    # RESETS ANIMATION BACK TO FRAME 0
+    def resetAnim(self):
+        self.frame = 0
+
+        # resets value on all animations but sprite-based ones
+        if self.kind != SPRITE:
+            self.value = 0
+
+        if self.kind == QUADRATIC:
+            self.diff1 = self.DIFF2 / 2
+
+        elif self.kind == RQUADRATIC:
+            self.diff1 = self.firstDiff1
+
+        # resets all tied animations
+        for anim in self.tied:
+            anim.resetAnim()
+
 
 
 # PLAYER
+# creates and loads all the ghost/player animations from file
 directionStrings = ["Left", "Up", "Right", "Down"]
 playMovement = []
 ghostMovement = []
 for direction in directionStrings:
     path =  "images\\play" + direction + ".png"
-    anim = Animation(6, SPRITE, path, 12, 14, mult)
-    playMovement.append(anim)
 
-    anim = Animation(6, SPRITE, path, 12, 14, mult)
-    anim.surface.set_alpha(100)
-    ghostMovement.append(anim)
+    # creates ghost animation, equal to the player animation except transparent
+    tempGhostAnim = Animation(6, SPRITE, path, 12, 14, mult)
+    tempGhostAnim.surface.set_alpha(100)
+    ghostMovement.append(tempGhostAnim)
+
+    # the ghost animation is then tied to the player animation
+    tempPlayAnim = Animation(6, SPRITE, path, 12, 14, mult, [tempGhostAnim])
+    playMovement.append(tempPlayAnim)
 
 # idle doesn't have to be animation, but this just makes things easier
 playIdle = Animation(0, SPRITE, "images\\playIdle.png",  12, 14, mult)
@@ -223,14 +278,15 @@ tiles = [None, tileEmpty, tileWall, tileGoal, tileSwirl]
 
 # LEVEL
 animRotate = Animation(18, QUADRATIC, 90)
-ROTATERADIUS = DUNGW + MARG
+ROTATERADIUS = DUNGW + MARG + 1
 ROTATEMIDX = DUNGW + MARG*3
 ROTATEMIDY = DUNGH + MARG*2
 
 animPlayDrop = Animation(8, LINEAR, SIDE)
 
-animCurLvlUp = Animation(34, QUADRATIC, -SCREENLENGTH)
-animNexLvlUp = Animation(34, QUADRATIC, -SIDE)
+# these two animations are "tied" together and will play at the same time
+animNexLvlUp = Animation(34, RQUADRATIC, -SIDE)
+animCurLvlUp = Animation(34, QUADRATIC, -SCREENLENGTH, [animNexLvlUp])
 
 LEVELSDOWN = 10  # how many levels below current level to show
 SHADOWINTERVAL = 255 / (LEVELSDOWN - 1)
@@ -439,17 +495,12 @@ while True:
     nexLayY = 0 # resets next level animation
     curLayY = 0
     curSpeed = 0
-    playYOffset = 0
     shadow = pygame.Surface((DUNGW, SIDE))  # fades the next levels out
 
     sideY = (levelNum + 1) * SIDE   # the yPos of the next level in sideSurfs
 
-
-
     # ROTATION
     angleOff = 0
-
-
 
     animCur = None
 
@@ -541,15 +592,7 @@ while True:
 
             # LAST FRAME STUFF
             if animCur.frame == animCur.lastFrame:
-
-                # RESET ALL VALUES
-                animCur.frame = 0
-                if animCur.kind == LINEAR:
-                    animCur.value = 0
-
-                elif animCur.kind == QUADRATIC:
-                    animCur.value = 0
-                    animCur.diff1 = animCur.DIFF2 / 2
+                animCur.resetAnim()
 
                 # SPECIFIC TO PLAYER MOVEMENT
                 if animCur == playAnim:
@@ -563,7 +606,6 @@ while True:
                     elif tile == GOAL:
                         animQueue.append(animPlayDrop)
                         animQueue.append(animCurLvlUp)
-                        animBypass.append(animNexLvlUp)
 
                     playAnim = playIdle  # reset the sprite to idle
                     ghostAnim = ghostIdle
@@ -604,9 +646,7 @@ while True:
                 # INCREMENT FRAME AND VALUES
                 animCur.nextFrame()
 
-                # SPECIFIC TO PLAYER DROPPING INTO NEXT LEVEL
-                if animCur == animPlayDrop:
-                    playYOffset = animCur.value
+
 
                 # SPECIFIC TO DUNGEON ROTATION
                 if animCur == animRotate:
@@ -631,8 +671,9 @@ while True:
                 elif animCur == animCurLvlUp:
                     # moves everything up
 
-                    curLayY = animCurLvlUp.value
-                    playYOffset = nexLayY + SIDE
+                    curLayY = round(animCurLvlUp.value)
+                    nexLayY = round(animNexLvlUp.value)
+
 
                     for dung, sideSurf in enumerate(sideSurfs):
                         # redraws the side layer
@@ -648,32 +689,6 @@ while True:
                             x = dungX[dung]
                             y = dungY[dung] + DUNGH + layer * SIDE
                             nexLay.blit(shadow, (x, y))
-
-
-
-
-        ### ALL ANIMATIONS THAT SKIP THE QUEUE ###
-        # increments all animations instead of just the first
-        for anim in reversed(animBypass):
-            if anim.frame == anim.lastFrame:
-
-                # RESET ALL VALUES
-                anim.frame = 0
-                if anim.kind == LINEAR:
-                    anim.value = 0
-
-                elif anim.kind == QUADRATIC:
-                    anim.value = 0
-                    anim.diff1 = anim.DIFF2 / 2
-
-                animBypass.remove(anim)
-
-            else:
-                # INCREMENT FRAME AND VALUES
-                anim.nextFrame()
-
-                if anim == animNexLvlUp:
-                    nexLayY = anim.value
 
 
 
@@ -706,9 +721,6 @@ while True:
                 ghostAnim = ghostMovement[moveDirection]
                 animQueue.append(playAnim)
 
-                # ghost skips queue so that it is simultaneous with movement
-                animBypass.append(ghostAnim)
-
 
 
 
@@ -729,44 +741,71 @@ while True:
                   [playMovement[RIGHT], 1, 1]]
 
         for dung in range(4):
-            position = pixelPos(dung, playCol - 1, playRow - 1)
-            position = (position[0], position[1] + playYOffset)
+            # CALCULATE THE PLAYER'S POSITION BASED ON THE CURRENT ANIMATION
+            playX = dungX[dung] + (playCol - 1) * TILE
+            playY = dungY[dung] + (playRow - 1) * TILE
+            if animCur == animPlayDrop:
+                playY += animPlayDrop.value
+
+            elif animCur == animCurLvlUp:
+                playY += nexLayY + SIDE
+
+                if nexLvl.tileAt(dung, playCol, playRow + 1) == WALL:
+                    y = playY + TILE
+
+            elif animCur == animRotate:
+                angle = (dung + 2) % 4 * 90
+                angle += animRotate.value
+                angle = math.radians(angle)
+
+                playX = ROTATEMIDX + math.cos(angle) * ROTATERADIUS
+                playY = ROTATEMIDY + math.sin(angle) * ROTATERADIUS
+
+                playX += (playCol - 1) * TILE
+                playY += (playRow - 1) * TILE
+
+
+
             # draws player at thier dungeon, and ghosts at all the others
             if playDung == dung:
-                playAnim.blitFrame(preDisplay, position)
+                playAnim.blitFrame(preDisplay, (playX, playY))
             else:
-                ghostAnim.blitFrame(preDisplay, position)
+                ghostAnim.blitFrame(preDisplay, (playX, playY))
 
 
 
-            # DRAWS TILES THAT SHOULD OVERLAP THE PLAYER
-            # draws level over player during win animation
+            # DRAWS BLOCKS THAT SHOULD OVERLAP THE PLAYER
             if animCur == animCurLvlUp:
-                for dung in range(4):
-                    # draw wall below player on next level
-                    if nexLvl.tileAt(dung, playCol, playRow + 1) == WALL:
-                        position = pixelPos(dung, playCol, playRow + 1.5)
-                        position = (position[0], position[1] + nexLayY)
+                x = playX + TILE
 
-                        tileWall.blitFrame(preDisplay, position, nexLvl.tileset)
+                # draw wall below player on next level
+                if nexLvl.tileAt(dung, playCol, playRow + 1) == WALL:
+                    y = playY + TILE + TILE
 
-                    # draw a segment of the current level above the player
-                    if animCur.frame < animCur.lastFrame / 2:
-                        x = dungX[dung] + playCol * TILE
-                        y = dungY[dung] + playRow * TILE + TILE
+                    tileWall.blitFrame(preDisplay, (x, y), nexLvl.tileset)
 
-                    else:
-                        # makes top player be covered by bottom dungeon
-                        x = dungX[dung] + playCol * TILE
-                        y = dungY[dung]
+                # draw a segment of the current level above the player
+                if animCur.frame < animCur.lastFrame / 2:
+                    y = playY + TILE + SIDE
 
-                    section = (x, y, TILE, DUNGH)
-                    preDisplay.blit(curLay, (x, y + curLayY + 1), section)
+                else:
+                    # makes top player be covered by bottom dungeon
+                    y = dungY[dung]
+
+                section = (x, y, TILE, DUNGH)
+                preDisplay.blit(curLay, (x, y + curLayY), section)
+
+            elif animCur == animRotate:
+                if curLvl.tileAt(dung, playCol, playRow + 1) == WALL:
+                    x = playX + TILE
+                    y = playY + TILE + TILE
+                    tileWall.blitFrame(preDisplay, (x, y), curLvl.tileset)
 
 
 
-            # draws blocks over player during normal movement
-            else:
+
+            else:  # during normal movement
+
                 # draws any walls that should overlap the player
                 if playAnim == playMovement[DOWN]:
                     checks[0][2] = 2
@@ -784,16 +823,15 @@ while True:
 
         postDisplay.blit(preDisplay, (-camX, -camY))
         ### POST CAMERA ###
-        pass
 
 
 
         ### DEBUGGING ###
         #print(animNextLevel.frame, dungLayer.get_alpha())
-        fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
-        debugText = TAHOMA.render(str(animCurLvlUp.frame), False, (255, 255, 255))
+        fps = TAHOMA.render(str(animPlayDrop.frame), False, (255, 255, 255))
+        debug1 = TAHOMA.render(str(playY), False, (255, 255, 255))
         postDisplay.blit(fps, (10, 10))
-        postDisplay.blit(debugText, (10, 20))
+        postDisplay.blit(debug1, (10, 20))
         if debugPressed:
             clockTick = 2
         else:
