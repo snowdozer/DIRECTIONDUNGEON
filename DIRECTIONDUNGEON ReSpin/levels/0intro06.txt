@@ -6,7 +6,7 @@ TILEBLUE
           W W W W W
 W W W W W           W W W W W
 W W W W W           W W W W W
-W W W W W           E E E E G
+G E E E E           W W W W W
 W W W W W           W W W W W
 W W W W W           W W W W W
           W W W W W

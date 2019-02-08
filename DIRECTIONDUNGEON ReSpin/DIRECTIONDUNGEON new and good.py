@@ -40,15 +40,15 @@ pygame.init()
 pygame.display.set_caption('DIRECTIONDUNGEON!')  # window title
 
 # CREATES THE INITIAL SCREEN BASED ON DESKTOP SIZE
-mult = 6
+mult = 8
 
 # PIXEL SIZE CONSTANTS
 TILE = 4 * mult   # pixel size of a tile
 SIDE = 2 * mult   # pixel size of the side of a tile
 
 MARG = 2 * mult   # pixel size of the margin between dungeons                  
-WIDTH  = 6         # tile width of a dungeon
-HEIGHT = 6         # tile height of a dungeon
+WIDTH  = 5         # tile width of a dungeon
+HEIGHT = 5         # tile height of a dungeon
 DUNGW = TILE*WIDTH  # pixel width of a dungeon
 DUNGH = TILE*HEIGHT # pixel height of a dungeon
 
@@ -431,8 +431,8 @@ preDisplay = newSurf(SCREENSIZE)  # pre-camera surface
 # levelNum can be changed later with the level select
 levelNum = 0
 if levelNum == 0:
-    playDung = 0
-    playCol = 2
+    playDung = RIGHT
+    playCol = 0
     playRow = 2
 
 else:
@@ -501,6 +501,7 @@ while True:
 
 
     # DRAWS BOTH THE CURRENT LEVEL AND THE NEXT LEVEL
+    curDungs.fill((0, 255, 0))
     for dung in range(4):
         curLvl.drawDung(curDungs, dung)
         curLay.blit(curDungs, (dungX[dung], dungY[dung]), dungRects[dung])
@@ -589,7 +590,7 @@ while True:
                 animCur.resetAnim()
 
                 # SPECIFIC TO PLAYER MOVEMENT
-                if animCur == playAnim:
+                if animCur is playAnim:
                     playCol = queryX       # update the player's position
                     playRow = queryY
 
@@ -607,7 +608,7 @@ while True:
 
 
                 # SPECIFIC TO DUNGEON ROTATION
-                elif animCur == animRotate:
+                elif animCur is animRotate:
                     # put player in new dung
                     playDung = (playDung + 1) % 4
 
@@ -625,13 +626,13 @@ while True:
 
 
                 # SPECIFIC TO PLAYER DROP DURING NEXT LEVEL TRANSITION
-                elif animCur == animPlayDrop:
+                elif animCur is animPlayDrop:
                     # skips a frame of animation
                     animQueue.remove(animCur)
                     continue
 
                 # SPECIFIC TO NEXT LEVEL TRANSITION
-                elif animCur == animCurLvlUp:
+                elif animCur is animCurLvlUp:
                     levelNum += 1
                     nextLevel = True
 
@@ -651,7 +652,7 @@ while True:
 
 
                 # SPECIFIC TO DUNGEON ROTATION
-                if animCur == animRotate:
+                if animCur is animRotate:
                     curLay.fill((0, 255, 0))
 
                     # CALCULATES WHERE ON THE CIRCLE TO DRAW THE LEVEL
@@ -670,7 +671,7 @@ while True:
 
 
                 # SPECIFIC TO NEXT LEVEL TRANSITION
-                elif animCur == animCurLvlUp:
+                elif animCur is animCurLvlUp:
                     # moves everything up
 
                     curLayY = round(animCurLvlUp.value)
@@ -746,16 +747,16 @@ while True:
             # CALCULATE THE PLAYER'S POSITION BASED ON THE CURRENT ANIMATION
             playX = dungX[dung] + (playCol - 1) * TILE
             playY = dungY[dung] + (playRow - 1) * TILE
-            if animCur == animPlayDrop:
+            if animCur is animPlayDrop:
                 playY += animPlayDrop.value
 
-            elif animCur == animCurLvlUp:
+            elif animCur is animCurLvlUp:
                 playY += nexLayY + SIDE
 
                 if nexLvl.tileAt(dung, playCol, playRow + 1) == WALL:
                     y = playY + TILE
 
-            elif animCur == animRotate:
+            elif animCur is animRotate:
                 angle = (dung + 2) % 4 * 90
                 angle += animRotate.value
                 angle = math.radians(angle)
@@ -777,7 +778,7 @@ while True:
 
 
             # DRAWS BLOCKS THAT SHOULD OVERLAP THE PLAYER
-            if animCur == animCurLvlUp:
+            if animCur is animCurLvlUp:
                 x = playX + TILE
 
                 # draw wall below player on next level
@@ -788,7 +789,10 @@ while True:
 
                 # draw a segment of the current level above the player
                 if animCur.frame < animCur.lastFrame / 2:
-                    y = playY + TILE + SIDE
+                    if curLvl.tileAt(dung, playCol, playRow + 1) == WALL:
+                        y = playY + TILE + SIDE
+                    else:
+                        y = playY + TILE + TILE
 
                 else:
                     # makes top player be covered by bottom dungeon
@@ -797,7 +801,7 @@ while True:
                 section = (x, y, TILE, DUNGH)
                 preDisplay.blit(curLay, (x, y + curLayY), section)
 
-            elif animCur == animRotate:
+            elif animCur is animRotate:
                 if curLvl.tileAt(dung, playCol, playRow + 1) == WALL:
                     x = playX + TILE
                     y = playY + TILE + TILE
@@ -830,7 +834,7 @@ while True:
 
         ### DEBUGGING ###
         #print(animNextLevel.frame, dungLayer.get_alpha())
-        fps = TAHOMA.render(str(clock.get_fps()), False, (255, 255, 255))
+        fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
         debug1 = TAHOMA.render(str(playY), False, (255, 255, 255))
         postDisplay.blit(fps, (10, 10))
         postDisplay.blit(debug1, (10, 20))
@@ -838,6 +842,8 @@ while True:
             clockTick = 2
         else:
             clockTick = 60
+
+
 
         ### FINAL OUTPUT ###
         pygame.display.flip()        # display the screen
