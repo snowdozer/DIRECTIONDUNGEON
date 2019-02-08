@@ -25,6 +25,7 @@
 ################################################################################
 import math
 import os
+import random
 import sys
 import copy
 import pygame
@@ -72,8 +73,9 @@ DOWN = 3
 VOID = 0
 EMPTY = 1
 WALL = 2
-GOAL = 3
-SWIRL = 4
+WALLSIDE = 3 # only used in tilesheets, not used in level generation
+GOAL = 4
+SWIRL = 5
 
 
 
@@ -106,6 +108,28 @@ def loadSprite(path, mult):
     return sprite
 
 
+# TILESETS (NEW)
+class Tilesheet:
+    def __init__(self, path, mult, varCount):
+        # varCount stores the amount of variations for each tileType
+        self.varCount = varCount   # should be a tuple of numbers
+        self.surface = loadSprite(path, mult)
+
+
+
+    def drawTile(self, surf, pos, tile, variant):
+        if tile == WALLSIDE:
+            height = SIDE
+        else:
+            height = TILE
+
+        tileRect = tile * TILE, variant * TILE, TILE, height
+
+        surf.blit(self.surface, pos, tileRect)
+
+
+
+TESTSHEET = Tilesheet("images\\testSheet.png", mult, (2, 2, 2, 0, 0))
 
 ### ANIMATIONS ###
 
@@ -327,11 +351,23 @@ class Level:
         self.layout = layout
         self.tileset = tileset
 
+        tileVars = [[[0, 0, 0, 0, 0] for x in range(WIDTH)] for x in range(4)]
+
+        for dung in range(4):
+            for col in range(WIDTH):
+                for row in range(HEIGHT):
+                    tile = self.tileAt(dung, col, row)
+                    variant = random.randint(0, tileset.varCount[tile])
+                    tileVars[dung][col][row] = variant
+
+        self.tileVars = tileVars
+
     def tileAt(self, dung, x, y):
         if 0 <= x < WIDTH and 0 <= y < HEIGHT:
             return self.layout[dung][x][y]
         else:
             return VOID
+
 
     def drawTile(self, surf, dung, col, row, x = None, y = None):
         if x == None and y == None:
@@ -340,18 +376,20 @@ class Level:
             pos = (x, y)
 
         tile = self.tileAt(dung, col, row)
-
+        tileset = self.tileset
+        variant = self.tileVars[dung][col][row]
 
         if tile == WALL:
-            tileWall.blitFrame(surf, pos, self.tileset)
+            tileset.drawTile(surf, pos, WALL, variant)
 
             if self.tileAt(dung, col, row + 1) != WALL:
                 pos = (pos[0], pos[1] + TILE)
-                tileWallSide.blitFrame(surf, pos, self.tileset)
+                tileset.drawTile(surf, pos, WALLSIDE, variant)
 
         elif tile != VOID:
             pos = (pos[0], pos[1] + SIDE)
-            self.TILES[tile].blitFrame(surf, pos, self.tileset)
+            tileset.drawTile(surf, pos, tile, variant)
+
 
     def drawDung(self, surf, dung, x = None, y = None):
         for col in range(WIDTH):
@@ -785,7 +823,7 @@ while True:
                 if nexLvl.tileAt(dung, playCol, playRow + 1) == WALL:
                     y = playY + TILE + TILE
 
-                    tileWall.blitFrame(preDisplay, (x, y), nexLvl.tileset)
+                    nexLvl.drawTile(preDisplay, dung, playCol, playRow + 1, x, y)
 
                 # draw a segment of the current level above the player
                 if animCur.frame < animCur.lastFrame / 2:
@@ -805,7 +843,7 @@ while True:
                 if curLvl.tileAt(dung, playCol, playRow + 1) == WALL:
                     x = playX + TILE
                     y = playY + TILE + TILE
-                    tileWall.blitFrame(preDisplay, (x, y), curLvl.tileset)
+                    nexLvl.drawTile(preDisplay, dung, playCol, playRow + 1, x, y)
 
 
 
@@ -817,13 +855,14 @@ while True:
                     checks[0][2] = 2
 
                 for i in checks:
-                    x = playCol + i[1]
-                    y = playRow + i[2]
+                    col = playCol + i[1]
+                    row = playRow + i[2]
 
                     if playAnim == i[0] and curLvl.tileAt(dung, x, y) == WALL:
-                        position = pixelPos(dung, x, y)
+                        x = dungX[dung] + col*TILE
+                        y = dungY[dung] + row*TILE
 
-                        tileWall.blitFrame(preDisplay, position, curLvl.tileset)
+                        curLvl.drawTile(preDisplay, dung, col, row, x, y)
 
 
 
