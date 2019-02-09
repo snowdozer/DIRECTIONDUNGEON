@@ -41,7 +41,7 @@ pygame.init()
 pygame.display.set_caption('DIRECTIONDUNGEON!')  # window title
 
 # CREATES THE INITIAL SCREEN BASED ON DESKTOP SIZE
-mult = 8
+mult = 7
 
 # PIXEL SIZE CONSTANTS
 TILE = 4 * mult   # pixel size of a tile
@@ -123,7 +123,7 @@ class Tilesheet:
         else:
             height = TILE
 
-        tileRect = tile * TILE, variant * TILE, TILE, height
+        tileRect = (tile - 1) * TILE, variant * TILE, TILE, height
 
         surf.blit(self.surface, pos, tileRect)
 
@@ -333,10 +333,10 @@ def newSurf(dimensions):
 
 
 # DUNGEON SURFACES
-curDungs = newSurf(SCREENSIZE)
+curDungs = newSurf((DUNGW * 4, DUNGH + SIDE))
 dungRects = []
 for dung in range(4):
-    dungRects.append((dungX[dung], dungY[dung], DUNGW, DUNGH + SIDE))
+    dungRects.append((dung * DUNGW, 0, DUNGW, DUNGH + SIDE))
 
 
 
@@ -391,12 +391,17 @@ class Level:
             tileset.drawTile(surf, pos, tile, variant)
 
 
-    def drawDung(self, surf, dung, x = None, y = None):
+    def drawDung(self, surf, dung, posX = None, posY = None):
         for col in range(WIDTH):
             for row in range(HEIGHT):
-                if x != None and y != None:
-                    x = x + col*TILE
-                    y = y + row*TILE
+                if posX == None and posY == None:
+                    x = dungX[dung] + col*TILE
+                    y = dungY[dung] + row*TILE
+
+                else:
+                    x = posX + col*TILE
+                    y = posY + row*TILE
+
                 self.drawTile(surf, dung, col, row, x, y)
 
 
@@ -473,8 +478,9 @@ if levelNum == 0:
     playCol = 0
     playRow = 2
 
+# find the goal in the previous level and start the player from there
 else:
-    # find the goal in the prevoius level and starts the player from there
+    goalExists = False
     for dungNum, dung in enumerate(levels[levelNum - 1][0]):
         for x, col in enumerate(dung):
             for y, tile in enumerate(col):
@@ -482,8 +488,14 @@ else:
                     playDung = dungNum
                     playCol = x
                     playRow = y
+                    goalExists = True
+                    break
 
-
+    # if somehow no goal was found, default to the middle of the level
+    if not goalExists:
+        playDung = LEFT
+        playCol = 2
+        playRow = 2
 
 # PREDRAWS THE SIDES OF ALL THE LEVELS
 sideSurfs = []
@@ -541,7 +553,7 @@ while True:
     # DRAWS BOTH THE CURRENT LEVEL AND THE NEXT LEVEL
     curDungs.fill((0, 255, 0))
     for dung in range(4):
-        curLvl.drawDung(curDungs, dung)
+        curLvl.drawDung(curDungs, dung, dung * DUNGW, 0)
         curLay.blit(curDungs, (dungX[dung], dungY[dung]), dungRects[dung])
 
         x = dungX[dung]
@@ -657,7 +669,7 @@ while True:
                     # REDRAW THE DUNGEONS IN THEIR NEW POSITIONS
                     curLay.fill((0, 255, 0))
                     for dung in range(4):
-                        curLvl.drawDung(curDungs, dung)
+                        curLvl.drawDung(curDungs, dung, 0, dung * (DUNGH + SIDE))
                         position = (dungX[dung], dungY[dung])
                         curLay.blit(curDungs, position, dungRects[dung])
 
@@ -769,18 +781,13 @@ while True:
         ### DRAWING EVERYTHING ###
         ##########################
 
-        # SIDE OF NEXT DUNGEONS & NEXT LEVEL
+        ### SIDE OF NEXT DUNGEONS & NEXT LEVEL ###
         preDisplay.blit(nexLay, (0, nexLayY + SIDE))
 
-        # DUNGEONS
+        ### DUNGEONS ###
         preDisplay.blit(curLay, (0, curLayY))
 
-        # PLAYER
-        # checks for walls that overlaps player
-        checks = [[playAnim, 0, 1],
-                  [playMovement[LEFT], -1, 1],
-                  [playMovement[RIGHT], 1, 1]]
-
+        ### PLAYER ###
         for dung in range(4):
             # CALCULATE THE PLAYER'S POSITION BASED ON THE CURRENT ANIMATION
             playX = dungX[dung] + (playCol - 1) * TILE
@@ -806,16 +813,20 @@ while True:
                 playY += (playRow - 1) * TILE
 
 
-
-            # draws player at thier dungeon, and ghosts at all the others
+            # DRAW THE PLAYER (and the ghosts)
             if playDung == dung:
                 playAnim.blitFrame(preDisplay, (playX, playY))
             else:
                 ghostAnim.blitFrame(preDisplay, (playX, playY))
 
 
-
             # DRAWS BLOCKS THAT SHOULD OVERLAP THE PLAYER
+            # during player dropping into goal
+            if animCur is animPlayDrop:
+                if nexLvl.tileAt(dung, playCol, playRow + 1):
+                    curLvl.drawTile(preDisplay, dung, playCol, playRow + 1)
+
+            # during next level transition
             if animCur is animCurLvlUp:
                 x = playX + TILE
 
@@ -839,30 +850,33 @@ while True:
                 section = (x, y, TILE, DUNGH)
                 preDisplay.blit(curLay, (x, y + curLayY), section)
 
+            # during dungeon rotation
             elif animCur is animRotate:
                 if curLvl.tileAt(dung, playCol, playRow + 1) == WALL:
                     x = playX + TILE
                     y = playY + TILE + TILE
                     nexLvl.drawTile(preDisplay, dung, playCol, playRow + 1, x, y)
 
+            # during normal movement
+            else:
+                #
+                if playAnim is playMovement[DOWN]:
+                    row = 2
+                else:
+                    row = 1
 
+                if curLvl.tileAt(dung, playCol, playRow + row) == WALL:
+                    curLvl.drawTile(preDisplay, dung, playCol, playRow + row)
 
+                col = 0
+                if playAnim is playMovement[LEFT]:
+                    col = -1
+                elif playAnim is playMovement[RIGHT]:
+                    col = 1
 
-            else:  # during normal movement
-
-                # draws any walls that should overlap the player
-                if playAnim == playMovement[DOWN]:
-                    checks[0][2] = 2
-
-                for i in checks:
-                    col = playCol + i[1]
-                    row = playRow + i[2]
-
-                    if playAnim == i[0] and curLvl.tileAt(dung, x, y) == WALL:
-                        x = dungX[dung] + col*TILE
-                        y = dungY[dung] + row*TILE
-
-                        curLvl.drawTile(preDisplay, dung, col, row, x, y)
+                if col:
+                    if curLvl.tileAt(dung, playCol + col, playRow + 1) == WALL:
+                        curLvl.drawTile(preDisplay, dung, playCol + col, playRow + 1)
 
 
 

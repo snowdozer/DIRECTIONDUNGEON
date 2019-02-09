@@ -1,0 +1,16 @@
+TESTSHEET
+          W W G W W
+          E E E E E
+          E W W W E
+          E E E E E
+          W W E W W
+W W W W W           W W W W W
+E E E E E           E E E E E
+E W W W E           E W W W E
+E E E E E           E E E E E
+W W E W W           W W E W W
+          W W W W W
+          E E E E E
+          E W W W E
+          E E E E E
+          W W E W W
