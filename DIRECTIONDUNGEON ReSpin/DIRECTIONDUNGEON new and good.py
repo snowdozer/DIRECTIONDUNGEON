@@ -1,69 +1,81 @@
-#########################
-### DIRECTIONDUNGEON! ###
-#########################
-### todo
-# levels with more objects (mainly walls) are laggier, but only in IDLE
-# also black background when current level moves up
-# camera                      DONE
-# centerpiece
-# movement animations         DONE, LEFT/RIGHT COULD BE IMPROVED
-# dungeon rotation animation  DONE, MIGHT NEED TO BE FASTER THOUGH
-# level clear animation       DONE? NEEDS A LOT OF CLEANUP, CAN LOOKER BETTER
-# should bottom wall partially cover the bottom tile?
-# different perspectives for each dungeon?
-# keys?
-# levels: probably 64, since it's 4 cubed, and because of 4 button menu
-# main menu
-# pause function?
-# sounds, probably raindrop-py
-# outsource music to mustardflu?  or maybe just have no music at all
+################################################################################
+###                            DIRECTIONDUNGEON!                             ###
+################################################################################
 
+### LIST OF THINGS TO DO ###
+# movement animations         LEFT/RIGHT SHADING COULD BE IMPROVED
+
+# fix the side of the DOWN dungeon being cut off at camera
+
+# levels
+# (probably 64, since it's 4 cubed, and because of 4 button menu)
+
+# main menu, and that sick level select i thought of
+# pause function...?
+
+# sounds, ambient and raindrop-py
+# music should be minimal and only at the start/end
+# if not, though, outsource music to mustardflu?
+
+
+### RANDOM IDEAS ###
+# should the void cover the bottom tile halfway? to hint at a wall being there?
+# different perspectives for each dungeon?
+# keys/locks?
+# pushable blocks?
 
 
 ################################################################################
 ###                    STUFF THAT IS ONLY LOADED ONCE                        ###
 ################################################################################
-import math
+
 import os
-import random
 import sys
+
+import math
+import random
+
 import copy
+
 import pygame
 
 
 
-#############################
-### WINDOW INITIALIZATION ###
-#############################
-os.environ['SDL_VIDEO_CENTERED'] = '1' # centers the window on the screen
+##################################
+### CONSTANTS AND WINDOW SETUP ###
+##################################
+
+### GRAPHICAL CONSTANTS ###
+# INITIAL WINDOW SETUP
+os.environ['SDL_VIDEO_CENTERED'] = '1'           # centers window
 
 pygame.init()
-pygame.display.set_caption('DIRECTIONDUNGEON!')  # window title
-
-# CREATES THE INITIAL SCREEN BASED ON DESKTOP SIZE
-mult = 7
+pygame.display.set_caption('DIRECTIONDUNGEON!')  # gives window a title
 
 # PIXEL SIZE CONSTANTS
-TILE = 4 * mult   # pixel size of a tile
-SIDE = 2 * mult   # pixel size of the side of a tile
+mult = 8            # pixel multiplier
 
-MARG = 2 * mult   # pixel size of the margin between dungeons                  
-WIDTH  = 5         # tile width of a dungeon
-HEIGHT = 5         # tile height of a dungeon
-DUNGW = TILE*WIDTH  # pixel width of a dungeon
-DUNGH = TILE*HEIGHT # pixel height of a dungeon
+TILE = 4 * mult     # size in pixels of a tile
+SIDE = 2 * mult     # size in pixels of the side of a tile
+MARG = 2 * mult     # size in pixels of the margin between dungeons
 
-SCREENLENGTH = DUNGH*3 + SIDE + MARG*4   # the size of the screen
-SCREENSIZE = (SCREENLENGTH, SCREENLENGTH) # the size of the screen, tupled
+WIDTH  = 5          # width  in tiles of a dungeon
+HEIGHT = 5          # height in tiles of a dungeon
+DUNGW = TILE*WIDTH  # width  in pixels of a dungeon
+DUNGH = TILE*HEIGHT # height in pixels of a dungeon
 
-postDisplay = pygame.display.set_mode(SCREENSIZE) # post-camera
+# AFTERWARDS WINDOW SETUP
+# the size of the screen, based on how things are laid out
+SCREENLENGTH = DUNGH*3 + MARG*4
+SCREENSIZE = (SCREENLENGTH, SCREENLENGTH)
+
+# initializes the display so that sprites can be loaded
+postDisplay = pygame.display.set_mode(SCREENSIZE)
 
 
 
-###########################
-### CONSTANTS AND STUFF ###
-###########################
-# DIRECTION CONSTANTS
+### GAMEPLAY CONSTANTS ###
+# DIRECTION
 LEFT = 0
 UP = 1
 RIGHT = 2
@@ -77,23 +89,17 @@ WALLSIDE = 3 # only used in tilesheets, not used in level generation
 GOAL = 4
 SWIRL = 5
 
-
-
-# DEFAULT DUNGEON POSITIONS AT A DUNGEON SIZE OF 6
+# DEFAULT DUNGEON POSITIONS
 dungX = [MARG, DUNGW + MARG*2, DUNGW*2 + MARG*3, DUNGW + MARG*2]
 dungY = [DUNGH + MARG*2, MARG, DUNGH + MARG*2, DUNGH*2 + MARG*3]
 
-# CENTERS THE DUNGEONS
-for i in range(4):
-    dungX[i] += SIDE
 
-##############################
-### SPRITES AND ANIMATIONS ###
-##############################
-### ANIMATION QUEUES ###
-animQueue = []
 
-### STATIC SPRITES ###
+###############
+### SPRITES ###
+###############
+
+### LOADS SPRITES ###
 def loadSprite(path, mult):
     sprite = pygame.image.load(path) # load sprite
 
@@ -108,80 +114,97 @@ def loadSprite(path, mult):
     return sprite
 
 
-# TILESETS (NEW)
+### TILESHEETS ###
+# VAR does not mean VARIABLE, it means VARIATIONS
 class Tilesheet:
     def __init__(self, path, mult, varCount):
-        # varCount stores the amount of variations for each tileType
-        self.varCount = varCount   # should be a tuple of numbers
         self.surface = loadSprite(path, mult)
 
+        # a tuple that stores the amount of variations for each tileType
+        self.varCount = varCount
 
 
+    # draws a tile based on its tileType and variant
     def drawTile(self, surf, pos, tile, variant):
         if tile == WALLSIDE:
             height = SIDE
         else:
             height = TILE
 
-        tileRect = (tile - 1) * TILE, variant * TILE, TILE, height
-
+        # cuts out the tile from the tilesheet and draws it
+        tileRect = ((tile - 1)*TILE, variant*TILE, TILE, height)
         surf.blit(self.surface, pos, tileRect)
 
-
-
+# a test tilesheet.  multiple can be made
 TESTSHEET = Tilesheet("images\\testSheet.png", mult, (0, 2, 2, 2, 0, 0))
 
-### ANIMATIONS ###
 
-# ANIMATION KINDS
-SPRITE     = 1 # counts by ones, also has a spritesheet tied to it
+
+##################
+### ANIMATIONS ###
+##################
+
+animQueue = []   # a queue that plays animations in order
+
+### THE ANIMATION CLASS ###
+# THERE ARE DIFFERENT TYPES OF ANIMATIONS
+SPRITE     = 1 # based off of sprites rather than values
 COUNTER    = 2 # counts by ones
-LINEAR     = 3 # counts by a defined value
-QUADRATIC  = 4 # counts by a changing value, slow then speeds up
-RQUADRATIC = 5 # counts by a changing value, fast then slows down
+LINEAR     = 3 # counts by a certain value
+QUADRATIC  = 4 # counts by a changing value (slow then speeds up)
+RQUADRATIC = 5 # counts by a changing value, reversed (fast then slows down)
 
 class Animation:
+
+    # I USE "args" BECAUSE SPRITE AND VALUE ANIMS TAKE DIFFERENT ARGUMENTS
     def __init__ (self, lastFrame, kind, arg0 = None, arg1 = None,
-                  arg2 = None, arg3 = None, arg4 = ()):
-        self.frame = 0
-        self.lastFrame = lastFrame
+                                         arg2 = None, arg3 = None, arg4 = ()):
+        #      kind: I couldn't use "type" because Python
+        #     frame: counts up the frame number of the animation
+        # lastFrame: the last frame number of the animation
+        #     value: stores the value of the animation
+        # peakValue: the highest/lowest point the value will reach
+        #      tied: references any animations that play at the same time
         self.kind = kind
 
+        self.frame = 0
+        self.lastFrame = lastFrame
 
 
-        # SPRITE-BASED ANIMATION
+        ### SPRITE-BASED ANIMATION ###
         if kind == SPRITE:
+            # DEFINE WHAT THE ARGUMENTS MEAN
+            filePath  = arg0
+            width     = arg1
+            height    = arg2
+            mult      = arg3
             self.tied = arg4
 
-            # define what the arguments mean
-            filePath = arg0
-            width = arg1
-            height = arg2
-            mult = arg3
-
-            # apply the width, height, and spritesheet of the animation
+            # WIDTH AND HEIGHT USED TO "CUT OUT" CERTAIN FRAMES
             self.width = width * mult
             self.height = height * mult
 
+            # STORES EVERY FRAME ON A SINGLE SURFACE
             self.surface = loadSprite(filePath, mult)
 
-        # VALUE-BASED ANIMATION
-        else:
-            # define what the arguments mean
-            peakValue = arg0
 
-            if arg1:
+        ### VALUE-BASED ANIMATION ###
+        else:
+            # DEFINE WHAT THE ARGUMENTS MEAN
+            peakValue = arg0
+            if arg1:  # only defines tied animations when arg1 exists
                 self.tied = arg1
             else:
                 self.tied = ()
 
-            # create a counter based on the kind of animation
+            # CREATES COUNTERS BASED ON THE TYPE OF ANIMATION
             if kind == LINEAR:
                 self.lastValue = peakValue
                 self.value = 0
                 self.DIFF = peakValue / lastFrame
 
             elif kind == QUADRATIC or kind == RQUADRATIC:
+                # wow look math, wow look parabolas
                 h = lastFrame
                 k = peakValue
                 a = k / h**2
@@ -193,8 +216,8 @@ class Animation:
                     self.diff1 = a
 
                 elif kind == RQUADRATIC:
-                    # GOES THROUGH THE PARABOLA AND RECORDS THE PRE-VERTEX VALUE
-                    # INEFFICIENT BUT I SPENT FOREVER TRYING SOMETHING ELSE
+                    # goes through the parabola and records the pre-vertex value
+                    # it's inefficient but I spent forever trying something else
                     diff1 = a
 
                     for x in range (lastFrame - 1):
@@ -204,7 +227,8 @@ class Animation:
                     self.diff1 = diff1
 
 
-    # DRAWS A SPECIFIC FRAME, BY CUTTING IT OUT FROM THE SURFACE
+    ### FUNCTIONS ###
+    # DRAWS A SPECIFIC FRAME, BY CUTTING IT OUT FROM THE SURFACE (sprite only)
     def blitFrame(self, dest, position, frameNum = -1):
         if frameNum == -1:
             frameNum = self.frame
@@ -213,7 +237,7 @@ class Animation:
         dest.blit(self.surface, position, frameRect)
 
 
-    # ADVANCES THE FRAME BY 1
+    # ADVANCES THE FRAME
     def nextFrame(self):
         self.frame += 1
 
@@ -228,7 +252,7 @@ class Animation:
             self.value += self.diff1
             self.diff1 -= self.DIFF2
 
-        # forwards all tied animations
+        # also advances each tied animation
         for anim in self.tied:
             anim.nextFrame()
 
@@ -237,7 +261,7 @@ class Animation:
     def resetAnim(self):
         self.frame = 0
 
-        # resets value on all animations but sprite-based ones
+        # self.value doesn't exist on SPRITES
         if self.kind != SPRITE:
             self.value = 0
 
@@ -247,13 +271,12 @@ class Animation:
         elif self.kind == RQUADRATIC:
             self.diff1 = self.firstDiff1
 
-        # resets all tied animations
+        # also resets all tied animations
         for anim in self.tied:
             anim.resetAnim()
 
 
-
-# PLAYER
+### PLAYER ANIMATIONS ###
 # creates and loads all the ghost/player animations from file
 directionStrings = ["Left", "Up", "Right", "Down"]
 playMovement = []
@@ -270,7 +293,7 @@ for direction in directionStrings:
     tempPlayAnim = Animation(6, SPRITE, path, 12, 14, mult, [tempGhostAnim])
     playMovement.append(tempPlayAnim)
 
-# idle doesn't have to be animation, but this just makes things easier
+# idle doesn't have to be animation, but it just makes things easier
 playIdle = Animation(0, SPRITE, "images\\playIdle.png",  12, 14, mult)
 ghostIdle = Animation(0, SPRITE, "images\\playIdle.png",  12, 14, mult)
 ghostIdle.surface.set_alpha(100)
@@ -278,10 +301,7 @@ playAnim = playIdle
 ghostAnim = ghostIdle
 
 
-
-
-
-# LEVEL
+### LEVEL ANIMATIONS ###
 animRotate = Animation(18, QUADRATIC, 90)
 ROTATERADIUS = DUNGW + MARG
 ROTATEMIDX = DUNGW + MARG*3
@@ -299,17 +319,7 @@ NEXTSHADOWINTERVAL = SHADOWINTERVAL / animNexLvlUp.lastFrame
 
 
 
-# RETURNS THE PIXEL POSITION ON THE SCREEN OF A TILE
-def pixelPos(dung, x, y):
-    if dung == None:
-        x = x * TILE
-        y = y * TILE
-    else:
-        x = dungX[dung] + x * TILE
-        y = dungY[dung] + y * TILE
-
-    return (x, y)
-
+### MISC GRAPHICAL STUFF ###
 # CREATES A NEW LAYER, WITH COLORKEY TRANSPARENCY
 def newSurf(dimensions):
     layer = pygame.Surface(dimensions)
@@ -318,24 +328,41 @@ def newSurf(dimensions):
     return layer
 
 
-
-# DUNGEON SURFACES
+# SURFACE WHERE EACH DUNGEON IS DRAWN TO
 curDungs = newSurf((DUNGW * 4, DUNGH + SIDE))
-dungRects = []
+dungRects = []  # used to cut out each dungeon from curDungs
 for dung in range(4):
     dungRects.append((dung * DUNGW, 0, DUNGW, DUNGH + SIDE))
 
+
+# BLITS DUNGEON SIDES FROM SIDESURFS
+def blitSide(surf, dung, x, y):
+    segment = (dung * DUNGW, sideY + SIDE*2, DUNGW, SIDE * LEVELSDOWN)
+    surf.blit(sideSurfs, (x, y), segment)
+
+
+# CAMERA
+camX = 0
+camY = 0
+CAMLIMIT = mult * 3
+CAMMAXFRAME = 60
 
 
 
 ##############
 ### LEVELS ###
 ##############
+
+### LEVEL CLASS ###
 class Level:
-    def __init__(self, layout, tileset):
+    def __init__(self, layout, tileSheet):
+        # origLayout: when resetting the level, revert to this.  don't modify
+        #     layout: stores the layout of the level.  modify if you want
+        #  tileSheet: stores which tilesheet the level is using
+        #   tileVars: stores which sprite variant each tile uses
         self.origLayout = layout
         self.layout = layout
-        self.tileset = tileset
+        self.tileSheet = tileSheet
 
         tileVars = [[[0, 0, 0, 0, 0] for x in range(WIDTH)] for x in range(4)]
 
@@ -343,47 +370,60 @@ class Level:
             for col in range(WIDTH):
                 for row in range(HEIGHT):
                     tile = self.tileAt(dung, col, row)
-                    variant = random.randint(0, tileset.varCount[tile])
+                    variant = random.randint(0, tileSheet.varCount[tile])
                     tileVars[dung][col][row] = variant
 
         self.tileVars = tileVars
 
+
+    ### RETURNS THE TILE AT A SPECIFIC LOCATION ###
     def tileAt(self, dung, x, y):
         if 0 <= x < WIDTH and 0 <= y < HEIGHT:
             return self.layout[dung][x][y]
+
+        # out of bounds tiles
         else:
             return VOID
 
 
+    ### DRAWS A TILE FROM THE LEVEL ###
     def drawTile(self, surf, dung, col, row, x = None, y = None):
+        # if no position arguments are given, use the default position
         if x == None and y == None:
-            pos = pixelPos(dung, col, row)
+            pos = (dungX[dung] + col * TILE, dungY[dung] + row * TILE)
         else:
             pos = (x, y)
 
-        tile = self.tileAt(dung, col, row)
-        tileset = self.tileset
-        variant = self.tileVars[dung][col][row]
+        # pulls some variables from self
+        tile      = self.tileAt(dung, col, row)
+        tileSheet = self.tileSheet
+        variant   = self.tileVars[dung][col][row]
 
+        # wall tiles consist of two potential parts, and are drawn higher
         if tile == WALL:
-            tileset.drawTile(surf, pos, WALL, variant)
+            tileSheet.drawTile(surf, pos, WALL, variant)
 
+            # draws side if tile below is not also a wall
             if self.tileAt(dung, col, row + 1) != WALL:
                 pos = (pos[0], pos[1] + TILE)
-                tileset.drawTile(surf, pos, WALLSIDE, variant)
+                tileSheet.drawTile(surf, pos, WALLSIDE, variant)
 
+        # all other tiles only consist of one part, and are drawn lower
         elif tile != VOID:
             pos = (pos[0], pos[1] + SIDE)
-            tileset.drawTile(surf, pos, tile, variant)
+            tileSheet.drawTile(surf, pos, tile, variant)
 
 
+    ### DRAWS AN ENTIRE DUNGEON ###
     def drawDung(self, surf, dung, posX = None, posY = None):
+        # basically just loops through and draws each tile
         for col in range(WIDTH):
             for row in range(HEIGHT):
+
+                # if no position arguments are given, use the default position
                 if posX == None and posY == None:
                     x = dungX[dung] + col*TILE
                     y = dungY[dung] + row*TILE
-
                 else:
                     x = posX + col*TILE
                     y = posY + row*TILE
@@ -392,28 +432,33 @@ class Level:
 
 
 
-
-# the level files use these letters to represent the tiles
+### LOADS THE LEVELS FROM FILE ###
+# the level file uses singular letters to represent tiles
 V = VOID
 E = EMPTY
 W = WALL
 G = GOAL
 S = SWIRL
 
+# READ FILE
 levels = []
-for file in os.listdir("levels\\"):   # goes through each level file
-    levelFile = open("levels\\" + file, "r")
-    levelFile = levelFile.read()
+levelFile = open("levels.txt", "r")
+levelFile = levelFile.read().split()
 
-    # SPLIT EACH LETTER IN THE FILE, AND CONVERT EACH INTO A NUMBER
-    levelFile = levelFile.split()
-    for x in range(len(levelFile)):
-        levelFile[x] = eval(levelFile[x])
+# REMOVES THE LEVEL DESCRIPTIONS (level00, level01, level02 and so on)
+for x in reversed(range(0, len(levelFile), WIDTH * HEIGHT * 4 + 2)):
+    levelFile.pop(x)
 
-    # FIRST THING IS THE LEVEL'S TILESET
-    buildSet = levelFile.pop(0)
+# CONVERTS ALL THE STRINGS TO THEIR RESPECTIVE CONSTANTS
+for x in range(len(levelFile)):
+    levelFile[x] = eval(levelFile[x])
 
-    # BUILDS THE LEVEL BY POPPING OFF THE NUMBERS IN ORDER
+while levelFile:   # stops loading once there is nothing to load
+
+    # FIRST ITEM SHOULD BE THE LEVEL'S TILESHEET
+    buildSheet = levelFile.pop(0)
+
+    # BUILDS THE LEVEL BY POPPING EACH ITEM OFF
     buildLayout = [[[] for x in range(WIDTH)] for x in range(4)]
     for row in range(HEIGHT):    # creates up dungeon
         for col in range(WIDTH):
@@ -430,37 +475,29 @@ for file in os.listdir("levels\\"):   # goes through each level file
         for col in range(WIDTH):
             buildLayout[ DOWN][col].append(levelFile.pop(0))
 
-    # ADDS THE LEVEL TO THE LEVEL LIST
-    levels.append(Level(buildLayout, buildSet))
+    # CREATES A LEVEL OBJECT AND ADDS IT TO THE LEVEL LIST
+    levels.append(Level(buildLayout, buildSheet))
 
 
 
 #######################
 ### MISC / UNSORTED ###
 #######################
-clock = pygame.time.Clock()
-TAHOMA = pygame.font.SysFont("Tahoma", 10)
-running = True
-debugPressed = False
+moveQueue = []  # keeps track of inputs
+clock = pygame.time.Clock()                 # stabilizes fps
+TAHOMA = pygame.font.SysFont("Tahoma", 10)  # font used for debug purposes
+running = True        # game loop finishes once this is set to false
+debugPressed = False  # tracks if the debug button is being pressed
 
-# BLITS A SEGMENT FROM SIDESURFS
-def blitSide(surf, dung, x, y):
-    segment = (0, sideY + SIDE * 4, DUNGW, SIDE * LEVELSDOWN + SIDE)
-    surf.blit(sideSurfs[dung], (x, y), segment)
-
-# CAMERA STUFF
-camX = 0
-camY = 0
-CAMLIMIT = 15
-CAMMAXFRAME = 60
 
 
 
 ################################################################################
 ###                                MENU ..?                                  ###
 ################################################################################
-preDisplay = newSurf(SCREENSIZE)  # pre-camera surface
 
+preDisplay = newSurf(SCREENSIZE)                 # the main display, pre-camera
+postDisplay = pygame.display.set_mode(SCREENSIZE)# the main display, post-camera
 
 
 # levelNum can be changed later with the level select
@@ -473,7 +510,7 @@ if levelNum == 0:
 # find the goal in the previous level and start the player from there
 else:
     goalExists = False
-    for dungNum, dung in enumerate(levels[levelNum - 1][0]):
+    for dungNum, dung in enumerate(levels[levelNum - 1].layout):
         for x, col in enumerate(dung):
             for y, tile in enumerate(col):
                 if tile == GOAL:
@@ -481,7 +518,6 @@ else:
                     playCol = x
                     playRow = y
                     goalExists = True
-                    break
 
     # if somehow no goal was found, default to the middle of the level
     if not goalExists:
@@ -489,60 +525,49 @@ else:
         playCol = 2
         playRow = 2
 
+
 # PREDRAWS THE SIDES OF ALL THE LEVELS
-sideSurfs = []
-for dung in range(4):
-    sideSurf = newSurf((DUNGW, len(levels)*SIDE))
+# makes a surface that stores level sides for all four dungeons
+sideSurfs = newSurf((DUNGW * 4, (len(levels) + 1)*SIDE + TILE+SIDE))
 
-    y = len(levels) * SIDE
-    for level in reversed(levels):
+# draws the four dungeons for each level
+y = len(levels) * SIDE
+for level in reversed(levels):
+    y -= SIDE
+    for dung in range(4):
         for col in range(WIDTH):
-            level.drawTile(sideSurf, dung, col, HEIGHT - 1, col*TILE, y)
-        y -= SIDE
-
-    sideSurfs.append(sideSurf)
+            x = dung*DUNGW + col*TILE
+            level.drawTile(sideSurfs, dung, col, HEIGHT-1, x, y)
 
 
-
+### PER-LEVEL LOOP ###
 while True:
 
     ############################################################################
     ###                   STUFF THAT RESETS EACH LEVEL                       ###
     ############################################################################
-    camXLock = 0
-    camYLock = 0
 
-    curLvl = levels[levelNum]
-    nexLvl = levels[levelNum + 1]
-
-
-
-    ### PLAYER INPUT ###
-    moveQueue = []
-
-
-    ### DRAWING DUNGEONS ###
-    curLay = newSurf(SCREENSIZE)  # current level's layer
+    ### DRAWING LEVELS ###
+    curLvl = levels[levelNum]  # stores reference to current level
+    nexLvl = levels[levelNum + 1]  # stores reference to next level
+    curLay = newSurf(SCREENSIZE)   # current level's layer
     nexLay = newSurf((SCREENLENGTH, SCREENLENGTH + SIDE))
+
+    # a black surface used to fade the level sides out
+    shadow = pygame.Surface((DUNGW, SIDE))
 
 
     ### ANIMATION STUFF ###
     # NEXT LEVEL
-    nexLayY = 0 # resets next level animation
+    nexLayY = 0  # resets y values
     curLayY = 0
-    curSpeed = 0
-    shadow = pygame.Surface((DUNGW, SIDE))  # fades the next levels out
-
-    sideY = (levelNum + 1) * SIDE   # the yPos of the next level in sideSurfs
-
-    # ROTATION
+    sideY = (levelNum + 2) * SIDE
     angleOff = 0
 
     animCur = None
 
 
-
-    # DRAWS BOTH THE CURRENT LEVEL AND THE NEXT LEVEL
+    ### PREDRAWS BOTH THE CURRENT LEVEL AND THE NEXT LEVEL ###
     curDungs.fill((0, 255, 0))
     for dung in range(4):
         curLvl.drawDung(curDungs, dung, dung * DUNGW, 0)
@@ -565,6 +590,10 @@ while True:
         nexLvl.drawDung(nexLay, dung)
 
 
+    # MISC
+    camXLock = 0    # reset camera
+    camYLock = 0
+
 
 
     ############################################################################
@@ -580,7 +609,7 @@ while True:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
 
-                # sorts priority of directional keys currently being pressed
+                # inserts inputs into the moveQueue
                 if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     moveQueue.insert(0, LEFT)
                 elif event.key == pygame.K_UP or event.key == pygame.K_w:
@@ -589,6 +618,7 @@ while True:
                     moveQueue.insert(0, RIGHT)
                 elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     moveQueue.insert(0, DOWN)
+
                 elif event.key == pygame.K_f:
                     debugPressed = True
 
@@ -596,7 +626,7 @@ while True:
 
             elif event.type == pygame.KEYUP:
 
-                # finds what key was released
+                # removes inputs from the moveQueue
                 liftedKey = 0
                 if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     liftedKey = LEFT
@@ -606,15 +636,59 @@ while True:
                     liftedKey = RIGHT
                 elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     liftedKey = DOWN
+
                 elif event.key == pygame.K_f:
                     debugPressed = False
 
-                # removes the listed key from the query
                 if liftedKey in moveQueue:
                     moveQueue.remove(liftedKey)
 
             elif event.type == pygame.QUIT:
                 running = False
+
+
+
+        #############
+        ### INPUT ###
+        #############
+
+        ### MOVEMENT ###
+        # if an input was made and no animation is currently playing
+        if moveQueue and animQueue == []:
+
+            # start movement animation if you land on a non-wall/non-void tile
+            moveDirection = moveQueue[0]
+            queryX = playCol
+            queryY = playRow
+            if moveQueue[0] == LEFT:
+                queryX -= 1
+
+            elif moveQueue[0] == RIGHT:
+                queryX += 1
+
+            elif moveQueue[0] == UP:
+                queryY -= 1
+
+            elif moveQueue[0] == DOWN:
+                queryY += 1
+
+            if curLvl.tileAt(moveDirection, queryX, queryY) not in [WALL, VOID]:
+                playDung = moveDirection
+                playAnim = playMovement[moveDirection]
+                ghostAnim = ghostMovement[moveDirection]
+
+                # a quick fix for the animation not showing the first frame
+                playAnim.frame = -1
+                ghostAnim.frame = -1
+
+                animQueue.append(playAnim)
+
+        if moveQueue:
+            camDir = moveQueue[0]
+            if camDir == LEFT or camDir == RIGHT:
+                camXLock = CAMMAXFRAME
+            elif camDir == UP or camDir == DOWN:
+                camYLock = CAMMAXFRAME
 
 
 
@@ -724,7 +798,7 @@ while True:
                     nexLayY = round(animNexLvlUp.value)
 
 
-                    for dung, sideSurf in enumerate(sideSurfs):
+                    for dung in range(4):
                         # redraws the side layer
                         x = dungX[dung]
                         y = dungY[dung] + DUNGH + SIDE
@@ -741,45 +815,6 @@ while True:
 
 
 
-        ####################
-        ### CALCULATIONS ###
-        ####################
-        ### MOVEMENT ###
-        # if an input was made and no animation is currently playing
-        if moveQueue and animQueue == []:
-
-            # start movement animation if you land on a non-wall/non-void tile
-            moveDirection = moveQueue[0]
-            queryX = playCol
-            queryY = playRow
-            if moveQueue[0] == LEFT:
-                queryX -= 1
-
-            elif moveQueue[0] == RIGHT:
-                queryX += 1
-
-            elif moveQueue[0] == UP:
-                queryY -= 1
-
-            elif moveQueue[0] == DOWN:
-                queryY += 1
-
-            if curLvl.tileAt(moveDirection, queryX, queryY) not in [WALL, VOID]:
-                playDung = moveDirection
-                playAnim  = playMovement[moveDirection]
-                ghostAnim = ghostMovement[moveDirection]
-                animQueue.append(playAnim)
-
-        if moveQueue:
-            camDir = moveQueue[0]
-            if camDir == LEFT or camDir == RIGHT:
-                camXLock = CAMMAXFRAME
-            elif camDir == UP or camDir == DOWN:
-                camYLock = CAMMAXFRAME
-
-
-
-
         ##########################
         ### DRAWING EVERYTHING ###
         ##########################
@@ -792,9 +827,10 @@ while True:
 
         ### PLAYER ###
         for dung in range(4):
-            # CALCULATE THE PLAYER'S POSITION BASED ON THE CURRENT ANIMATION
             playX = dungX[dung] + (playCol - 1) * TILE
             playY = dungY[dung] + (playRow - 1) * TILE
+
+            ### CHANGE THE PLAYER'S POSITION BASED ON THE CURRENT ANIMATION ###
             if animCur is animPlayDrop:
                 playY += animPlayDrop.value
 
@@ -816,75 +852,90 @@ while True:
                 playY += (playRow - 1) * TILE
 
 
-            # DRAW THE PLAYER (and the ghosts)
+            ### DRAW THE PLAYER (and the ghosts) ###
             if playDung == dung:
                 playAnim.blitFrame(preDisplay, (playX, playY))
             else:
                 ghostAnim.blitFrame(preDisplay, (playX, playY))
 
 
-            # DRAWS BLOCKS THAT SHOULD OVERLAP THE PLAYER
-            # during player dropping into goal
+            ### DRAWS BLOCKS THAT SHOULD OVERLAP THE PLAYER (and ghosts)###
             if animCur is animPlayDrop:
+
+                # draws block directly below player.  no exceptions
                 if nexLvl.tileAt(dung, playCol, playRow + 1):
                     curLvl.drawTile(preDisplay, dung, playCol, playRow + 1)
 
-            # during next level transition
-            if animCur is animCurLvlUp:
+
+            elif animCur is animCurLvlUp:
                 x = playX + TILE
 
-                # draw wall below player on next level
+                # draws block beneath player on next level
                 if nexLvl.tileAt(dung, playCol, playRow + 1) == WALL:
                     y = playY + TILE + TILE
 
                     nexLvl.drawTile(preDisplay, dung, playCol, playRow + 1, x, y)
 
-                # draw a segment of the current level above the player
+                # draws the column of blocks that overlap the player
+                # during first half, only draw blocks below the player
                 if animCur.frame < animCur.lastFrame / 2:
+
+                    # a wall will start higher up from the other blocks
                     if curLvl.tileAt(dung, playCol, playRow + 1) == WALL:
                         y = playY + TILE + SIDE
                     else:
                         y = playY + TILE + TILE
 
+                # during second half, top ghost is covered by bottom dungeon
                 else:
-                    # makes top player be covered by bottom dungeon
+                    # so draw the entire column
                     y = dungY[dung]
 
                 section = (x, y, TILE, DUNGH)
                 preDisplay.blit(curLay, (x, y + curLayY), section)
 
-            # during dungeon rotation
+
             elif animCur is animRotate:
+
+                # draws block beneath player
                 if curLvl.tileAt(dung, playCol, playRow + 1) == WALL:
                     x = playX + TILE
                     y = playY + TILE + TILE
                     nexLvl.drawTile(preDisplay, dung, playCol, playRow + 1, x, y)
 
-            # during normal movement
-            else:
-                #
+
+            else:   # normal movement
+
+                # IF A WALL IS BELOW YOU, IT SHOULD COVER YOU
+                # check two blocks below instead of one when moving down
                 if playAnim is playMovement[DOWN]:
                     row = 2
                 else:
                     row = 1
 
+                # if there is a wall below, it should cover the player
                 if curLvl.tileAt(dung, playCol, playRow + row) == WALL:
                     curLvl.drawTile(preDisplay, dung, playCol, playRow + row)
 
-                col = 0
+
+                # LEFT/RIGHT MOVEMENT REQUIRES A SECOND BLOCK TO BE DRAWN
+                # because your sprite extends in that direction
+                col = None
                 if playAnim is playMovement[LEFT]:
                     col = -1
                 elif playAnim is playMovement[RIGHT]:
                     col = 1
 
+                # draw the other tile that covers the player
                 if col:
-                    if curLvl.tileAt(dung, playCol + col, playRow + 1) == WALL:
+                    if curLvl.tileAt(dung, playCol+col, playRow+1) == WALL:
                         curLvl.drawTile(preDisplay, dung, playCol + col, playRow + 1)
 
 
 
         ### CAMERA MOVEMENT ###
-        if camXLock:  # MOVES THE CAMERA ALONG X AXIS
+        # MOVES THE CAMERA ALONG X AXIS
+        if camXLock:
             camXLock -= 1
 
             if camDir == LEFT:
@@ -892,10 +943,15 @@ while True:
             elif camDir == RIGHT:
                 camX += (CAMLIMIT - camX) * 0.1
 
-        elif camX != 0:  # resets the x axis
+        elif -0.2 > camX or camX > 0.2:  # smooths the movement back, until 0.2
             camX -= camX * 0.1
 
-        if camYLock:  # MOVES THE CAMERA ALONG Y AXIS
+        else:                            # resets the camera to 0
+            camX = 0
+
+
+        # MOVES THE CAMERA ALONG Y AXIS, BASICALLY THE SAME AS X
+        if camYLock:
             camYLock -= 1
 
             if camDir == UP:
@@ -903,27 +959,31 @@ while True:
             elif camDir == DOWN:
                 camY += (CAMLIMIT - camY) * 0.1
 
-        elif camY != 0:  # resets the y axis
+        elif -0.2 > camY or camY > 0.2:
             camY -= camY * 0.1
 
+        else:
+            camY = 0
 
 
         postDisplay.blit(preDisplay, (-camX, -camY))
-        ### POST CAMERA ###
 
+
+
+        ### POST CAMERA ###
+        # there's nothing here lol
 
 
         ### DEBUGGING ###
         #print(animNextLevel.frame, dungLayer.get_alpha())
         fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
-        debug1 = TAHOMA.render(str(playY), False, (255, 255, 255))
+        debug1 = TAHOMA.render(str(camX)+' '+str(camY), False, (255, 255, 255))
         postDisplay.blit(fps, (10, 10))
         postDisplay.blit(debug1, (10, 20))
         if debugPressed:
-            clockTick = 2
+            clockTick = 2   # slow down game when the debug button is pressed
         else:
             clockTick = 60
-
 
 
         ### FINAL OUTPUT ###
@@ -931,10 +991,13 @@ while True:
 
         preDisplay.fill((0, 0, 0))   # clear the screen
         postDisplay.fill((0, 0, 0))
-        clock.tick(clockTick)        # keeps the FPS consistent 60
+
+        clock.tick(clockTick)        # keeps the FPS at a consistent 60
 
 
-        if not running: # exits loop when window closed
+
+        # exits loops when window is closed
+        if not running:
             break
 
     if not running:

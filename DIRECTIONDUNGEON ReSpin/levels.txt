@@ -1,0 +1,89 @@
+level00
+TESTSHEET
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+W W W W W           W W W W W
+W W W W W           W W W W W
+W W W W W           E E E E G
+W W W W W           W W W W W
+W W W W W           W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+
+level01
+TESTSHEET
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+W W W W W           W W W W W
+W W W W W           W W W W W
+G E E E E           W W W W W
+W W W W W           W W W W W
+W W W W W           W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+
+level02
+TESTSHEET
+          W W G W W
+          W E E E W
+          W E E E W
+          W E E E W
+          W W W W W
+W W W W W           W W W W W
+W E E E W           W E E E W
+E E E E W           W E E E W
+W E E E W           W E E E W
+W W W W W           W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+
+level03
+TESTSHEET
+          W W E W W
+          W E E E W
+          W E E E W
+          W E E E W
+          W W W W W
+W W W W W           W W W W W
+W E E E W           W E E E W
+W E E E W           W E E E W
+W E E E W           W E E E W
+W W W W W           W W W W W
+          W W W W W
+          W E E E W
+          W E E E W
+          W E E E W
+          W W G W W
+
+level04
+TESTSHEET
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+          W E E E E
+W W W W W           W W W W W
+W W W W W           W W W W W
+W W W W W           E E E E G
+W W W W W           W W W W W
+W E E E E           W E E E E
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+          W E E E E

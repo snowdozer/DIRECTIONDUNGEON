@@ -1,0 +1,16 @@
+         W W W W W
+         W W W W W
+         E E E E E
+         E W W W E
+         E E E E E
+W W W W W         W W W W W
+W W W W W         W W W W W
+G E E E E         E W W W E
+E W W W E         E W W W E
+E E E E E         E E E E E
+         W W W W E
+         W W W W W
+         E E E E E
+         E W W W E
+         E E E E E
+3 2 4
