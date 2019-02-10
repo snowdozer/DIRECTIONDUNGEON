@@ -129,7 +129,7 @@ class Tilesheet:
 
 
 
-TESTSHEET = Tilesheet("images\\testSheet.png", mult, (2, 2, 2, 0, 0))
+TESTSHEET = Tilesheet("images\\testSheet.png", mult, (0, 2, 2, 2, 0, 0))
 
 ### ANIMATIONS ###
 
@@ -279,19 +279,6 @@ ghostAnim = ghostIdle
 
 
 
-# TILES (each tileset is a "frame")
-tileEmpty = Animation(2, SPRITE, "images\\empty.png",   4, 4, mult)
-tileWall  = Animation(2, SPRITE, "images\\wallTop.png", 4, 4, mult)
-tileWallSide = Animation(2, SPRITE, "images\\wallSide.png", 4, 2, mult)
-tileGoal  = Animation(2, SPRITE, "images\\goal.png",    4, 4, mult)
-tileSwirl = Animation(2, SPRITE, "images\\swirl.png",   4, 4, mult)
-TILEBLUE = 0
-TILEGREEN = 1
-TILEPURPLE = 2
-
-# indexes each tile sprite
-tiles = [None, tileEmpty, tileWall, tileGoal, tileSwirl]
-
 
 
 # LEVEL
@@ -345,7 +332,6 @@ for dung in range(4):
 ### LEVELS ###
 ##############
 class Level:
-    TILES = [None, tileEmpty, tileWall, tileGoal, tileSwirl]
     def __init__(self, layout, tileset):
         self.origLayout = layout
         self.layout = layout
@@ -462,6 +448,12 @@ def blitSide(surf, dung, x, y):
     segment = (0, sideY + SIDE * 4, DUNGW, SIDE * LEVELSDOWN + SIDE)
     surf.blit(sideSurfs[dung], (x, y), segment)
 
+# CAMERA STUFF
+camX = 0
+camY = 0
+CAMLIMIT = 15
+CAMMAXFRAME = 60
+
 
 
 ################################################################################
@@ -517,8 +509,8 @@ while True:
     ############################################################################
     ###                   STUFF THAT RESETS EACH LEVEL                       ###
     ############################################################################
-    camX = 0
-    camY = 0
+    camXLock = 0
+    camYLock = 0
 
     curLvl = levels[levelNum]
     nexLvl = levels[levelNum + 1]
@@ -666,10 +658,14 @@ while True:
                     curLvl.layout.insert(0, curLvl.layout[3])
                     del curLvl.layout[4]
 
+                    curLvl.tileVars.insert(0, curLvl.tileVars[3])
+                    del curLvl.tileVars[4]
+
                     # REDRAW THE DUNGEONS IN THEIR NEW POSITIONS
+                    curDungs.fill((0, 255, 0))
                     curLay.fill((0, 255, 0))
                     for dung in range(4):
-                        curLvl.drawDung(curDungs, dung, 0, dung * (DUNGH + SIDE))
+                        curLvl.drawDung(curDungs, dung, dung * DUNGW, 0)
                         position = (dungX[dung], dungY[dung])
                         curLay.blit(curDungs, position, dungRects[dung])
 
@@ -774,6 +770,13 @@ while True:
                 ghostAnim = ghostMovement[moveDirection]
                 animQueue.append(playAnim)
 
+        if moveQueue:
+            camDir = moveQueue[0]
+            if camDir == LEFT or camDir == RIGHT:
+                camXLock = CAMMAXFRAME
+            elif camDir == UP or camDir == DOWN:
+                camYLock = CAMMAXFRAME
+
 
 
 
@@ -877,6 +880,31 @@ while True:
                 if col:
                     if curLvl.tileAt(dung, playCol + col, playRow + 1) == WALL:
                         curLvl.drawTile(preDisplay, dung, playCol + col, playRow + 1)
+
+
+
+        ### CAMERA MOVEMENT ###
+        if camXLock:  # MOVES THE CAMERA ALONG X AXIS
+            camXLock -= 1
+
+            if camDir == LEFT:
+                camX -= (CAMLIMIT + camX) * 0.1
+            elif camDir == RIGHT:
+                camX += (CAMLIMIT - camX) * 0.1
+
+        elif camX != 0:  # resets the x axis
+            camX -= camX * 0.1
+
+        if camYLock:  # MOVES THE CAMERA ALONG Y AXIS
+            camYLock -= 1
+
+            if camDir == UP:
+                camY -= (CAMLIMIT + camY) * 0.1
+            elif camDir == DOWN:
+                camY += (CAMLIMIT - camY) * 0.1
+
+        elif camY != 0:  # resets the y axis
+            camY -= camY * 0.1
 
 
 

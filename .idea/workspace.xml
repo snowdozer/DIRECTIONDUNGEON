@@ -2,19 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b473aad1-d247-4772-a8e5-fe79a4a57641" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro09.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro12.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro18.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro21.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro24.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro27.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/ZIP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ZIP.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/testSheet.gal" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/testSheet.gal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/testSheet.png" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/testSheet.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/test.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,8 +18,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="816" column="28" lean-forward="true" selection-start-line="816" selection-start-column="28" selection-end-line="816" selection-end-column="28" />
+            <state relative-caret-position="231">
+              <caret line="816" lean-forward="true" selection-start-line="816" selection-end-line="816" />
+              <folding>
+                <element signature="e#1023#1034#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON/ye olde DIRECTIONDUNGEON.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="8078">
+              <caret line="582" selection-start-line="582" selection-end-line="603" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -37,7 +40,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>nexLay</find>
       <find>drawBotROW</find>
       <find>col</find>
       <find>drawDung</find>
@@ -67,6 +69,7 @@
       <find>print</find>
       <find>wallChecks</find>
       <find>playDrop</find>
+      <find>tilesheet</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -97,6 +100,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -109,11 +113,16 @@
               <item name="DIRECTIONDUNGEON" type="462c0819:PsiDirectoryNode" />
               <item name="DIRECTIONDUNGEON ReSpin" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="DIRECTIONDUNGEON" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DIRECTIONDUNGEON" type="462c0819:PsiDirectoryNode" />
+              <item name="DIRECTIONDUNGEON ReSpin" type="462c0819:PsiDirectoryNode" />
+              <item name="levels" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -219,13 +228,13 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="55" y="-7" width="1233" height="735" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14818764" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14663257" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="0" sideWeight="0.49947312" weight="0.3261105" />
+      <window_info anchor="bottom" id="Version Control" order="0" sideWeight="0.49947312" weight="0.32504147" />
       <window_info anchor="bottom" id="Python Console" order="1" />
       <window_info anchor="bottom" id="Terminal" order="2" />
       <window_info anchor="bottom" id="Event Log" order="3" sideWeight="0.50052685" side_tool="true" weight="0.30552545" />
@@ -238,7 +247,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Run" order="3" visible="true" weight="0.28198293" />
+      <window_info active="true" anchor="right" id="Run" order="3" visible="true" weight="0.27706736" />
     </layout>
   </component>
   <component name="editorHistoryManager">
@@ -267,8 +276,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="816" column="28" lean-forward="true" selection-start-line="816" selection-start-column="28" selection-end-line="816" selection-end-column="28" />
+        <state relative-caret-position="231">
+          <caret line="816" lean-forward="true" selection-start-line="816" selection-end-line="816" />
+          <folding>
+            <element signature="e#1023#1034#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON/ye olde DIRECTIONDUNGEON.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8078">
+          <caret line="582" selection-start-line="582" selection-end-line="603" selection-end-column="26" />
         </state>
       </provider>
     </entry>
