@@ -5,6 +5,8 @@
 ### LIST OF THINGS TO DO ###
 # shadow looks a bit confusing?  make the levels below darker?
 # fix goal clipping through player
+# fix empty tile clipping through wall during next level transition
+# add shadows on empties with walls above them?
 
 # levels
 # (probably 64, since it's 4 cubed, and because of 4 button menu)
@@ -52,7 +54,7 @@ pygame.init()
 pygame.display.set_caption('DIRECTIONDUNGEON!')  # gives window a title
 
 # PIXEL SIZE CONSTANTS
-mult = 8            # pixel multiplier
+mult = 7            # pixel multiplier
 
 TILE = 4 * mult     # size in pixels of a tile
 SIDE = 2 * mult     # size in pixels of the side of a tile
@@ -65,7 +67,7 @@ DUNGH = TILE*HEIGHT # height in pixels of a dungeon
 
 # AFTERWARDS WINDOW SETUP
 # the size of the screen, based on how things are laid out
-SCREENLENGTH = DUNGH*3 + MARG*4
+SCREENLENGTH = DUNGH*3 + MARG*4 + SIDE
 SCREENSIZE = (SCREENLENGTH, SCREENLENGTH)
 
 # initializes the display so that sprites can be loaded
@@ -91,6 +93,9 @@ SWIRL = 5
 # DEFAULT DUNGEON POSITIONS
 dungX = [MARG, DUNGW + MARG*2, DUNGW*2 + MARG*3, DUNGW + MARG*2]
 dungY = [DUNGH + MARG*2, MARG, DUNGH + MARG*2, DUNGH*2 + MARG*3]
+
+for dung in range(4):
+    dungX[dung] += SIDE / 2
 
 
 
@@ -329,6 +334,7 @@ def newSurf(dimensions):
 
 # SURFACE WHERE EACH DUNGEON IS DRAWN TO
 curDungs = newSurf((DUNGW * 4, DUNGH + SIDE))
+nexDungs = newSurf((DUNGW * 4, DUNGH + SIDE))
 dungRects = []  # used to cut out each dungeon from curDungs
 for dung in range(4):
     dungRects.append((dung * DUNGW, 0, DUNGW, DUNGH + SIDE))
@@ -343,6 +349,8 @@ def blitSide(surf, dung, x, y):
 # CAMERA
 camX = 0
 camY = 0
+camXLock = 0  # locks camera in direction for several frames
+camYLock = 0
 CAMLIMIT = mult * 2
 CAMMAXFRAME = 60
 
@@ -488,6 +496,24 @@ TAHOMA = pygame.font.SysFont("Tahoma", 10)  # font used for debug purposes
 running = True        # game loop finishes once this is set to false
 debugPressed = False  # tracks if the debug button is being pressed
 
+# DRAWS SHADOW ON THE NEXT LAYER & SIDES
+def drawNextShadow(surf, x, y, shadowOffset):
+    # blit over entire dungeon first
+    shadowAlpha = shadowOffset
+    shadowAlpha += SHADOWINTERVAL
+
+    shadow.set_alpha(shadowAlpha)
+    surf.blit(shadow, (x, y))
+
+    y += DUNGH
+
+    # blit each side shadow with a different opacity
+    for layer in range(1, LEVELSDOWN + 1):
+        shadow.set_alpha(shadowAlpha)
+        surf.blit(shadow, (x, y))
+
+        y += SIDE
+        shadowAlpha += SHADOWINTERVAL
 
 
 
@@ -502,7 +528,7 @@ postDisplay = pygame.display.set_mode(SCREENSIZE)
 
 
 # levelNum can be changed later with the level select
-levelNum = 0
+levelNum = 10
 if levelNum == 0:
     playDung = RIGHT
     playCol = 0
@@ -555,7 +581,9 @@ while True:
     nexLay = newSurf((SCREENLENGTH, SCREENLENGTH + SIDE))
 
     # a black surface used to fade the level sides out
-    shadow = pygame.Surface((DUNGW, SIDE))
+    shadow = pygame.Surface((DUNGW, DUNGH))
+    sideRect = (0, 0, DUNGW, SIDE)
+    tileRect = (0, 0, TILE, SIDE)
 
 
     ### ANIMATION STUFF ###
@@ -570,31 +598,23 @@ while True:
 
     ### PREDRAWS BOTH THE CURRENT LEVEL AND THE NEXT LEVEL ###
     curDungs.fill((0, 255, 0))
+    nexDungs.fill((0, 255, 0))
     for dung in range(4):
         curLvl.drawDung(curDungs, dung, dung * DUNGW, 0)
         curLay.blit(curDungs, (dungX[dung], dungY[dung]), dungRects[dung])
+
+        nexLvl.drawDung(nexDungs, dung, dung * DUNGW, 0)
+        nexLay.blit(nexDungs, (dungX[dung], dungY[dung]), dungRects[dung])
 
         x = dungX[dung]
         y = dungY[dung] + DUNGH + SIDE
         blitSide(nexLay, dung, x, y)
 
         # DRAWS SHADOWS
-        shadowAlpha = 0
-        for layer in range(1, LEVELSDOWN + 2):
-            shadowAlpha += SHADOWINTERVAL
-            shadow.set_alpha(shadowAlpha)
-            x = dungX[dung]
-            y = dungY[dung] + DUNGH + layer * SIDE
-            nexLay.blit(shadow, (x, y))
-
-        # DRAWS THE NEXT LEVEL
-        nexLvl.drawDung(nexLay, dung)
+        drawNextShadow(nexLay, dungX[dung], dungY[dung], 0)
 
 
     # MISC
-    camXLock = 0    # reset camera
-    camYLock = 0
-
     # stores player's current position for when reset key is pressed
     startCol = playCol
     startRow = playRow
@@ -818,25 +838,26 @@ while True:
                 # SPECIFIC TO NEXT LEVEL TRANSITION
                 elif animCur is animCurLvlUp:
                     # moves everything up
-
                     curLayY = round(animCurLvlUp.value)
                     nexLayY = round(animNexLvlUp.value)
 
+                    nexLay.fill((0, 0, 0))
 
                     for dung in range(4):
+                        # redraws dungeons
+                        nexLay.blit(nexDungs, (dungX[dung], dungY[dung]), dungRects[dung])
+
                         # redraws the side layer
                         x = dungX[dung]
                         y = dungY[dung] + DUNGH + SIDE
                         blitSide(nexLay, dung, x, y)
 
-                        # redraws the shadows
-                        shadowAlpha = - NEXTSHADOWINTERVAL * animCur.frame
-                        for layer in range(1, LEVELSDOWN + 2):
-                            shadowAlpha += SHADOWINTERVAL
-                            shadow.set_alpha(shadowAlpha)
-                            x = dungX[dung]
-                            y = dungY[dung] + DUNGH + layer * SIDE
-                            nexLay.blit(shadow, (x, y))
+                        # redraws the shadows, with an offset based on the frame
+                        shadowOff = - NEXTSHADOWINTERVAL * animCur.frame
+                        drawNextShadow(nexLay, dungX[dung], dungY[dung], shadowOff)
+
+                    camXLock = 0  # resets camera
+                    camYLock = 0
 
 
 
@@ -1003,8 +1024,12 @@ while True:
         #print(animNextLevel.frame, dungLayer.get_alpha())
         fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
         debug1 = TAHOMA.render(str(levelNum * 20), False, (255, 255, 255))
+        debug2 = TAHOMA.render(str(camXLock), False, (255, 255, 255))
+        debug3 = TAHOMA.render(str(camX), False, (255, 255, 255))
         postDisplay.blit(fps, (10, 10))
         postDisplay.blit(debug1, (10, 20))
+        postDisplay.blit(debug2, (10, 30))
+        postDisplay.blit(debug3, (10, 40))
         if debugPressed:
             clockTick = 2   # slow down game when the debug button is pressed
         else:
