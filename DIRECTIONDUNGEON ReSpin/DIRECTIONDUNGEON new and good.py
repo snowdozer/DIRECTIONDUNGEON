@@ -3,9 +3,8 @@
 ################################################################################
 
 ### LIST OF THINGS TO DO ###
-# movement animations         LEFT/RIGHT SHADING COULD BE IMPROVED
-
-# fix the side of the DOWN dungeon being cut off at camera
+# shadow looks a bit confusing?  make the levels below darker?
+# fix goal clipping through player
 
 # levels
 # (probably 64, since it's 4 cubed, and because of 4 button menu)
@@ -344,7 +343,7 @@ def blitSide(surf, dung, x, y):
 # CAMERA
 camX = 0
 camY = 0
-CAMLIMIT = mult * 3
+CAMLIMIT = mult * 2
 CAMMAXFRAME = 60
 
 
@@ -495,9 +494,11 @@ debugPressed = False  # tracks if the debug button is being pressed
 ################################################################################
 ###                                MENU ..?                                  ###
 ################################################################################
+# the main display, pre-camera
+preDisplay = newSurf((SCREENLENGTH, SCREENLENGTH + CAMLIMIT))
 
-preDisplay = newSurf(SCREENSIZE)                 # the main display, pre-camera
-postDisplay = pygame.display.set_mode(SCREENSIZE)# the main display, post-camera
+# the main display, post-camera
+postDisplay = pygame.display.set_mode(SCREENSIZE)
 
 
 # levelNum can be changed later with the level select
@@ -594,6 +595,11 @@ while True:
     camXLock = 0    # reset camera
     camYLock = 0
 
+    # stores player's current position for when reset key is pressed
+    startCol = playCol
+    startRow = playRow
+    startDung = playDung
+
 
 
     ############################################################################
@@ -619,8 +625,27 @@ while True:
                 elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     moveQueue.insert(0, DOWN)
 
+                # debug key
                 elif event.key == pygame.K_f:
                     debugPressed = True
+
+                # resets level
+                elif event.key == pygame.K_r and animQueue == []:
+                    # resets camera
+                    camXLock = 0
+                    camYLock = 0
+
+                    # resets layout and redraws dungeons
+                    curLvl.layout = curLvl.origLayout
+                    for dung in range(4):
+                        curLvl.drawDung(curDungs, dung, dung * DUNGW, 0)
+                        position = (dungX[dung], dungY[dung])
+                        curLay.blit(curDungs, position, dungRects[dung])
+
+                    # resets player
+                    playCol = startCol
+                    playRow = startRow
+                    playDung = startDung
 
 
 
@@ -977,7 +1002,7 @@ while True:
         ### DEBUGGING ###
         #print(animNextLevel.frame, dungLayer.get_alpha())
         fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
-        debug1 = TAHOMA.render(str(camX)+' '+str(camY), False, (255, 255, 255))
+        debug1 = TAHOMA.render(str(levelNum * 20), False, (255, 255, 255))
         postDisplay.blit(fps, (10, 10))
         postDisplay.blit(debug1, (10, 20))
         if debugPressed:
