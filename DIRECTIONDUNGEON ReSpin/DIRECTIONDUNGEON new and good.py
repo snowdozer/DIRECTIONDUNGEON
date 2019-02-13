@@ -3,10 +3,8 @@
 ################################################################################
 
 ### LIST OF THINGS TO DO ###
-# shadow looks a bit confusing?  make the levels below darker?
+# fix green surface during rotate, without breaking shadows in the process
 # fix goal clipping through player
-# fix empty tile clipping through wall during next level transition
-# add shadows on empties with walls above them?
 
 # levels
 # (probably 64, since it's 4 cubed, and because of 4 button menu)
@@ -54,7 +52,7 @@ pygame.init()
 pygame.display.set_caption('DIRECTIONDUNGEON!')  # gives window a title
 
 # PIXEL SIZE CONSTANTS
-mult = 7            # pixel multiplier
+mult = 8            # pixel multiplier
 
 TILE = 4 * mult     # size in pixels of a tile
 SIDE = 2 * mult     # size in pixels of the side of a tile
@@ -308,7 +306,7 @@ ghostAnim = ghostIdle
 ### LEVEL ANIMATIONS ###
 animRotate = Animation(18, QUADRATIC, 90)
 ROTATERADIUS = DUNGW + MARG
-ROTATEMIDX = DUNGW + MARG*3
+ROTATEMIDX = DUNGW + MARG*2 + SIDE // 2
 ROTATEMIDY = DUNGH + MARG*2
 
 animPlayDrop = Animation(8, LINEAR, SIDE)
@@ -317,7 +315,7 @@ animPlayDrop = Animation(8, LINEAR, SIDE)
 animNexLvlUp = Animation(34, RQUADRATIC, -SIDE)
 animCurLvlUp = Animation(34, QUADRATIC, -SCREENLENGTH, [animNexLvlUp])
 
-LEVELSDOWN = 10  # how many levels below current level to show
+LEVELSDOWN = 8  # how many levels below current level to show
 SHADOWINTERVAL = 255 / (LEVELSDOWN - 1)
 NEXTSHADOWINTERVAL = SHADOWINTERVAL / animNexLvlUp.lastFrame
 
@@ -354,6 +352,12 @@ camYLock = 0
 CAMLIMIT = mult * 2
 CAMMAXFRAME = 60
 
+
+# SHADOW: a black surface used to fade the level sides out
+shadow = pygame.Surface((DUNGW, DUNGH))
+
+sideShadow = (0, 0, DUNGW, SIDE)
+wallShadow = (0, 0, TILE, SIDE)
 
 
 ##############
@@ -419,6 +423,12 @@ class Level:
         elif tile != VOID:
             pos = (pos[0], pos[1] + SIDE)
             tileSheet.drawTile(surf, pos, tile, variant)
+
+            # (doesn't look good) draw shadow if tile above is a wall
+            # if self.tileAt(dung, col, row - 1) == WALL:
+                # shadow.set_alpha(50)
+                # surf.blit(shadow, pos, wallShadow)
+
 
 
     ### DRAWS AN ENTIRE DUNGEON ###
@@ -508,9 +518,9 @@ def drawNextShadow(surf, x, y, shadowOffset):
     y += DUNGH
 
     # blit each side shadow with a different opacity
-    for layer in range(1, LEVELSDOWN + 1):
+    for layer in range(1, LEVELSDOWN + 2):
         shadow.set_alpha(shadowAlpha)
-        surf.blit(shadow, (x, y))
+        surf.blit(shadow, (x, y), sideShadow)
 
         y += SIDE
         shadowAlpha += SHADOWINTERVAL
@@ -528,7 +538,7 @@ postDisplay = pygame.display.set_mode(SCREENSIZE)
 
 
 # levelNum can be changed later with the level select
-levelNum = 10
+levelNum = 15
 if levelNum == 0:
     playDung = RIGHT
     playCol = 0
@@ -580,10 +590,6 @@ while True:
     curLay = newSurf(SCREENSIZE)   # current level's layer
     nexLay = newSurf((SCREENLENGTH, SCREENLENGTH + SIDE))
 
-    # a black surface used to fade the level sides out
-    shadow = pygame.Surface((DUNGW, DUNGH))
-    sideRect = (0, 0, DUNGW, SIDE)
-    tileRect = (0, 0, TILE, SIDE)
 
 
     ### ANIMATION STUFF ###
@@ -599,6 +605,8 @@ while True:
     ### PREDRAWS BOTH THE CURRENT LEVEL AND THE NEXT LEVEL ###
     curDungs.fill((0, 255, 0))
     nexDungs.fill((0, 255, 0))
+    curLay.fill((0, 255, 0))
+    nexLay.fill((0, 255, 0))
     for dung in range(4):
         curLvl.drawDung(curDungs, dung, dung * DUNGW, 0)
         curLay.blit(curDungs, (dungX[dung], dungY[dung]), dungRects[dung])
@@ -773,7 +781,7 @@ while True:
                     # put player in new dung
                     playDung = (playDung + 1) % 4
 
-                    # update layour
+                    # update layout
                     curLvl.layout.insert(0, curLvl.layout[3])
                     del curLvl.layout[4]
 
@@ -830,8 +838,6 @@ while True:
                         y = ROTATEMIDY + math.sin(angle) * ROTATERADIUS
 
                         curLay.blit(curDungs, (x, y), dungRects[dung])
-
-                    # DRAWS THE PLAYER THERE
 
 
 
@@ -911,6 +917,10 @@ while True:
                 # draws block directly below player.  no exceptions
                 if nexLvl.tileAt(dung, playCol, playRow + 1):
                     curLvl.drawTile(preDisplay, dung, playCol, playRow + 1)
+
+                # flat tiles will cover the wall below it so redraw that wall
+                if curLvl.tileAt(dung, playCol, playRow + 2) == WALL:
+                    curLvl.drawTile(preDisplay, dung, playCol, playRow + 2)
 
 
             elif animCur is animCurLvlUp:
@@ -1034,6 +1044,8 @@ while True:
             clockTick = 2   # slow down game when the debug button is pressed
         else:
             clockTick = 60
+
+        #postDisplay.blit(nexLay, (0, -200))
 
 
         ### FINAL OUTPUT ###
