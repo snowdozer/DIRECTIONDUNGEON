@@ -657,6 +657,66 @@ W W W W W           W W W W W
 
 
 
+SET03level??
+TESTSHEET
+          W W E W W
+          W W S W W
+          W W S W W
+          W W W W W
+          W W W W W
+W W E W W           W W E W W
+W W S W W           W W S W W
+W W S W W           W W S W W
+W W W W W           W W W W W
+W W W W W           W W W W W
+          W W E W W
+          W W S W W
+          W W S W W
+          W W E W W
+          W W G W W
+
+
+
+SET03level??
+TESTSHEET
+          E E W E E
+          E E W E E
+          W W W W W
+          E E W E E
+          E E W E E
+S E E E S           E E W E E
+E E E E E           E E W E E
+E E E E E           W W W W W
+E E E E E           E E W E E
+S E E E G           E E W E E
+          E E W E E
+          E E W E E
+          W W W W W
+          E E W E E
+          E E W E E
+
+
+
+SET03level??
+TESTSHEET
+          W E W E W
+          E W E W E
+          W E W E W
+          E W E W E
+          W E W E W
+E W E W E           G W E W S
+W E W E W           W E W E W
+E W E W E           E W E W E
+W E W E W           W E W E W
+E W E W E           S W E W E
+          W E W E W
+          E W E W E
+          W E W E W
+          E W E W E
+          W E W E W
+
+
+
 templateWall
 TESTSHEET
           W W W W W

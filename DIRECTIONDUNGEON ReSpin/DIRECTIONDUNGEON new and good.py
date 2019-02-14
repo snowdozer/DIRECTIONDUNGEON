@@ -353,11 +353,12 @@ CAMLIMIT = mult * 2
 CAMMAXFRAME = 60
 
 
-# SHADOW: a black surface used to fade the level sides out
-shadow = pygame.Surface((DUNGW, DUNGH))
+# SHADOW: a black surface that changes opacity
+shadow = pygame.Surface((DUNGW, DUNGH + SIDE))
 
-sideShadow = (0, 0, DUNGW, SIDE)
-wallShadow = (0, 0, TILE, SIDE)
+sideShadow = (0, 0, DUNGW, SIDE) # used to fade out the level sides
+wallShadow = (0, 0, TILE, SIDE)  # (un)used to add shadows below walls
+tileShadow = (0, 0, TILE, TILE)  # used as a fix during next level transition
 
 
 ##############
@@ -372,7 +373,7 @@ class Level:
         #  tileSheet: stores which tilesheet the level is using
         #   tileVars: stores which sprite variant each tile uses
         self.origLayout = layout
-        self.layout = layout
+        self.layout = copy.deepcopy(layout)
         self.tileSheet = tileSheet
 
         tileVars = [[[0, 0, 0, 0, 0] for x in range(WIDTH)] for x in range(4)]
@@ -384,7 +385,8 @@ class Level:
                     variant = random.randint(0, tileSheet.varCount[tile])
                     tileVars[dung][col][row] = variant
 
-        self.tileVars = tileVars
+        self.origTileVars = tileVars
+        self.tileVars = copy.deepcopy(tileVars)
 
 
     ### RETURNS THE TILE AT A SPECIFIC LOCATION ###
@@ -507,7 +509,9 @@ running = True        # game loop finishes once this is set to false
 debugPressed = False  # tracks if the debug button is being pressed
 
 # DRAWS SHADOW ON THE NEXT LAYER & SIDES
-def drawNextShadow(surf, x, y, shadowOffset):
+def drawNextShadow(surf, dung, x, y, shadowOffset):
+    oldY = y
+
     # blit over entire dungeon first
     shadowAlpha = shadowOffset
     shadowAlpha += SHADOWINTERVAL
@@ -515,15 +519,22 @@ def drawNextShadow(surf, x, y, shadowOffset):
     shadow.set_alpha(shadowAlpha)
     surf.blit(shadow, (x, y))
 
-    y += DUNGH
+    y += DUNGH + SIDE
 
     # blit each side shadow with a different opacity
     for layer in range(1, LEVELSDOWN + 2):
+        shadowAlpha += SHADOWINTERVAL
+
         shadow.set_alpha(shadowAlpha)
         surf.blit(shadow, (x, y), sideShadow)
 
         y += SIDE
-        shadowAlpha += SHADOWINTERVAL
+
+    # this fixes the green showing overtop of empty tiles during swirl
+    for col in range(WIDTH):
+        if nexLvl.tileAt(dung, col, 0) != WALL:
+            pygame.draw.rect(surf, (0, 255, 0), (x, oldY, TILE, SIDE))
+        x += TILE
 
 
 
@@ -538,7 +549,7 @@ postDisplay = pygame.display.set_mode(SCREENSIZE)
 
 
 # levelNum can be changed later with the level select
-levelNum = 15
+levelNum = 0
 if levelNum == 0:
     playDung = RIGHT
     playCol = 0
@@ -619,7 +630,7 @@ while True:
         blitSide(nexLay, dung, x, y)
 
         # DRAWS SHADOWS
-        drawNextShadow(nexLay, dungX[dung], dungY[dung], 0)
+        drawNextShadow(nexLay, dung, dungX[dung], dungY[dung], 0)
 
 
     # MISC
@@ -664,7 +675,11 @@ while True:
                     camYLock = 0
 
                     # resets layout and redraws dungeons
-                    curLvl.layout = curLvl.origLayout
+                    curLay.fill((0, 255, 0))
+                    curDungs.fill((0, 255, 0))
+
+                    curLvl.layout = copy.deepcopy(curLvl.origLayout)
+                    curLvl.tileVars = copy.deepcopy(curLvl.origTileVars)
                     for dung in range(4):
                         curLvl.drawDung(curDungs, dung, dung * DUNGW, 0)
                         position = (dungX[dung], dungY[dung])
@@ -860,10 +875,13 @@ while True:
 
                         # redraws the shadows, with an offset based on the frame
                         shadowOff = - NEXTSHADOWINTERVAL * animCur.frame
-                        drawNextShadow(nexLay, dungX[dung], dungY[dung], shadowOff)
+                        drawNextShadow(nexLay, dung, dungX[dung], dungY[dung], shadowOff)
 
                     camXLock = 0  # resets camera
                     camYLock = 0
+
+        else:   # resets if there are no animations playing
+            animCur = None
 
 
 
@@ -924,13 +942,19 @@ while True:
 
 
             elif animCur is animCurLvlUp:
-                x = playX + TILE
+                x = dungX[dung] + playCol * TILE
 
-                # draws block beneath player on next level
+                # draws wall beneath player on next level
                 if nexLvl.tileAt(dung, playCol, playRow + 1) == WALL:
                     y = playY + TILE + TILE
 
                     nexLvl.drawTile(preDisplay, dung, playCol, playRow + 1, x, y)
+
+                    # draw a single-block shadow onto the wall
+                    shadowAlpha = - NEXTSHADOWINTERVAL * animCur.frame + SHADOWINTERVAL
+                    shadow.set_alpha(shadowAlpha)
+                    preDisplay.blit(shadow, (x, y), tileShadow)
+
 
                 # draws the column of blocks that overlap the player
                 # during first half, only draw blocks below the player
@@ -938,9 +962,9 @@ while True:
 
                     # a wall will start higher up from the other blocks
                     if curLvl.tileAt(dung, playCol, playRow + 1) == WALL:
-                        y = playY + TILE + SIDE
+                        y = dungY[dung] + playRow * TILE + TILE
                     else:
-                        y = playY + TILE + TILE
+                        y = dungY[dung] + playRow * TILE + TILE + SIDE
 
                 # during second half, top ghost is covered by bottom dungeon
                 else:
@@ -1041,7 +1065,7 @@ while True:
         postDisplay.blit(debug2, (10, 30))
         postDisplay.blit(debug3, (10, 40))
         if debugPressed:
-            clockTick = 2   # slow down game when the debug button is pressed
+            clockTick = 5   # slow down game when the debug button is pressed
         else:
             clockTick = 60
 
