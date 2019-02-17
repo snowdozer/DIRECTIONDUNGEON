@@ -217,7 +217,7 @@ W W W W W           W W W W W
 		
 
 		
-SET00level12(teachresethere)
+SET00level12
 TESTSHEET
           W W W W W
           W E E E W
@@ -365,9 +365,9 @@ TESTSHEET
           E E E E E
           E E E E E
 E E E E E           E E E E E
-E E E E E           E E E W E
-E E E E E           E E E W G
-E E E E E           E E E W E
+E E E E E           E E E E E
+E E E W E           E E E W G
+E E E E E           E E E E E
 E E E E E           E E E E E
           E E E E E
           E E E E E
@@ -521,40 +521,59 @@ E E E E E           E E W E E
 SET02level06
 TESTSHEET
           W W W W W
-          W E E W W
+          W E W W W
           W W W W W
           W W W W W
           W W W W W
 W W W W W           W W W W W
-W W W W W           W W W E W
-W E G W W           W W W W W
-W W W W W           W W W E W
+W W W W W           W W E W W
+W E W W W           W W W W W
+W W W W W           W W W W W
 W W W W W           W W W W W
           W W W W W
           W W W W W
-          W W W E W
-          W W E W W
+          W W G W W
           W W W W W
+          W W W W W
+
+
+SET02level??
+TESTSHEET
+          E W W W W
+          E E W W W
+          E E W W W
+          E W W W W
+          W W W W W
+W W W W W           W E E E E
+W W W W W           W W E E W
+W W W W W           W W W W W
+W E W W W           W W W W W
+E E E W W           W W W W W
+          W W W W W
+          W W W W E
+          W W W E E
+          W W E E E
+          W W W E G
 
 
 
 SET02level??
 TESTSHEET
+          W W W W E
+          E W E W E
+          E W W W W
+          E W E W E
           W W W W W
-          W E W W W
-          W W W W W
-          W G W W W
-          W W W W W
-W W W W W           W W W W W
-W W W W W           W W E W W
+W W G E E           W W W W W
 W W W W W           W E W E W
-W W E W W           W E W W W
-W E W W W           W W W W W
+W W W W W           W W E W E
+W E W E W           W W W W W
+E W E W W           W W W W W
           W W W W W
           W W W W W
+          W E W E W
           W W E W W
-          W W W E W
-          W W E W W
+          W E W E W
 
 
 
@@ -577,6 +596,27 @@ W W G W W           W W G W W
           W W G W W
 
 
+
+SET03level00
+TESTSHEET
+          E E E E E
+          E W W W E
+          E W G W E
+          E W E W E
+          E E E E E
+E E E E E           E E E E E
+E W W W E           E W W W E
+E W E W E           E W E W E
+E W E W E           E W E W E
+E E E E E           E E E E E
+          E E E E E
+          E W W W E
+          E W E W E
+          E W E W E
+          E E E E E
+
+
+
 SET03level01
 TESTSHEET
           E E E E S
@@ -595,7 +635,29 @@ E E E E E           E E E E E
           E W E W E
           E E E E E
 
-SET03level??
+
+
+SET03level02
+TESTSHEET
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+S E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E G           E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+
+
+
+SET03level03
 TESTSHEET
           E E E E E
           E W S W E
@@ -615,9 +677,7 @@ E E E E E           E E E E E
 
 
 
-
-
-SET03level??
+SET03level04
 TESTSHEET
           W W W W W
           W W S W W
@@ -637,7 +697,247 @@ W W W W W           W W W W W
 
 
 
-SET03level??(justmoveright.needsalevelbeforeit)
+SET03level05
+TESTSHEET
+          W W G W W
+          W W S W W
+          G S W S G
+          W W S W W
+          W W G W W
+W W W W W           W W W W W
+W W S W W           W W S W W
+W S W S W           W S W S W
+W W S W W           W W S W W
+W W W W W           W W W W W
+          W W W W W
+          W W S W W
+          W S W S W
+          W W S W W
+          W W W W W
+
+
+
+SET03level06
+TESTSHEET
+          E E W E E
+          E E W E E
+          G E W E S
+          E E W E E
+          E E W E E
+E E W E E           E E E E E
+E E W E E           E E E E E
+E E W E S           E E E E S
+E E W E E           E E E E E
+E E W E E           E E E E E
+          E E E E E
+          E E E E E
+          E E E E S
+          E E E E E
+          E E E E E
+
+
+
+SET03level07(probablybad)
+TESTSHEET
+          S E E W E
+          E E W E W
+          E W E W E
+          W E W E E
+          E W E E E
+S E E W E           S E E E W
+E E W E W           E E E W E
+E W E W E           E E W E E
+W E W E E           E W E E E
+E W E E G           W E E E E
+          S E E E W
+          E E E W E
+          E E W E E
+          E W E E E
+          W E E E E
+
+
+
+SET03level08
+TESTSHEET
+          E E W E E
+          E E W E E
+          W W W W W
+          E E W E E
+          E E W E E
+E E W E E           E E W E E
+E E W E E           E E W E E
+W W W W W           W W W W W
+E E W E E           E E W E E
+E E W E E           E E W E E
+          S E E E G
+          E E E E E
+          E E E E E
+          E E E E E
+          S E E E S
+
+
+
+SET03level09
+TESTSHEET
+          S W E W E
+          W E W E W
+          E W E W E
+          W E W E W
+          G W E W S
+W E W E W           W E W E W
+E W E W E           E W E W E
+W E W E W           W E W E W
+E W E W E           E W E W E
+W E W E W           W E W E W
+          E W E W E
+          W E W E W
+          E W E W E
+          W E W E W
+          E W E W E
+
+
+
+SET03level10(MIGHTNOTBEFUN)
+TESTSHEET
+          W W W W W
+          W W W W W
+          W W W W W
+          E W W W W
+          S W E E E
+W W W W E           E W W W W
+W W W W E           E W W W W
+W W W W E           E W G W W
+E W W W E           E W E W W
+S W W W E           S W E W W
+          E E E E E
+          W W W W W
+          W W W W W
+          E W W W W
+          S W W W W
+
+
+
+SET03level11(MIGHTNOTBEFUN)
+TESTSHEET
+          E E E E E
+          W W W W E
+          W W S W E
+          W W E W E
+          E E E W G
+E W W W W           E E E E E
+E W W W W           E W W W E
+E W S W W           E W S W E
+E W E W W           E W E W E
+E E E W W           E E E W G
+          E W W W E
+          E W W W E
+          E W S W E
+          E W E W E
+          E E E W G
+
+
+
+SET03level12(MIGHTNOTBEFUN)
+TESTSHEET
+          E G W W W
+          E W W W W
+          E W W W E
+          E W E W E
+          E W E W S
+E G W W W           W G W W W
+E W W W W           W W W W W
+E W W W E           W W E E E
+E W W W E           W W W W E
+E W W W S           E E W W S
+          E G W W W
+          E W W W W
+          E W E E E
+          E W W W E
+          E E W W S
+
+
+
+SET03level??(LASTNORMALSWIRLLEVEL)
+TESTSHEET
+          S W E E E
+          E E E E E
+          W W W W W
+          E E E E E
+          E E E E E
+S E E E E           S E E E E
+E E E E E           W E E E E
+W W W W W           W W W W W
+E E E E E           E E E E E
+E E E E E           E E E E G
+          S E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+
+
+
+SET03level??(SHOULDIADDTHIS?)
+TESTSHEET
+          E E E E E
+          W W E W W
+          E W S E E
+          W W E W W
+          W W E W W
+W W E W W           W W E W W
+W W W W W           W W E W W
+E E E E E           E E E W E
+W W E W W           W W E W W
+W W E W W           W W E W W
+          W W E W W
+          W W E W W
+          E E E E E
+          W W W W W
+          W W E W W
+
+
+
+SET04level??
+TESTSHEET
+          S S S S S
+          S S S S S
+          S S E S S
+          S S S S S
+          S S S S S
+S S S S S           S S S S S
+S S S S S           S S S S S
+S S E S S           S S E S S
+S S S S S           S S S S S
+S S S S S           S S S S G
+          S S S S S
+          S S S S S
+          S S E S S
+          S S S S S
+          S S S S S
+
+
+
+SET04level??
+TESTSHEET
+          S S S S S
+          S S S S S
+          S S S S S
+          S S S S S
+          S S S S S
+G S S S S           S S S S S
+S S S S S           S S S S S
+S S S S S           S S S S S
+S S S S S           S S S S S
+S S S S S           S S S S S
+          S S S S S
+          S S S S S
+          S S S S S
+          S S S S S
+          S S S S S
+
+
+
+SET04level??(justmoveright.needsalevelbeforeit)
 TESTSHEET
           W W W W W
           W W W W W
@@ -657,7 +957,7 @@ W W W W W           W W W W W
 
 
 
-SET03level??
+SET04level??
 TESTSHEET
           W W E W W
           W W S W W
@@ -674,86 +974,6 @@ W W W W W           W W W W W
           W W S W W
           W W E W W
           W W G W W
-
-
-
-SET03level??
-TESTSHEET
-          E E W E E
-          E E W E E
-          W W W W W
-          E E W E E
-          E E W E E
-S E E E S           E E W E E
-E E E E E           E E W E E
-E E E E E           W W W W W
-E E E E E           E E W E E
-S E E E G           E E W E E
-          E E W E E
-          E E W E E
-          W W W W W
-          E E W E E
-          E E W E E
-
-
-
-SET03level??
-TESTSHEET
-          W E W E W
-          E W E W E
-          W E W E W
-          E W E W E
-          W E W E W
-E W E W E           G W E W S
-W E W E W           W E W E W
-E W E W E           E W E W E
-W E W E W           W E W E W
-E W E W E           S W E W E
-          W E W E W
-          E W E W E
-          W E W E W
-          E W E W E
-          W E W E W
-
-
-
-templateWall
-TESTSHEET
-          W W W W W
-          W W W W W
-          W W W W W
-          W W W W W
-          W W W W W
-W W W W W           W W W W W
-W W W W W           W W W W W
-W W W W W           W W W W W
-W W W W W           W W W W W
-W W W W W           W W W W W
-          W W W W W
-          W W W W W
-          W W W W W
-          W W W W W
-          W W W W W
-		 
-
-		 
-templateEmpty
-TESTSHEET
-          E E E E E
-          E E E E E
-          E E E E E
-          E E E E E
-          E E E E E
-E E E E E           E E E E E
-E E E E E           E E E E E
-E E E E E           E E E E E
-E E E E E           E E E E E
-E E E E E           E E E E E
-          E E E E E
-          E E E E E
-          E E E E E
-          E E E E E
-          E E E E E
 
 
 
@@ -834,3 +1054,43 @@ E E E E E           E E E E E
           G E E E E
           E E E E E
 		  E E E E E
+
+
+
+
+		  templateWall
+TESTSHEET
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+W W W W W           W W W W W
+W W W W W           W W W W W
+W W W W W           W W W W W
+W W W W W           W W W W W
+W W W W W           W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+
+
+templateEmpty
+TESTSHEET
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E

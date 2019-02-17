@@ -304,7 +304,7 @@ ghostAnim = ghostIdle
 
 
 ### LEVEL ANIMATIONS ###
-animRotate = Animation(18, QUADRATIC, 90)
+animRotate = Animation(18, RQUADRATIC, 90)
 ROTATERADIUS = DUNGW + MARG
 ROTATEMIDX = DUNGW + MARG*2 + SIDE // 2
 ROTATEMIDY = DUNGH + MARG*2
@@ -549,7 +549,7 @@ postDisplay = pygame.display.set_mode(SCREENSIZE)
 
 
 # levelNum can be changed later with the level select
-levelNum = 0
+levelNum = 41
 if levelNum == 0:
     playDung = RIGHT
     playCol = 0
@@ -981,7 +981,7 @@ while True:
                 if curLvl.tileAt(dung, playCol, playRow + 1) == WALL:
                     x = playX + TILE
                     y = playY + TILE + TILE
-                    nexLvl.drawTile(preDisplay, dung, playCol, playRow + 1, x, y)
+                    curLvl.drawTile(preDisplay, dung, playCol, playRow + 1, x, y)
 
 
             else:   # normal movement
@@ -1023,10 +1023,16 @@ while True:
             elif camDir == RIGHT:
                 camX += (CAMLIMIT - camX) * 0.1
 
-        elif -0.2 > camX or camX > 0.2:  # smooths the movement back, until 0.2
+        # makes sure x and y both move back together
+        elif camYLock:
+            pass
+
+        # smooths the movement back, until 0.2 where it snaps
+        elif -0.2 > camX or camX > 0.2:
             camX -= camX * 0.1
 
-        else:                            # resets the camera to 0
+        # snaps camera to 0
+        else:
             camX = 0
 
 
@@ -1038,6 +1044,9 @@ while True:
                 camY -= (CAMLIMIT + camY) * 0.1
             elif camDir == DOWN:
                 camY += (CAMLIMIT - camY) * 0.1
+
+        elif camXLock:
+            pass
 
         elif -0.2 > camY or camY > 0.2:
             camY -= camY * 0.1
@@ -1057,13 +1066,15 @@ while True:
         ### DEBUGGING ###
         #print(animNextLevel.frame, dungLayer.get_alpha())
         fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
-        debug1 = TAHOMA.render(str(levelNum * 20), False, (255, 255, 255))
-        debug2 = TAHOMA.render(str(camXLock), False, (255, 255, 255))
-        debug3 = TAHOMA.render(str(camX), False, (255, 255, 255))
         postDisplay.blit(fps, (10, 10))
+
+        debug1 = TAHOMA.render(str(levelNum * 20), False, (255, 255, 255))
+        #debug2 = TAHOMA.render(str(camXLock), False, (255, 255, 255))
+        #debug3 = TAHOMA.render(str(camX), False, (255, 255, 255))
+
         postDisplay.blit(debug1, (10, 20))
-        postDisplay.blit(debug2, (10, 30))
-        postDisplay.blit(debug3, (10, 40))
+        #postDisplay.blit(debug2, (10, 30))
+        #postDisplay.blit(debug3, (10, 40))
         if debugPressed:
             clockTick = 5   # slow down game when the debug button is pressed
         else:
