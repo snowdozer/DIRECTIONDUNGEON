@@ -1,0 +1,36 @@
+templateWall
+TESTSHEET
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+W W W W W           W W W W W
+W W W W W           W W W W W
+W W W W W           W W W W W
+W W W W W           W W W W W
+W W W W W           W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+          W W W W W
+
+
+templateEmpty
+TESTSHEET
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E

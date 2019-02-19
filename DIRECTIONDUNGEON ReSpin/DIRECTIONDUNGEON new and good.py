@@ -3,14 +3,28 @@
 ################################################################################
 
 ### LIST OF THINGS TO DO ###
-# fix green surface during rotate, without breaking shadows in the process
-# fix goal clipping through player
+
+# sokoban blocks, except they can be in less than 4 dungeons
+# also need plate for them to go on.  or maybe drop them into holes?
 
 # levels
 # (probably 64, since it's 4 cubed, and because of 4 button menu)
+# i have decided that 64 is too short....
 
-# main menu, and that sick level select i thought of
-# pause function...?
+# optimize - don't draw nexlvl unless animRotate or animNextLevel
+# optimize - don't draw layers to preDisplay every single frame
+
+# figure out how to slowly fade the player over time
+# (probably by taking the pixel array and recoloring it every few levels or so)
+# (or having an original cube spritesheet and drawing a black surface over it
+# with changing opacity)
+
+# create the gemstone/star in the center of the dungeons
+
+# main menu
+# that sick level select i thought of
+# pause function...?  probably not necessary since everything is
+#     silent and there's not much action
 
 # sounds, ambient and raindrop-py
 # music should be minimal and only at the start/end
@@ -549,7 +563,7 @@ postDisplay = pygame.display.set_mode(SCREENSIZE)
 
 
 # levelNum can be changed later with the level select
-levelNum = 41
+levelNum = 45
 if levelNum == 0:
     playDung = RIGHT
     playCol = 0
