@@ -1,3 +1,22 @@
+SET00boxtest
+TESTSHEET
+          E E E E E
+          E E E E E
+          E E B E E
+          E E E E E
+          E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+G E B E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+EMPTY SWIRL
+
 SET00level00
 TESTSHEET
           W W W W W

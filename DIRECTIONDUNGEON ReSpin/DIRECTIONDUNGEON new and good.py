@@ -101,7 +101,8 @@ WALL = 2
 WALLSIDE = 3 # only used in tilesheets, not used in level generation
 GOAL = 4
 SWIRL = 5
-
+BOX = 6
+covers = (WALL, BOX)  # tile types that cover the player
 # DEFAULT DUNGEON POSITIONS
 dungX = [MARG, DUNGW + MARG*2, DUNGW*2 + MARG*3, DUNGW + MARG*2]
 dungY = [DUNGH + MARG*2, MARG, DUNGH + MARG*2, DUNGH*2 + MARG*3]
@@ -144,6 +145,8 @@ class Tilesheet:
     def drawTile(self, surf, pos, tile, variant):
         if tile == WALLSIDE:
             height = SIDE
+        elif tile == BOX:
+            height = TILE + SIDE
         else:
             height = TILE
 
@@ -152,7 +155,7 @@ class Tilesheet:
         surf.blit(self.surface, pos, tileRect)
 
 # a test tilesheet.  multiple can be made
-TESTSHEET = Tilesheet("images\\testSheet.png", mult, (0, 2, 2, 2, 0, 0))
+TESTSHEET = Tilesheet("images\\testSheet.png", mult, (0, 2, 2, 2, 0, 0, 0))
 
 
 
@@ -378,6 +381,9 @@ tileShadow = (0, 0, TILE, TILE)  # used as a fix during next level transition
 ##############
 ### LEVELS ###
 ##############
+class Box:
+    def __init__(self, covering):
+        self.covering = covering
 
 ### LEVEL CLASS ###
 class Level:
@@ -404,9 +410,13 @@ class Level:
 
 
     ### RETURNS THE TILE AT A SPECIFIC LOCATION ###
-    def tileAt(self, dung, x, y):
-        if 0 <= x < WIDTH and 0 <= y < HEIGHT:
-            return self.layout[dung][x][y]
+    def tileAt(self, dung, col, row):
+        if 0 <= col < WIDTH and 0 <= row < HEIGHT:
+            tile = self.layout[dung][col][row]
+            if type(tile) == Box:
+                return BOX
+            else:
+                return tile
 
         # out of bounds tiles
         else:
@@ -434,6 +444,10 @@ class Level:
             if self.tileAt(dung, col, row + 1) != WALL:
                 pos = (pos[0], pos[1] + TILE)
                 tileSheet.drawTile(surf, pos, WALLSIDE, variant)
+
+        elif tile == BOX:
+            tileSheet.drawTile(surf, pos, BOX, variant)
+
 
         # all other tiles only consist of one part, and are drawn lower
         elif tile != VOID:
@@ -465,6 +479,7 @@ class Level:
 
 
 
+
 ### LOADS THE LEVELS FROM FILE ###
 # the level file uses singular letters to represent tiles
 V = VOID
@@ -472,6 +487,7 @@ E = EMPTY
 W = WALL
 G = GOAL
 S = SWIRL
+B = BOX
 
 # READ FILE
 levels = []
@@ -479,34 +495,58 @@ levelFile = open("levels.txt", "r")
 levelFile = levelFile.read().split()
 
 # REMOVES THE LEVEL DESCRIPTIONS (level00, level01, level02 and so on)
-for x in reversed(range(0, len(levelFile), WIDTH * HEIGHT * 4 + 2)):
-    levelFile.pop(x)
+for x in reversed(range(len(levelFile))):
+    if levelFile[x][:3] == "SET":
+        levelFile.pop(x)
 
 # CONVERTS ALL THE STRINGS TO THEIR RESPECTIVE CONSTANTS
 for x in range(len(levelFile)):
     levelFile[x] = eval(levelFile[x])
 
 while levelFile:   # stops loading once there is nothing to load
+    boxCount = 0   # counts the amount of box declarations needed
 
     # FIRST ITEM SHOULD BE THE LEVEL'S TILESHEET
     buildSheet = levelFile.pop(0)
 
+    buildBoxes = []
+
     # BUILDS THE LEVEL BY POPPING EACH ITEM OFF
-    buildLayout = [[[] for x in range(WIDTH)] for x in range(4)]
+    buildLayout = [[[0 for x in range(HEIGHT)] for x in range(WIDTH)] for x in range(4)]
+
     for row in range(HEIGHT):    # creates up dungeon
         for col in range(WIDTH):
-            buildLayout[   UP][col].append(levelFile.pop(0))
+            if levelFile[0] == BOX:
+                buildBoxes.append((UP, col, row))
+                levelFile.pop(0)
+            else:
+                buildLayout[   UP][col][row] = (levelFile.pop(0))
 
     for row in range(HEIGHT):    # creates left and right; they occupy same line
         for col in range(WIDTH):
-            buildLayout[ LEFT][col].append(levelFile.pop(0))
+            if levelFile[0] == BOX:
+                buildBoxes.append((LEFT, col, row))
+                levelFile.pop(0)
+            else:
+                buildLayout[ LEFT][col][row] = (levelFile.pop(0))
 
         for col in range(WIDTH):
-            buildLayout[RIGHT][col].append(levelFile.pop(0))
+            if levelFile[0] == BOX:
+                buildBoxes.append((RIGHT, col, row))
+                levelFile.pop(0)
+            else:
+                buildLayout[RIGHT][col][row] = (levelFile.pop(0))
 
     for row in range(HEIGHT):    # finally, creates down
         for col in range(WIDTH):
-            buildLayout[ DOWN][col].append(levelFile.pop(0))
+            if levelFile[0] == BOX:
+                buildBoxes.append((DOWN, col, row))
+                levelFile.pop(0)
+            else:
+                buildLayout[ DOWN][col][row] = (levelFile.pop(0))
+
+    for box in buildBoxes:
+        buildLayout[box[0]][box[1]][box[2]] = Box(levelFile.pop(0))
 
     # CREATES A LEVEL OBJECT AND ADDS IT TO THE LEVEL LIST
     levels.append(Level(buildLayout, buildSheet))
@@ -563,7 +603,7 @@ postDisplay = pygame.display.set_mode(SCREENSIZE)
 
 
 # levelNum can be changed later with the level select
-levelNum = 45
+levelNum = 0
 if levelNum == 0:
     playDung = RIGHT
     playCol = 0
@@ -921,9 +961,6 @@ while True:
             elif animCur is animCurLvlUp:
                 playY += nexLayY + SIDE
 
-                if nexLvl.tileAt(dung, playCol, playRow + 1) == WALL:
-                    y = playY + TILE
-
             elif animCur is animRotate:
                 angle = (dung + 2) % 4 * 90
                 angle += animRotate.value
@@ -951,7 +988,7 @@ while True:
                     curLvl.drawTile(preDisplay, dung, playCol, playRow + 1)
 
                 # flat tiles will cover the wall below it so redraw that wall
-                if curLvl.tileAt(dung, playCol, playRow + 2) == WALL:
+                if curLvl.tileAt(dung, playCol, playRow + 2) in covers:
                     curLvl.drawTile(preDisplay, dung, playCol, playRow + 2)
 
 
@@ -959,7 +996,7 @@ while True:
                 x = dungX[dung] + playCol * TILE
 
                 # draws wall beneath player on next level
-                if nexLvl.tileAt(dung, playCol, playRow + 1) == WALL:
+                if nexLvl.tileAt(dung, playCol, playRow + 1) in covers:
                     y = playY + TILE + TILE
 
                     nexLvl.drawTile(preDisplay, dung, playCol, playRow + 1, x, y)
@@ -975,7 +1012,7 @@ while True:
                 if animCur.frame < animCur.lastFrame / 2:
 
                     # a wall will start higher up from the other blocks
-                    if curLvl.tileAt(dung, playCol, playRow + 1) == WALL:
+                    if curLvl.tileAt(dung, playCol, playRow + 1) in covers:
                         y = dungY[dung] + playRow * TILE + TILE
                     else:
                         y = dungY[dung] + playRow * TILE + TILE + SIDE
@@ -992,7 +1029,7 @@ while True:
             elif animCur is animRotate:
 
                 # draws block beneath player
-                if curLvl.tileAt(dung, playCol, playRow + 1) == WALL:
+                if curLvl.tileAt(dung, playCol, playRow + 1) in covers:
                     x = playX + TILE
                     y = playY + TILE + TILE
                     curLvl.drawTile(preDisplay, dung, playCol, playRow + 1, x, y)
@@ -1008,7 +1045,7 @@ while True:
                     row = 1
 
                 # if there is a wall below, it should cover the player
-                if curLvl.tileAt(dung, playCol, playRow + row) == WALL:
+                if curLvl.tileAt(dung, playCol, playRow + row) in covers:
                     curLvl.drawTile(preDisplay, dung, playCol, playRow + row)
 
 
@@ -1022,7 +1059,7 @@ while True:
 
                 # draw the other tile that covers the player
                 if col:
-                    if curLvl.tileAt(dung, playCol+col, playRow+1) == WALL:
+                    if curLvl.tileAt(dung, playCol+col, playRow+1) in covers:
                         curLvl.drawTile(preDisplay, dung, playCol + col, playRow + 1)
 
 
