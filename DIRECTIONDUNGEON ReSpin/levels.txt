@@ -2,12 +2,12 @@ SET00boxtest
 TESTSHEET
           E E E E E
           E E E E E
-          E E B E E
+          E E B B E
           E E E E E
           E E E E E
 E E E E E           E E E E E
 E E E E E           E E E E E
-G E B E E           E E E E E
+G E E E E           E E E E B
 E E E E E           E E E E E
 E E E E E           E E E E E
           E E E E E
@@ -15,7 +15,7 @@ E E E E E           E E E E E
           E E E E E
           E E E E E
           E E E E E
-EMPTY SWIRL
+EMPTY None UP None DOWN   EMPTY LEFT UP None DOWN   EMPTY None UP RIGHT None
 
 SET00level00
 TESTSHEET

@@ -88,7 +88,7 @@ postDisplay = pygame.display.set_mode(SCREENSIZE)
 
 
 ### GAMEPLAY CONSTANTS ###
-# DIRECTION
+# DIRECTIONS
 LEFT = 0
 UP = 1
 RIGHT = 2
@@ -295,7 +295,13 @@ class Animation:
             anim.resetAnim()
 
 
+
 ### PLAYER ANIMATIONS ###
+
+# sliding boxes (should actually be 6 frames but that breaks it kinda
+animBoxSlide = Animation(7, RQUADRATIC, TILE)
+# you can change this to RQUADRATIC if you think it looks better
+
 # creates and loads all the ghost/player animations from file
 directionStrings = ["Left", "Up", "Right", "Down"]
 playMovement = []
@@ -309,7 +315,7 @@ for direction in directionStrings:
     ghostMovement.append(tempGhostAnim)
 
     # the ghost animation is then tied to the player animation
-    tempPlayAnim = Animation(6, SPRITE, path, 12, 14, mult, [tempGhostAnim])
+    tempPlayAnim = Animation(6, SPRITE, path, 12, 14, mult, [tempGhostAnim, animBoxSlide])
     playMovement.append(tempPlayAnim)
 
 # idle doesn't have to be animation, but it just makes things easier
@@ -318,6 +324,7 @@ ghostIdle = Animation(0, SPRITE, "images\\playIdle.png",  12, 14, mult)
 ghostIdle.surface.set_alpha(100)
 playAnim = playIdle
 ghostAnim = ghostIdle
+
 
 
 ### LEVEL ANIMATIONS ###
@@ -382,12 +389,57 @@ tileShadow = (0, 0, TILE, TILE)  # used as a fix during next level transition
 ### LEVELS ###
 ##############
 class Box:
-    def __init__(self, covering):
-        self.covering = covering
+    def __init__(self, dungs, col, row):
+        self.dungs = dungs
+        self.origCol = col
+        self.origRow = row
+        self.col = col
+        self.row = row
+        self.xOff = 0
+        self.yOff = 0
+
+moveBoxes = [] # all boxes that should be moved during animation
+
+# checks, recursively, if boxes are valid to push
+def checkBox(direction, dung, col, row):
+    global moveBoxes
+
+    # determine direction to check
+    if direction == LEFT:
+        col -= 1
+    elif direction == RIGHT:
+        col += 1
+    elif direction == UP:
+        row -= 1
+    elif direction == DOWN:
+        row += 1
+
+    # search for any boxes at this new position
+    valid = True
+    for box in curLvl.boxes:
+        if box.col == col and box.row == row and box.dungs[dung] != None:
+            if box not in moveBoxes:
+                moveBoxes.append(box)
+
+            # check each of the directions this box occupies
+            for newDung in box.dungs:
+                if newDung != None:
+                    if not (checkBox(direction, newDung, col, row)):
+                        valid = False
+
+            return valid
+
+    # if there are no boxes, depending on the tile type, return if pushable
+    if curLvl.tileAt(dung, col, row) in (WALL, VOID):
+        return False
+    else:
+        return True
+
+
 
 ### LEVEL CLASS ###
 class Level:
-    def __init__(self, layout, tileSheet):
+    def __init__(self, layout, tileSheet, boxes):
         # origLayout: when resetting the level, revert to this.  don't modify
         #     layout: stores the layout of the level.  modify if you want
         #  tileSheet: stores which tilesheet the level is using
@@ -395,6 +447,7 @@ class Level:
         self.origLayout = layout
         self.layout = copy.deepcopy(layout)
         self.tileSheet = tileSheet
+        self.boxes = boxes
 
         tileVars = [[[0, 0, 0, 0, 0] for x in range(WIDTH)] for x in range(4)]
 
@@ -445,8 +498,6 @@ class Level:
                 pos = (pos[0], pos[1] + TILE)
                 tileSheet.drawTile(surf, pos, WALLSIDE, variant)
 
-        elif tile == BOX:
-            tileSheet.drawTile(surf, pos, BOX, variant)
 
 
         # all other tiles only consist of one part, and are drawn lower
@@ -509,7 +560,8 @@ while levelFile:   # stops loading once there is nothing to load
     # FIRST ITEM SHOULD BE THE LEVEL'S TILESHEET
     buildSheet = levelFile.pop(0)
 
-    buildBoxes = []
+    boxPositions = []
+    finalBoxes = []
 
     # BUILDS THE LEVEL BY POPPING EACH ITEM OFF
     buildLayout = [[[0 for x in range(HEIGHT)] for x in range(WIDTH)] for x in range(4)]
@@ -517,7 +569,7 @@ while levelFile:   # stops loading once there is nothing to load
     for row in range(HEIGHT):    # creates up dungeon
         for col in range(WIDTH):
             if levelFile[0] == BOX:
-                buildBoxes.append((UP, col, row))
+                boxPositions.append((UP, col, row))
                 levelFile.pop(0)
             else:
                 buildLayout[   UP][col][row] = (levelFile.pop(0))
@@ -525,14 +577,14 @@ while levelFile:   # stops loading once there is nothing to load
     for row in range(HEIGHT):    # creates left and right; they occupy same line
         for col in range(WIDTH):
             if levelFile[0] == BOX:
-                buildBoxes.append((LEFT, col, row))
+                boxPositions.append((LEFT, col, row))
                 levelFile.pop(0)
             else:
                 buildLayout[ LEFT][col][row] = (levelFile.pop(0))
 
         for col in range(WIDTH):
             if levelFile[0] == BOX:
-                buildBoxes.append((RIGHT, col, row))
+                boxPositions.append((RIGHT, col, row))
                 levelFile.pop(0)
             else:
                 buildLayout[RIGHT][col][row] = (levelFile.pop(0))
@@ -540,16 +592,21 @@ while levelFile:   # stops loading once there is nothing to load
     for row in range(HEIGHT):    # finally, creates down
         for col in range(WIDTH):
             if levelFile[0] == BOX:
-                buildBoxes.append((DOWN, col, row))
+                boxPositions.append((DOWN, col, row))
                 levelFile.pop(0)
             else:
                 buildLayout[ DOWN][col][row] = (levelFile.pop(0))
 
-    for box in buildBoxes:
-        buildLayout[box[0]][box[1]][box[2]] = Box(levelFile.pop(0))
+    for box in boxPositions:
+        buildDungs = []
+        buildLayout[box[0]][box[1]][box[2]] = levelFile.pop(0)
+        for dung in range(4):
+            buildDungs.append(levelFile.pop(0))
+
+        finalBoxes.append(Box(buildDungs, box[1], box[2]))
 
     # CREATES A LEVEL OBJECT AND ADDS IT TO THE LEVEL LIST
-    levels.append(Level(buildLayout, buildSheet))
+    levels.append(Level(buildLayout, buildSheet, finalBoxes))
 
 
 
@@ -655,6 +712,9 @@ while True:
     curLay = newSurf(SCREENSIZE)   # current level's layer
     nexLay = newSurf((SCREENLENGTH, SCREENLENGTH + SIDE))
 
+    curTileSheet = curLvl.tileSheet
+    nexTileSheet = nexLvl.tileSheet
+
 
 
     ### ANIMATION STUFF ###
@@ -744,6 +804,11 @@ while True:
                     playRow = startRow
                     playDung = startDung
 
+                    # resets all boxes
+                    for box in curLvl.boxes:
+                        box.col = box.origCol
+                        box.row = box.origRow
+
 
 
             elif event.type == pygame.KEYUP:
@@ -794,7 +859,11 @@ while True:
             elif moveQueue[0] == DOWN:
                 queryY += 1
 
-            if curLvl.tileAt(moveDirection, queryX, queryY) not in [WALL, VOID]:
+            tile = curLvl.tileAt(moveDirection, queryX, queryY)
+            moveBoxes = []
+            validBox = checkBox(moveDirection, moveDirection, playCol, playRow)
+
+            if tile not in (WALL, VOID) and (validBox or moveBoxes == []):
                 playDung = moveDirection
                 playAnim = playMovement[moveDirection]
                 ghostAnim = ghostMovement[moveDirection]
@@ -842,6 +911,23 @@ while True:
 
                     playAnim = playIdle  # reset the sprite to idle
                     ghostAnim = ghostIdle
+
+
+                    # BOX STUFF
+                    for box in moveBoxes:
+                        if moveDirection == LEFT:
+                            box.col -= 1
+                        elif moveDirection == RIGHT:
+                            box.col += 1
+                        elif moveDirection == UP:
+                            box.row -= 1
+                        elif moveDirection == DOWN:
+                            box.row += 1
+
+                        box.xOff = 0
+                        box.yOff = 0
+
+                    moveBoxes = []
 
 
 
@@ -892,6 +978,22 @@ while True:
                 animCur.nextFrame()
 
 
+                # SPECIFIC TO PLAYER MOVEMENT (mostly just box stuff)
+                if animCur is playAnim:
+                    for box in moveBoxes:
+
+                        if moveDirection == LEFT:
+                            box.xOff = -animBoxSlide.value
+
+                        elif moveDirection == RIGHT:
+                            box.xOff = animBoxSlide.value
+
+                        elif moveDirection == UP:
+                            box.yOff = -animBoxSlide.value
+
+                        elif moveDirection == DOWN:
+                            box.yOff = animBoxSlide.value
+
 
                 # SPECIFIC TO DUNGEON ROTATION
                 if animCur is animRotate:
@@ -934,8 +1036,13 @@ while True:
                     camXLock = 0  # resets camera
                     camYLock = 0
 
+
         else:   # resets if there are no animations playing
             animCur = None
+
+
+
+
 
 
 
@@ -1062,6 +1169,14 @@ while True:
                     if curLvl.tileAt(dung, playCol+col, playRow+1) in covers:
                         curLvl.drawTile(preDisplay, dung, playCol + col, playRow + 1)
 
+        for box in curLvl.boxes:
+            for dung in box.dungs:
+                if dung != None:
+                    x = dungX[dung] + box.col * TILE + box.xOff
+                    y = dungY[dung] + box.row * TILE + box.yOff
+
+                    curTileSheet.drawTile(preDisplay, (x, y), BOX, 0)
+
 
 
         ### CAMERA MOVEMENT ###
@@ -1120,11 +1235,11 @@ while True:
         postDisplay.blit(fps, (10, 10))
 
         debug1 = TAHOMA.render(str(levelNum * 20), False, (255, 255, 255))
-        #debug2 = TAHOMA.render(str(camXLock), False, (255, 255, 255))
+        debug2 = TAHOMA.render(repr(moveBoxes), False, (255, 255, 255))
         #debug3 = TAHOMA.render(str(camX), False, (255, 255, 255))
 
         postDisplay.blit(debug1, (10, 20))
-        #postDisplay.blit(debug2, (10, 30))
+        postDisplay.blit(debug2, (10, 30))
         #postDisplay.blit(debug3, (10, 40))
         if debugPressed:
             clockTick = 5   # slow down game when the debug button is pressed

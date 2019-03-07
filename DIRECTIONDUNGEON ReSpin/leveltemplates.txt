@@ -34,3 +34,25 @@ E E E E E           E E E E E
           E E E E E
           E E E E E
           E E E E E
+
+
+
+templateBoxes
+TESTSHEET
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+EMPTY LEFT UP DOWN RIGHT   EMPTY LEFT UP DOWN RIGHT   EMPTY LEFT UP DOWN RIGHT
+EMPTY LEFT UP DOWN RIGHT   EMPTY LEFT UP DOWN RIGHT   EMPTY LEFT UP DOWN RIGHT
