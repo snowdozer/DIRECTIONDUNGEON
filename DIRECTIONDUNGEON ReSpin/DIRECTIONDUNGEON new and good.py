@@ -103,12 +103,20 @@ GOAL = 4
 SWIRL = 5
 BOX = 6
 covers = (WALL, BOX)  # tile types that cover the player
-# DEFAULT DUNGEON POSITIONS
-dungX = [MARG, DUNGW + MARG*2, DUNGW*2 + MARG*3, DUNGW + MARG*2]
-dungY = [DUNGH + MARG*2, MARG, DUNGH + MARG*2, DUNGH*2 + MARG*3]
 
+# DUNGEON POSITIONS
+origDungX = [MARG, DUNGW + MARG*2, DUNGW*2 + MARG*3, DUNGW + MARG*2]
+origDungY = [DUNGH + MARG*2, MARG, DUNGH + MARG*2, DUNGH*2 + MARG*3]
+
+# centers dungeons (because of sides, height of dungeon is more than width)
 for dung in range(4):
-    dungX[dung] += SIDE / 2
+    origDungX[dung] += SIDE / 2
+
+dungX = copy.copy(origDungX)
+dungY = copy.copy(origDungY)
+
+
+
 
 
 
@@ -151,11 +159,11 @@ class Tilesheet:
             height = TILE
 
         # cuts out the tile from the tilesheet and draws it
-        tileRect = ((tile - 1)*TILE, variant*TILE, TILE, height)
+        tileRect = ((tile - 1)*TILE, variant*height, TILE, height)
         surf.blit(self.surface, pos, tileRect)
 
 # a test tilesheet.  multiple can be made
-TESTSHEET = Tilesheet("images\\testSheet.png", mult, (0, 2, 2, 2, 0, 0, 0))
+TESTSHEET = Tilesheet("images\\testSheet.png", mult, (0, 2, 2, 2, 0, 0, 3))
 
 
 
@@ -367,6 +375,27 @@ def blitSide(surf, dung, x, y):
     segment = (dung * DUNGW, sideY + SIDE*2, DUNGW, SIDE * LEVELSDOWN)
     surf.blit(sideSurfs, (x, y), segment)
 
+def drawCov(direction, dung, col, row):
+    # IF A WALL IS BELOW YOU, IT SHOULD COVER YOU
+    # check two blocks below instead of one when moving down
+    if direction == DOWN:
+        rowOff = 2
+    else:
+        rowOff = 1
+
+    # LEFT/RIGHT MOVEMENT REQUIRES A SECOND BLOCK TO BE DRAWN
+    # because the sprite extends in that direction
+    if direction == LEFT:
+        colOff = -1
+    elif direction == RIGHT:
+        colOff = 1
+    else:
+        colOff = None
+
+    # draw the other tile that covers the player
+    if colOff:
+        if curLvl.tileAt(dung, col + colOff, row + 1) in covers:
+            curLvl.drawTile(preDisplay, dung, col + colOff, row + 1)
 
 # CAMERA
 camX = 0
@@ -389,14 +418,16 @@ tileShadow = (0, 0, TILE, TILE)  # used as a fix during next level transition
 ### LEVELS ###
 ##############
 class Box:
-    def __init__(self, dungs, col, row):
-        self.dungs = dungs
+    def __init__(self, dungs, col, row, variant):
+        self.origDungs = dungs
         self.origCol = col
         self.origRow = row
+        self.dungs = dungs
         self.col = col
         self.row = row
         self.xOff = 0
         self.yOff = 0
+        self.variant = variant
 
 moveBoxes = [] # all boxes that should be moved during animation
 
@@ -422,8 +453,8 @@ def checkBox(direction, dung, col, row):
                 moveBoxes.append(box)
 
             # check each of the directions this box occupies
-            for newDung in box.dungs:
-                if newDung != None:
+            for newDung in range(4):
+                if box.dungs[newDung] != None:
                     if not (checkBox(direction, newDung, col, row)):
                         valid = False
 
@@ -556,6 +587,7 @@ for x in range(len(levelFile)):
 
 while levelFile:   # stops loading once there is nothing to load
     boxCount = 0   # counts the amount of box declarations needed
+    boxVar = 0
 
     # FIRST ITEM SHOULD BE THE LEVEL'S TILESHEET
     buildSheet = levelFile.pop(0)
@@ -598,12 +630,16 @@ while levelFile:   # stops loading once there is nothing to load
                 buildLayout[ DOWN][col][row] = (levelFile.pop(0))
 
     for box in boxPositions:
+        boxVar = (boxVar + 1) % (buildSheet.varCount[BOX] + 1)
         buildDungs = []
         buildLayout[box[0]][box[1]][box[2]] = levelFile.pop(0)
         for dung in range(4):
-            buildDungs.append(levelFile.pop(0))
+            if levelFile.pop(0) == None:
+                buildDungs.append(None)
+            else:
+                buildDungs.append(True)
 
-        finalBoxes.append(Box(buildDungs, box[1], box[2]))
+        finalBoxes.append(Box(buildDungs, box[1], box[2], boxVar))
 
     # CREATES A LEVEL OBJECT AND ADDS IT TO THE LEVEL LIST
     levels.append(Level(buildLayout, buildSheet, finalBoxes))
@@ -706,6 +742,9 @@ while True:
     ###                   STUFF THAT RESETS EACH LEVEL                       ###
     ############################################################################
 
+    validBox = None
+    moveDirection = None
+    boxDirection = None
     ### DRAWING LEVELS ###
     curLvl = levels[levelNum]  # stores reference to current level
     nexLvl = levels[levelNum + 1]  # stores reference to next level
@@ -722,7 +761,6 @@ while True:
     nexLayY = 0  # resets y values
     curLayY = 0
     sideY = (levelNum + 2) * SIDE
-    angleOff = 0
 
     animCur = None
 
@@ -808,6 +846,7 @@ while True:
                     for box in curLvl.boxes:
                         box.col = box.origCol
                         box.row = box.origRow
+                        box.dungs = copy.copy(box.origDungs)
 
 
 
@@ -845,6 +884,7 @@ while True:
 
             # start movement animation if you land on a non-wall/non-void tile
             moveDirection = moveQueue[0]
+
             queryX = playCol
             queryY = playRow
             if moveQueue[0] == LEFT:
@@ -863,6 +903,9 @@ while True:
             moveBoxes = []
             validBox = checkBox(moveDirection, moveDirection, playCol, playRow)
 
+            if validBox and moveBoxes != []:
+                boxDirection = moveDirection
+
             if tile not in (WALL, VOID) and (validBox or moveBoxes == []):
                 playDung = moveDirection
                 playAnim = playMovement[moveDirection]
@@ -873,6 +916,9 @@ while True:
                 ghostAnim.frame = -1
 
                 animQueue.append(playAnim)
+
+            else:
+                moveDirection = None
 
         if moveQueue:
             camDir = moveQueue[0]
@@ -929,27 +975,41 @@ while True:
 
                     moveBoxes = []
 
+                    moveDirection = None
+                    boxDirection = None
+
 
 
                 # SPECIFIC TO DUNGEON ROTATION
                 elif animCur is animRotate:
-                    # put player in new dung
+                    # UPDATE PLAYER DUNG
                     playDung = (playDung + 1) % 4
 
-                    # update layout
+                    # UPDATE LAYOUT
                     curLvl.layout.insert(0, curLvl.layout[3])
                     del curLvl.layout[4]
+
+                    # UPDATE BOXES
+                    for box in curLvl.boxes:
+                        box.dungs.insert(0, box.dungs[3])
+                        del box.dungs[4]
 
                     curLvl.tileVars.insert(0, curLvl.tileVars[3])
                     del curLvl.tileVars[4]
 
-                    # REDRAW THE DUNGEONS IN THEIR NEW POSITIONS
+                    # RESET DUNGEON POSITIONS
+                    dungX = copy.copy(origDungX)
+                    dungY = copy.copy(origDungY)
+
+                    # REDRAW THE DUNGEONS IN THEIR RESET POSITIONS
                     curDungs.fill((0, 255, 0))
                     curLay.fill((0, 255, 0))
                     for dung in range(4):
                         curLvl.drawDung(curDungs, dung, dung * DUNGW, 0)
                         position = (dungX[dung], dungY[dung])
                         curLay.blit(curDungs, position, dungRects[dung])
+
+
 
 
 
@@ -997,6 +1057,7 @@ while True:
 
                 # SPECIFIC TO DUNGEON ROTATION
                 if animCur is animRotate:
+
                     curLay.fill((0, 255, 0))
 
                     # CALCULATES WHERE ON THE CIRCLE TO DRAW THE LEVEL
@@ -1007,6 +1068,9 @@ while True:
 
                         x = ROTATEMIDX + math.cos(angle) * ROTATERADIUS
                         y = ROTATEMIDY + math.sin(angle) * ROTATERADIUS
+
+                        dungX[dung] = x
+                        dungY[dung] = y
 
                         curLay.blit(curDungs, (x, y), dungRects[dung])
 
@@ -1036,6 +1100,17 @@ while True:
                     camXLock = 0  # resets camera
                     camYLock = 0
 
+                    # DRAW BOXES
+                    for box in nexLvl.boxes:
+                        for dung in range(4):
+                            if box.dungs[dung] != None:
+                                x = dungX[dung] + box.col * TILE
+                                y = dungY[dung] + box.row * TILE + nexLayY
+                                nexTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
+
+                                if nexLvl.tileAt(dung, box.col, box.row + 1) in covers:
+                                    nexLvl.drawTile(preDisplay, dung, box.col, box.row + 1)
+
 
         else:   # resets if there are no animations playing
             animCur = None
@@ -1053,8 +1128,38 @@ while True:
         ### SIDE OF NEXT DUNGEONS & NEXT LEVEL ###
         preDisplay.blit(nexLay, (0, nexLayY + SIDE))
 
+        if animCur is animCurLvlUp:
+            for box in nexLvl.boxes:
+                for dung in range(4):
+                    if box.dungs[dung] != None:
+                        x = dungX[dung] + box.col * TILE
+                        y = dungY[dung] + box.row * TILE + SIDE + nexLayY
+
+                        nexTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
+
+                        if nexLvl.tileAt(dung, box.col, box.row + 1) in covers:
+                            nexLvl.drawTile(preDisplay, dung, box.col, box.row + 1, x, y + TILE)
+
         ### DUNGEONS ###
         preDisplay.blit(curLay, (0, curLayY))
+
+        ### BOXES ABOVE PLAYER ###
+        for row in range(playRow + 1):
+            for box in curLvl.boxes:
+                if box.row == row:
+                    for dung in range(4):
+                        if box.dungs[dung] != None:
+                            x = dungX[dung] + box.col * TILE + box.xOff
+                            y = dungY[dung] + box.row * TILE + box.yOff + curLayY
+
+                            curTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
+
+                            if curLvl.tileAt(dung, box.col, box.row + 1) in covers:
+                                curLvl.drawTile(preDisplay, dung, box.col, box.row + 1)
+                            elif box in moveBoxes:
+                                drawCov(boxDirection, dung, box.col, box.row)
+                            else:
+                                drawCov(None, dung, box.col, box.row)
 
         ### PLAYER ###
         for dung in range(4):
@@ -1068,16 +1173,6 @@ while True:
             elif animCur is animCurLvlUp:
                 playY += nexLayY + SIDE
 
-            elif animCur is animRotate:
-                angle = (dung + 2) % 4 * 90
-                angle += animRotate.value
-                angle = math.radians(angle)
-
-                playX = ROTATEMIDX + math.cos(angle) * ROTATERADIUS
-                playY = ROTATEMIDY + math.sin(angle) * ROTATERADIUS
-
-                playX += (playCol - 1) * TILE
-                playY += (playRow - 1) * TILE
 
 
             ### DRAW THE PLAYER (and the ghosts) ###
@@ -1133,49 +1228,30 @@ while True:
                 preDisplay.blit(curLay, (x, y + curLayY), section)
 
 
-            elif animCur is animRotate:
-
-                # draws block beneath player
-                if curLvl.tileAt(dung, playCol, playRow + 1) in covers:
-                    x = playX + TILE
-                    y = playY + TILE + TILE
-                    curLvl.drawTile(preDisplay, dung, playCol, playRow + 1, x, y)
-
 
             else:   # normal movement
-
-                # IF A WALL IS BELOW YOU, IT SHOULD COVER YOU
-                # check two blocks below instead of one when moving down
-                if playAnim is playMovement[DOWN]:
-                    row = 2
-                else:
-                    row = 1
-
-                # if there is a wall below, it should cover the player
-                if curLvl.tileAt(dung, playCol, playRow + row) in covers:
-                    curLvl.drawTile(preDisplay, dung, playCol, playRow + row)
+                drawCov(moveDirection, dung, playCol, playRow)
 
 
-                # LEFT/RIGHT MOVEMENT REQUIRES A SECOND BLOCK TO BE DRAWN
-                # because your sprite extends in that direction
-                col = None
-                if playAnim is playMovement[LEFT]:
-                    col = -1
-                elif playAnim is playMovement[RIGHT]:
-                    col = 1
 
-                # draw the other tile that covers the player
-                if col:
-                    if curLvl.tileAt(dung, playCol+col, playRow+1) in covers:
-                        curLvl.drawTile(preDisplay, dung, playCol + col, playRow + 1)
+        ### BOXES BELOW PLAYER ###
+        for row in range(playRow + 1, HEIGHT):
+            for box in curLvl.boxes:
+                if box.row == row:
+                    for dung in range(4):
+                        if box.dungs[dung] != None:
+                            x = dungX[dung] + box.col * TILE + box.xOff
+                            y = dungY[dung] + box.row * TILE + box.yOff + curLayY
 
-        for box in curLvl.boxes:
-            for dung in box.dungs:
-                if dung != None:
-                    x = dungX[dung] + box.col * TILE + box.xOff
-                    y = dungY[dung] + box.row * TILE + box.yOff
+                            curTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
 
-                    curTileSheet.drawTile(preDisplay, (x, y), BOX, 0)
+                            if animCur == animCurLvlUp:
+                                if curLvl.tileAt(dung, box.col, box.row + 1) in covers:
+                                    curLvl.drawTile(preDisplay, dung, box.col, box.row + 1)
+                            elif box in moveBoxes:
+                                drawCov(boxDirection, dung, box.col, box.row)
+                            else:
+                                drawCov(None, dung, box.col, box.row)
 
 
 
@@ -1235,12 +1311,14 @@ while True:
         postDisplay.blit(fps, (10, 10))
 
         debug1 = TAHOMA.render(str(levelNum * 20), False, (255, 255, 255))
-        debug2 = TAHOMA.render(repr(moveBoxes), False, (255, 255, 255))
-        #debug3 = TAHOMA.render(str(camX), False, (255, 255, 255))
+        debug2 = TAHOMA.render(str(moveDirection), False, (255, 255, 255))
+        debug3 = TAHOMA.render(str(boxDirection), False, (255, 255, 255))
+        debug4 = TAHOMA.render(repr(moveBoxes), False, (255, 255, 255))
 
         postDisplay.blit(debug1, (10, 20))
         postDisplay.blit(debug2, (10, 30))
-        #postDisplay.blit(debug3, (10, 40))
+        postDisplay.blit(debug3, (10, 40))
+        postDisplay.blit(debug4, (10, 50))
         if debugPressed:
             clockTick = 5   # slow down game when the debug button is pressed
         else:
