@@ -7,15 +7,15 @@ TESTSHEET
           E E E E E
 E E E E S           E E E E S
 E E E E E           E E E E E
-G E E E E           E E E E B
-E E E E E           E W W W E
+G E E E E           E E E E E
+E E E E E           E E E E E
 E E E E E           E E E E E
           E E E E S
           E E E E E
           E E E E E
-          E W W W E
           E E E E E
-EMPTY None UP None DOWN   EMPTY LEFT UP None DOWN   EMPTY None UP RIGHT None
+          E E E E E
+EMPTY None UP None DOWN   EMPTY LEFT UP None DOWN
 
 SET00boxtest
 TESTSHEET

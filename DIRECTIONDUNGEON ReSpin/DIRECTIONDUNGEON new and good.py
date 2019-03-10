@@ -428,8 +428,17 @@ class Box:
         self.xOff = 0
         self.yOff = 0
         self.variant = variant
+        self.direction = None
 
 moveBoxes = [] # all boxes that should be moved during animation
+
+player = None
+def initPlayer(dung, col, row):
+    global player
+    # only col and row are important
+    player = Box([True, True, True, True], col, row, 0)
+    player.dung = dung
+    player.origDung = dung
 
 # checks, recursively, if boxes are valid to push
 def checkBox(direction, dung, col, row):
@@ -698,27 +707,21 @@ postDisplay = pygame.display.set_mode(SCREENSIZE)
 # levelNum can be changed later with the level select
 levelNum = 0
 if levelNum == 0:
-    playDung = RIGHT
-    playCol = 0
-    playRow = 2
+    initPlayer(RIGHT, 0, 2)
 
 # find the goal in the previous level and start the player from there
 else:
     goalExists = False
     for dungNum, dung in enumerate(levels[levelNum - 1].layout):
-        for x, col in enumerate(dung):
-            for y, tile in enumerate(col):
+        for colNum, col in enumerate(dung):
+            for rowNum, tile in enumerate(col):
                 if tile == GOAL:
-                    playDung = dungNum
-                    playCol = x
-                    playRow = y
+                    initPlayer(RIGHT, colNum, rowNum)
                     goalExists = True
 
     # if somehow no goal was found, default to the middle of the level
     if not goalExists:
-        playDung = LEFT
-        playCol = 2
-        playRow = 2
+        initPlayer(LEFT, 2, 2)
 
 
 # PREDRAWS THE SIDES OF ALL THE LEVELS
@@ -786,10 +789,9 @@ while True:
 
 
     # MISC
-    # stores player's current position for when reset key is pressed
-    startCol = playCol
-    startRow = playRow
-    startDung = playDung
+    objBuff = [[] for x in range(HEIGHT)]
+    for box in curLvl.boxes:
+        objBuff[box.row].append(box)
 
 
 
@@ -837,16 +839,20 @@ while True:
                         position = (dungX[dung], dungY[dung])
                         curLay.blit(curDungs, position, dungRects[dung])
 
-                    # resets player
-                    playCol = startCol
-                    playRow = startRow
-                    playDung = startDung
+                    # resets all boxes and player
+                    player.col = player.origCol
+                    player.row = player.origRow
+                    player.dung = player.origDung
 
                     # resets all boxes
                     for box in curLvl.boxes:
                         box.col = box.origCol
                         box.row = box.origRow
                         box.dungs = copy.copy(box.origDungs)
+
+                    objBuff = [[] for x in range(HEIGHT)]
+                    for box in curLvl.boxes:
+                        objBuff[box.row].append(box)
 
 
 
@@ -885,8 +891,8 @@ while True:
             # start movement animation if you land on a non-wall/non-void tile
             moveDirection = moveQueue[0]
 
-            queryX = playCol
-            queryY = playRow
+            queryX = player.col
+            queryY = player.row
             if moveQueue[0] == LEFT:
                 queryX -= 1
 
@@ -901,13 +907,13 @@ while True:
 
             tile = curLvl.tileAt(moveDirection, queryX, queryY)
             moveBoxes = []
-            validBox = checkBox(moveDirection, moveDirection, playCol, playRow)
+            validBox = checkBox(moveDirection, moveDirection, player.col, player.row)
 
             if validBox and moveBoxes != []:
                 boxDirection = moveDirection
 
             if tile not in (WALL, VOID) and (validBox or moveBoxes == []):
-                playDung = moveDirection
+                player.dung = moveDirection
                 playAnim = playMovement[moveDirection]
                 ghostAnim = ghostMovement[moveDirection]
 
@@ -944,10 +950,10 @@ while True:
 
                 # SPECIFIC TO PLAYER MOVEMENT
                 if animCur is playAnim:
-                    playCol = queryX       # update the player's position
-                    playRow = queryY
+                    player.col = queryX       # update the player's position
+                    player.row = queryY
 
-                    tile = curLvl.tileAt(playDung, playCol, playRow)
+                    tile = curLvl.tileAt(player.dung, player.col, player.row)
                     if tile == SWIRL:
                         animQueue.append(animRotate)
 
@@ -960,6 +966,12 @@ while True:
 
 
                     # BOX STUFF
+                    # remove boxes from y-buffer, to be added to new row later
+                    if moveDirection == UP or moveDirection == DOWN:
+                        for box in moveBoxes:
+                            objBuff[box.row].remove(box)
+
+                    # updates box
                     for box in moveBoxes:
                         if moveDirection == LEFT:
                             box.col -= 1
@@ -973,6 +985,11 @@ while True:
                         box.xOff = 0
                         box.yOff = 0
 
+                    # adds boxes to their new row
+                    if moveDirection == UP or moveDirection == DOWN:
+                        for box in moveBoxes:
+                            objBuff[box.row].append(box)
+
                     moveBoxes = []
 
                     moveDirection = None
@@ -983,7 +1000,7 @@ while True:
                 # SPECIFIC TO DUNGEON ROTATION
                 elif animCur is animRotate:
                     # UPDATE PLAYER DUNG
-                    playDung = (playDung + 1) % 4
+                    player.dung = (player.dung + 1) % 4
 
                     # UPDATE LAYOUT
                     curLvl.layout.insert(0, curLvl.layout[3])
@@ -1143,28 +1160,12 @@ while True:
         ### DUNGEONS ###
         preDisplay.blit(curLay, (0, curLayY))
 
-        ### BOXES ABOVE PLAYER ###
-        for row in range(playRow + 1):
-            for box in curLvl.boxes:
-                if box.row == row:
-                    for dung in range(4):
-                        if box.dungs[dung] != None:
-                            x = dungX[dung] + box.col * TILE + box.xOff
-                            y = dungY[dung] + box.row * TILE + box.yOff + curLayY
 
-                            curTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
-
-                            if curLvl.tileAt(dung, box.col, box.row + 1) in covers:
-                                curLvl.drawTile(preDisplay, dung, box.col, box.row + 1)
-                            elif box in moveBoxes:
-                                drawCov(boxDirection, dung, box.col, box.row)
-                            else:
-                                drawCov(None, dung, box.col, box.row)
 
         ### PLAYER ###
         for dung in range(4):
-            playX = dungX[dung] + (playCol - 1) * TILE
-            playY = dungY[dung] + (playRow - 1) * TILE
+            playX = dungX[dung] + (player.col - 1) * TILE
+            playY = dungY[dung] + (player.row - 1) * TILE
 
             ### CHANGE THE PLAYER'S POSITION BASED ON THE CURRENT ANIMATION ###
             if animCur is animPlayDrop:
@@ -1176,7 +1177,7 @@ while True:
 
 
             ### DRAW THE PLAYER (and the ghosts) ###
-            if playDung == dung:
+            if player.dung == dung:
                 playAnim.blitFrame(preDisplay, (playX, playY))
             else:
                 ghostAnim.blitFrame(preDisplay, (playX, playY))
@@ -1186,22 +1187,22 @@ while True:
             if animCur is animPlayDrop:
 
                 # draws block directly below player.  no exceptions
-                if nexLvl.tileAt(dung, playCol, playRow + 1):
-                    curLvl.drawTile(preDisplay, dung, playCol, playRow + 1)
+                if nexLvl.tileAt(dung, player.col, player.row + 1):
+                    curLvl.drawTile(preDisplay, dung, player.col, player.row + 1)
 
                 # flat tiles will cover the wall below it so redraw that wall
-                if curLvl.tileAt(dung, playCol, playRow + 2) in covers:
-                    curLvl.drawTile(preDisplay, dung, playCol, playRow + 2)
+                if curLvl.tileAt(dung, player.col, player.row + 2) in covers:
+                    curLvl.drawTile(preDisplay, dung, player.col, player.row + 2)
 
 
             elif animCur is animCurLvlUp:
-                x = dungX[dung] + playCol * TILE
+                x = dungX[dung] + player.col * TILE
 
                 # draws wall beneath player on next level
-                if nexLvl.tileAt(dung, playCol, playRow + 1) in covers:
+                if nexLvl.tileAt(dung, player.col, player.row + 1) in covers:
                     y = playY + TILE + TILE
 
-                    nexLvl.drawTile(preDisplay, dung, playCol, playRow + 1, x, y)
+                    nexLvl.drawTile(preDisplay, dung, player.col, player.row + 1, x, y)
 
                     # draw a single-block shadow onto the wall
                     shadowAlpha = - NEXTSHADOWINTERVAL * animCur.frame + SHADOWINTERVAL
@@ -1214,10 +1215,10 @@ while True:
                 if animCur.frame < animCur.lastFrame / 2:
 
                     # a wall will start higher up from the other blocks
-                    if curLvl.tileAt(dung, playCol, playRow + 1) in covers:
-                        y = dungY[dung] + playRow * TILE + TILE
+                    if curLvl.tileAt(dung, player.col, player.row + 1) in covers:
+                        y = dungY[dung] + player.row * TILE + TILE
                     else:
-                        y = dungY[dung] + playRow * TILE + TILE + SIDE
+                        y = dungY[dung] + player.row * TILE + TILE + SIDE
 
                 # during second half, top ghost is covered by bottom dungeon
                 else:
@@ -1230,29 +1231,19 @@ while True:
 
 
             else:   # normal movement
-                drawCov(moveDirection, dung, playCol, playRow)
+                drawCov(moveDirection, dung, player.col, player.row)
 
 
 
-        ### BOXES BELOW PLAYER ###
-        for row in range(playRow + 1, HEIGHT):
-            for box in curLvl.boxes:
-                if box.row == row:
-                    for dung in range(4):
-                        if box.dungs[dung] != None:
-                            x = dungX[dung] + box.col * TILE + box.xOff
-                            y = dungY[dung] + box.row * TILE + box.yOff + curLayY
+        ### BOXES ###
+        for row in objBuff:
+            for box in row:
+                for dung in range(4):
+                    if box.dungs[dung] != None:
+                        x = dungX[dung] + box.col * TILE + box.xOff
+                        y = dungY[dung] + box.row * TILE + box.yOff + curLayY
 
-                            curTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
-
-                            if animCur == animCurLvlUp:
-                                if curLvl.tileAt(dung, box.col, box.row + 1) in covers:
-                                    curLvl.drawTile(preDisplay, dung, box.col, box.row + 1)
-                            elif box in moveBoxes:
-                                drawCov(boxDirection, dung, box.col, box.row)
-                            else:
-                                drawCov(None, dung, box.col, box.row)
-
+                        curTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
 
 
         ### CAMERA MOVEMENT ###
