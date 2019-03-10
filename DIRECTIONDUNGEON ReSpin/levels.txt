@@ -15,7 +15,7 @@ E E E E E           E E E E E
           E E E E E
           E E E E E
           E E E E E
-EMPTY None UP None DOWN   EMPTY LEFT UP None DOWN
+EMPTY LEFT UP None DOWN   EMPTY LEFT UP None DOWN
 
 SET00boxtest
 TESTSHEET

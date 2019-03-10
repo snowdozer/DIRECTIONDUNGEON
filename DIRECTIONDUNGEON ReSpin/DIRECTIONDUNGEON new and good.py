@@ -1198,7 +1198,7 @@ while True:
                 if nexLvl.tileAt(dung, player.col, player.row + 1) in covers:
                     y = curLvl.dungY[dung] + player.row * TILE + player.yOff
 
-                    nexLvl.drawTile(preDisplay, dung, player.col, player.row + 1, x, y)
+                    nexLvl.drawTile(preDisplay, dung, player.col, player.row + 1)
 
                     # draw a single-block shadow onto the wall
                     shadowAlpha = - NEXTSHADOWINTERVAL * animCur.frame + SHADOWINTERVAL
