@@ -732,7 +732,7 @@ while True:
 
     ### ANIMATION STUFF ###
     # NEXT LEVEL
-    nexLvl.y = 0  # resets y values
+    nexLvl.y = SIDE  # resets y values
     curLvl.y = 0
     sideY = (levelNum + 2) * SIDE
 
@@ -752,11 +752,11 @@ while True:
         nexDungs.blit(nexLay, (dung * DUNGW, 0), normRects[dung])
 
         x = nexLvl.dungX[dung]
-        y = nexLvl.dungY[dung] + DUNGH + SIDE
-        blitSide(nexLay, dung, x, y)
+        y = nexLvl.dungY[dung]
+        blitSide(nexLay, dung, x, y + DUNGH)
 
         # DRAWS SHADOWS
-        drawNextShadow(nexLay, dung, nexLvl.dungX[dung], nexLvl.dungY[dung], 0)
+        drawNextShadow(nexLay, dung, x, y, 0)
 
 
     # MISC
@@ -897,21 +897,22 @@ while True:
         ##################
         ### ANIMATIONS ###
         ##################
+        # all of the game's functionalities are tied to the animations, since
+        # things should only happen once animations finish up
 
-        ### ALL QUEUED ANIMATIONS ###
-        # increments these animations one at a time
         if animQueue:
-            animCur = animQueue[0]
+            animCur = animQueue[0]   # only affects first animation in queue
 
-            # LAST FRAME STUFF
+            ### LAST FRAME THINGS ###
             if animCur.frame == animCur.lastFrame:
-                animCur.resetAnim()
+                animCur.resetAnim()  # RESETS THE ANIMATION
 
-                # SPECIFIC TO PLAYER MOVEMENT
+                ### SPECIFIC TO PLAYER MOVEMENT ###
                 if animCur is playAnim:
+                    ### UPDATE POSITIONS OF PLAYER AND BOXES ###
                     direction = player.direction
 
-                    # remove things that moved in the y-buffer
+                    # remove objects that moved in the y-buffer
                     if direction == UP or direction == DOWN:
                         for box in moveBoxes:
                             objBuff[box.row].remove(box)
@@ -932,7 +933,7 @@ while True:
 
                         box.direction = None
 
-                    # re-add things that moved in the y-buffer
+                    # re-add objects that moved in the y-buffer
                     if direction == UP or direction == DOWN:
                         for box in moveBoxes:
                             objBuff[box.row].append(box)
@@ -950,12 +951,15 @@ while True:
                         animQueue.append(animPlayDrop)
                         animQueue.append(animCurLvlUp)
 
-                    playAnim = playIdle  # reset the sprite to idle
+
+
+                    ### RESET PLAYER SPRITES TO IDLE ###
+                    playAnim = playIdle
                     ghostAnim = ghostIdle
 
 
 
-                # SPECIFIC TO DUNGEON ROTATION
+                ### SPECIFIC TO DUNGEON ROTATION ###
                 elif animCur is animRotate:
                     # UPDATE PLAYER DUNG
                     player.dung = (player.dung + 1) % 4
@@ -969,14 +973,15 @@ while True:
                         box.dungs.insert(0, box.dungs[3])
                         del box.dungs[4]
 
+                    # UPDATE TILE VARIANTS
                     curLvl.tileVars.insert(0, curLvl.tileVars[3])
                     del curLvl.tileVars[4]
 
-                    # RESET DUNGEON POSITIONS
+                    # UPDATE (RESET) DUNGEON POSITIONS
                     curLvl.dungX = copy.copy(origDungX)
                     curLvl.dungY = copy.copy(origDungY)
 
-                    # REDRAW THE DUNGEONS IN THEIR RESET POSITIONS
+                    # UPDATE (REDRAW) THE DUNGEONS IN THEIR RESET POSITIONS
                     curDungs.fill((0, 255, 0))
                     curLay.fill((0, 255, 0))
                     for dung in range(4):
@@ -985,35 +990,37 @@ while True:
 
 
 
-
-
-                # SPECIFIC TO PLAYER DROP DURING NEXT LEVEL TRANSITION
+                ### SPECIFIC TO PLAYER DROPPING INTO GOAL ###
                 elif animCur is animPlayDrop:
-                    # skips a frame of animation
                     animQueue.remove(animCur)
-                    continue
+                    continue  # king crimsons a single frame
 
-                # SPECIFIC TO NEXT LEVEL TRANSITION
+
+
+                ### SPECIFIC TO NEXT LEVEL TRANSITION ###
                 elif animCur is animCurLvlUp:
                     levelNum += 1
                     nextLevel = True
 
                     # exits game loop and goes to the next level
                     animQueue.remove(animCur)
-                    break
+                    break    # reload stuff for next level
+
+
 
                 animQueue.remove(animCur) # deletes animation from queue
 
 
 
-            # ALL OTHER FRAMES
+            ### ALL OTHER FRAMES ###
             else:
-                # INCREMENT FRAME AND VALUES
-                animCur.nextFrame()
+                animCur.nextFrame()  # INCREMENTS FRAME AND VALUES
 
 
-                # SPECIFIC TO PLAYER MOVEMENT (mostly just box stuff)
+                ### SPECIFIC TO PLAYER MOVEMENT ###
                 if animCur is playAnim:
+
+                    # slides all boxes
                     for box in moveBoxes:
 
                         if box.direction == LEFT:
@@ -1028,17 +1035,14 @@ while True:
                         elif box.direction == DOWN:
                             box.yOff = animBoxSlide.value
 
-                    player.xOff = 0
+                    player.xOff = 0  # does not slide the player
                     player.yOff = 0
 
 
-                # SPECIFIC TO DUNGEON ROTATION
+
+                ### SPECIFIC TO DUNGEON ROTATION ###
                 if animCur is animRotate:
-
-                    curLay.fill((0, 255, 0))
-
-                    # CALCULATES WHERE ON THE CIRCLE TO DRAW THE LEVEL
-                    for dung in range(4):
+                    for dung in range(4):     # updates the dungeon positions
                         angle = (dung + 2) % 4 * 90
                         angle += animCur.value
                         angle = math.radians(angle)
@@ -1051,25 +1055,24 @@ while True:
 
 
 
-                # SPECIFIC TO NEXT LEVEL TRANSITION
+                ### SPECIFIC TO NEXT LEVEL TRANSITION ###
                 elif animCur is animCurLvlUp:
-                    # moves everything up
-                    curLvl.y = round(animCurLvlUp.value)
-                    nexLvl.y = round(animNexLvlUp.value)
+                    curLvl.y = round(animCurLvlUp.value) # move everything up
+                    nexLvl.y = round(animNexLvlUp.value) + SIDE
 
                     nexLay.fill((0, 0, 0))
 
+                    # REDRAW DUNGEONS AND SIDE LAYER
                     for dung in range(4):
-                        # redraws dungeons and side layer
                         x = nexLvl.dungX[dung]
                         y = nexLvl.dungY[dung]
 
                         nexLay.blit(nexDungs, (x, y), alignRects[dung])
-                        blitSide(nexLay, dung, x, y + DUNGH + SIDE)
+                        blitSide(nexLay, dung, x, y + DUNGH)
 
-                        # redraws the shadows, with an offset based on the frame
+                        # shadows are offset so that a gradual fade occurs
                         shadowOff = - NEXTSHADOWINTERVAL * animCur.frame
-                        drawNextShadow(nexLay, dung, nexLvl.dungX[dung], nexLvl.dungY[dung], shadowOff)
+                        drawNextShadow(nexLay, dung, x, y, shadowOff)
 
                     camXLock = 0  # resets camera
                     camYLock = 0
@@ -1090,11 +1093,8 @@ while True:
         ### DRAWING EVERYTHING ###
         ##########################
 
-        ### SIDE OF NEXT DUNGEONS & NEXT LEVEL ###
-        preDisplay.blit(nexLay, (0, nexLvl.y + SIDE))
-
+        # DRAW BOXES ON NEXT LEVEL
         if animCur == animCurLvlUp:
-            # DRAW BOXES ON NEXT LEVEL
             nexObjBuff = [[] for x in range(HEIGHT)]
             for box in nexLvl.boxes:
                 nexObjBuff[box.row].append(box)
@@ -1104,16 +1104,22 @@ while True:
                     for dung in range(4):
                         if box.dungs[dung] != None:
                             x = nexLvl.dungX[dung] + box.col * TILE
-                            y = nexLvl.dungY[dung] + box.row * TILE + nexLvl.y
-                            nexTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
+                            y = nexLvl.dungY[dung] + box.row * TILE
+                            nexTileSheet.drawTile(nexLay, (x, y), BOX, box.variant)
 
                             if nexLvl.tileAt(dung, box.col, box.row + 1) == WALL:
-                                nexLvl.drawTile(preDisplay, dung, box.col, box.row + 1)
+                                nexLvl.drawTile(nexLay, dung, box.col, box.row + 1)
 
-        ### DUNGEONS ###
+        ### SIDE OF NEXT DUNGEONS & NEXT LEVEL ###
+        preDisplay.blit(nexLay, (0, nexLvl.y))
+
+
+
+        ### CURRENT LEVEL ###
+        curLay.fill((0, 255, 0))  # clear the level layer
         for dung in range(4):
-            x = curLvl.x + curLvl.dungX[dung]
-            y = curLvl.y + curLvl.dungY[dung]
+            x = curLvl.dungX[dung]
+            y = curLvl.dungY[dung]
             curLay.blit(curDungs, (x, y), alignRects[dung])
         preDisplay.blit(curLay, (0, curLvl.y))
 
