@@ -102,6 +102,7 @@ WALLSIDE = 3 # only used in tilesheets, not used in level generation
 GOAL = 4
 SWIRL = 5
 BOX = 6
+BOXSIDE = 7
 
 # DUNGEON POSITIONS
 origDungX = [MARG, DUNGW + MARG*2, DUNGW*2 + MARG*3, DUNGW + MARG*2]
@@ -148,10 +149,8 @@ class Tilesheet:
 
     # draws a tile based on its tileType and variant
     def drawTile(self, surf, pos, tile, variant):
-        if tile == WALLSIDE:
+        if tile == WALLSIDE or tile == BOXSIDE:
             height = SIDE
-        elif tile == BOX:
-            height = TILE + SIDE
         else:
             height = TILE
 
@@ -160,7 +159,7 @@ class Tilesheet:
         surf.blit(self.surface, pos, tileRect)
 
 # a test tilesheet.  multiple can be made
-TESTSHEET = Tilesheet("images\\testSheet.png", mult, (0, 2, 0, 2, 0, 0, 3))
+TESTSHEET = Tilesheet("images\\testSheet.png", mult, (0, 2, 0, 2, 0, 0, 3, 3))
 
 
 
@@ -376,7 +375,7 @@ for dung in range(4):
 
 # BLITS DUNGEON SIDES FROM SIDESURFS
 def blitSide(surf, dung, x, y):
-    segment = (dung * DUNGW, (levelNum + 2) * SIDE, DUNGW, SIDE * LEVELSDOWN)
+    segment = (dung * DUNGW, (levelNum + 3) * SIDE, DUNGW, SIDE * LEVELSDOWN)
     surf.blit(sideSurfs, (x, y), segment)
 
 
@@ -667,6 +666,52 @@ def drawNextShadow(surf, dung, x, y, shadowOffset):
 
 
 
+def drawObjs(surf, dung, x, y, drawPlayer):
+    curWalls = []
+
+    ### OBJECTS ###
+    for row in objBuff:
+        for obj in row:
+            if obj.dungs[dung] != None:
+                # PLAYER
+                if obj is player:
+                    if drawPlayer:
+                        objX = x + obj.col * TILE - TILE
+                        objY = y + obj.row * TILE - TILE
+
+                        if player.dung == dung:
+                            playAnim.blitFrame(surf, (objX, objY))
+                        else:
+                            ghostAnim.blitFrame(surf, (objX, objY))
+
+                # BOXES
+                else:
+                    objX = x + obj.col * TILE + obj.xOff
+                    objY = y + obj.row * TILE + obj.yOff + curLvl.y
+
+                    curTileSheet.drawTile(surf, (objX, objY), BOX, obj.variant)
+                    curTileSheet.drawTile(surf, (objX, objY + TILE), BOXSIDE, obj.variant)
+
+                # WALLS THAT SHOULD COVER THE OBJECT
+                if obj.direction != DOWN:
+                    curWalls.append((dung, obj.col, obj.row + 1))
+
+                    if obj.direction == LEFT:
+                        curWalls.append((dung, obj.col - 1, obj.row + 1))
+                    elif obj.direction == RIGHT:
+                        curWalls.append((dung, obj.col + 1, obj.row + 1))
+
+                else:
+                    curWalls.append((dung, obj.col, obj.row + 2))
+
+    for wall in curWalls:
+        if curLvl.tileAt(wall[0], wall[1], wall[2]) == WALL:
+            wallX = x + wall[1] * TILE
+            wallY = y + wall[2] * TILE
+            var = curLvl.tileVars[wall[0]][wall[1]][wall[2]]
+
+            curTileSheet.drawTile(surf, (wallX, wallY), WALL, var)
+
 
 
 ################################################################################
@@ -676,7 +721,7 @@ def drawNextShadow(surf, dung, x, y, shadowOffset):
 preDisplay = newSurf((SCREENLENGTH, SCREENLENGTH + CAMLIMIT))
 
 # the main display, post-camera
-postDisplay = pygame.display.set_mode(SCREENSIZE)
+postDisplay.fill((0, 255, 0))
 
 
 # levelNum can be changed later with the level select
@@ -722,7 +767,7 @@ for level in reversed(levels):
             for dung in range(4):
                 if box.dungs[dung]:
                     x = dung * DUNGW + box.col * TILE
-                    level.tileSheet.drawTile(sideSurfs, (x, y - SIDE), BOX, box.variant)
+                    level.tileSheet.drawTile(sideSurfs, (x, y + SIDE), BOXSIDE, box.variant)
 
 
 
@@ -761,15 +806,8 @@ while True:
         nexObjBuff[box.row].append(box)
 
     for dung in range(4):
-        ### DRAW CURRENT LEVEL ###
-        # postDisplay is used temporarily to draw dungeons in position
-        curLvl.drawDung(postDisplay, dung)
-        curDungs.blit(postDisplay, (dung * DUNGW, 0), normRects[dung])
-        postDisplay.fill((0, 0, 0))
-
-
-
         ### DRAW NEXT LEVEL ###
+        # postDisplay is used temporarily to draw dungeons in position
         nexLvl.drawDung(postDisplay, dung)
 
         # DRAW BOXES ONTO NEXT LEVEL (aren't constantly updated like cur level)
@@ -780,17 +818,30 @@ while True:
                     y = nexLvl.dungY[dung] + box.row * TILE
                     nexTileSheet.drawTile(postDisplay, (x, y), BOX, box.variant)
 
-                    if nexLvl.tileAt(dung, box.col, box.row + 1) == WALL:
-                        nexLvl.drawTile(postDisplay, dung, box.col, box.row + 1)
+                    if nexLvl.tileAt(dung, box.col, box.row + 1) != WALL:
+                        nexTileSheet.drawTile(postDisplay, (x, y + TILE), BOXSIDE, box.variant)
 
         nexDungs.blit(postDisplay, (dung * DUNGW, 0), normRects[dung])
-        postDisplay.fill((0, 0, 0))
+        postDisplay.fill((0, 255, 0))
 
         x = dung * DUNGW
         blitSide(nexDungs, dung, x, DUNGH + SIDE)
 
         # DRAWS SHADOWS
         drawNextShadow(nexDungs, dung, x, 0, 0)
+
+
+
+        ### DRAW CURRENT LEVEL ###
+        curLvl.drawDung(postDisplay, dung)
+        curDungs.blit(postDisplay, (dung * DUNGW, 0), normRects[dung])
+
+        postDisplay.fill((0, 0, 0))
+
+        preDisplay.blit(nexDungs, (nexLvl.dungX[dung], nexLvl.dungY[dung] + nexLvl.y), nextRects[dung])
+        preDisplay.blit(curDungs, (curLvl.dungX[dung], curLvl.dungY[dung]), alignRects[dung])
+
+
 
 
     # MISC
@@ -804,6 +855,9 @@ while True:
     player.origRow = player.row
     player.origDung = player.dung
 
+    for dung in range(4):
+        drawObjs(preDisplay, dung, curLvl.dungX[dung], curLvl.dungY[dung], True)
+
     shadowOff = 0
 
 
@@ -814,8 +868,6 @@ while True:
 
     nextLevel = False
     while not nextLevel:
-        curWalls = [] # tracks all tiles that, if they are a wall, are redrawn
-        nexWalls = []
 
         ##############
         ### EVENTS ###
@@ -871,6 +923,12 @@ while True:
                         objBuff[box.row].append(box)
 
                     objBuff[player.row].append(player)
+
+                    # resets what is drawn in preDisplay
+                    for dung in range(4):
+                        preDisplay.blit(curDungs, (curLvl.dungX[dung], curLvl.dungY[dung]), alignRects[dung])
+
+                        drawObjs(preDisplay, dung, curLvl.dungX[dung], curLvl.dungY[dung], True)
 
 
 
@@ -982,21 +1040,53 @@ while True:
                     moveBoxes = []
 
 
+                    # reset player sprites to idle
+                    playAnim = playIdle
+                    ghostAnim = ghostIdle
+
 
                     ### INTERACT WITH TILES ###
                     tile = curLvl.tileAt(player.dung, player.col, player.row)
                     if tile == SWIRL:
+                        for dung in range(4):
+                            drawObjs(curDungs, dung, dung * DUNGW, 0, False)
+
                         animQueue.append(animRotate)
 
                     elif tile == GOAL:
+                        for dung in range(4):
+                            drawObjs(curDungs, dung, dung * DUNGW, 0, False)
+
+                            ### REDRAWS NEXT LEVEL WITHOUT SHADOWS ###
+                            postDisplay.fill((0, 255, 0))
+                            nexLvl.drawDung(postDisplay, dung)
+
+                            for row in nexObjBuff:
+                                for box in row:
+                                    if box.dungs[dung] != None:
+                                        x = nexLvl.dungX[dung] + box.col * TILE
+                                        y = nexLvl.dungY[dung] + box.row * TILE
+                                        nexTileSheet.drawTile(postDisplay, (x, y), BOX, box.variant)
+
+                                        if nexLvl.tileAt(dung, box.col, box.row + 1) != WALL:
+                                            nexTileSheet.drawTile(postDisplay, (x, y + TILE), BOXSIDE, box.variant)
+
+                            nexDungs.blit(postDisplay, (dung * DUNGW, 0), normRects[dung])
+                            postDisplay.fill((0, 0, 0))
+
+                            x = dung * DUNGW
+                            blitSide(nexDungs, dung, x, DUNGH + SIDE)
+
                         animQueue.append(animPlayDrop)
                         animQueue.append(animCurLvlUp)
 
+                    else:
+                        for dung in range(4):
+                            preDisplay.blit(curDungs, (curLvl.dungX[dung], curLvl.dungY[dung]), alignRects[dung])
+
+                            drawObjs(preDisplay, dung, curLvl.dungX[dung], curLvl.dungY[dung], True)
 
 
-                    ### RESET PLAYER SPRITES TO IDLE ###
-                    playAnim = playIdle
-                    ghostAnim = ghostIdle
 
 
 
@@ -1022,7 +1112,9 @@ while True:
                     curLvl.dungX = copy.copy(origDungX)
                     curLvl.dungY = copy.copy(origDungY)
 
-                    # UPDATE (REDRAW) THE DUNGEONS IN THEIR RESET POSITIONS
+                    # SHIFT OVER EACH DUNGEON IN CURDUNGS
+                    postDisplay.fill((0, 255, 0))
+
                     curDungs.fill((0, 255, 0))
                     for dung in range(4):
                         curLvl.drawDung(postDisplay, dung)
@@ -1030,13 +1122,24 @@ while True:
 
                     postDisplay.fill((0, 0, 0))
 
+                    # REDRAW EVERYTHING
+                    preDisplay.fill((0, 0, 0))
+                    for dung in range(4):
+                        x = curLvl.dungX[dung]
+                        y = curLvl.dungY[dung]
+                        preDisplay.blit(nexDungs, (x, y + SIDE), nextRects[dung])
+                        preDisplay.blit(curDungs, (x, y), alignRects[dung])
+
+                        drawObjs(preDisplay, dung, curLvl.dungX[dung], curLvl.dungY[dung], True)
+
+                    del animQueue[0]
+                    continue  # king crimsons a single frame
 
 
                 ### SPECIFIC TO PLAYER DROPPING INTO GOAL ###
                 elif animCur is animPlayDrop:
                     animQueue.remove(animCur)
-                    continue  # king crimsons a single frame
-
+                    continue
 
 
                 ### SPECIFIC TO NEXT LEVEL TRANSITION ###
@@ -1045,86 +1148,17 @@ while True:
                     nextLevel = True
 
                     # exits game loop and goes to the next level
-                    animQueue.remove(animCur)
+                    del animQueue[0]
                     break    # reload stuff for next level
 
+                del animQueue[0] # deletes animation from queue
 
-
-                animQueue.remove(animCur) # deletes animation from queue
-
-
-
-            ### ALL OTHER FRAMES ###
+            # INCREMENTS FRAME AND VALUES for each other frame
             else:
-                animCur.nextFrame()  # INCREMENTS FRAME AND VALUES
-
-
-                ### SPECIFIC TO PLAYER MOVEMENT ###
-                if animCur is playAnim:
-
-                    # slides all boxes
-                    for box in moveBoxes:
-
-                        if box.direction == LEFT:
-                            box.xOff = -animBoxSlide.value
-
-                        elif box.direction == RIGHT:
-                            box.xOff = animBoxSlide.value
-
-                        elif box.direction == UP:
-                            box.yOff = -animBoxSlide.value
-
-                        elif box.direction == DOWN:
-                            box.yOff = animBoxSlide.value
-
-                    player.xOff = 0  # does not slide the player
-                    player.yOff = 0
-
-
-
-                ### SPECIFIC TO DUNGEON ROTATION ###
-                if animCur is animRotate:
-                    for dung in range(4):     # updates the dungeon positions
-                        angle = (dung + 2) % 4 * 90
-                        angle += animCur.value
-                        angle = math.radians(angle)
-
-                        x = ROTATEMIDX + math.cos(angle) * ROTATERADIUS
-                        y = ROTATEMIDY + math.sin(angle) * ROTATERADIUS
-
-                        curLvl.dungX[dung] = x
-                        curLvl.dungY[dung] = y
-
-
-
-                ### SPECIFIC TO NEXT LEVEL TRANSITION ###
-                elif animCur is animCurLvlUp:
-                    curLvl.y = round(animCurLvlUp.value) # move everything up
-                    nexLvl.y = round(animNexLvlUp.value) + SIDE
-
-
-
-                    # shadows are offset so that a gradual fade occurs
-                    shadowOff = - NEXTSHADOWINTERVAL * animCur.frame
-
-                    shadowAlpha = SHADOWINTERVAL
-                    shadow.set_alpha(shadowAlpha)
-
-                    camXLock = 0  # resets camera
-                    camYLock = 0
-
-
-
-
-
-
+                animCur.nextFrame()
 
         else:   # resets if there are no animations playing
             animCur = None
-
-
-
-
 
 
 
@@ -1132,137 +1166,241 @@ while True:
         ### DRAWING EVERYTHING ###
         ##########################
 
-        ### SIDE OF NEXT DUNGEONS & NEXT LEVEL ###
+        if animCur is playAnim:
+            # slides all boxes
+            for box in moveBoxes:
 
-        if animCur is animRotate or animCur is animCurLvlUp:
-            rects = sideRects
-        else:
-            rects = nextRects
+                if box.direction == LEFT:
+                    box.xOff = -animBoxSlide.value
 
-        for dung in range(4):
+                elif box.direction == RIGHT:
+                    box.xOff = animBoxSlide.value
 
-            x = nexLvl.dungX[dung]
-            y = nexLvl.dungY[dung]
+                elif box.direction == UP:
+                    box.yOff = -animBoxSlide.value
 
-            preDisplay.blit(nexDungs, (x, y), rects[dung])
+                elif box.direction == DOWN:
+                    box.yOff = animBoxSlide.value
 
+            player.xOff = 0  # does not slide the player
+            player.yOff = 0
 
-        ### CURRENT LEVEL ###
-        for dung in range(4):
-            x = curLvl.dungX[dung]
-            y = curLvl.dungY[dung]
-            preDisplay.blit(curDungs, (x, y), alignRects[dung])
-
-
-
-        ### PLAYER ###
-        player.xOff = 0
-        player.yOff = 0
-
-        ### CHANGE THE PLAYER'S POSITION BASED ON THE CURRENT ANIMATION ###
-        if animCur is animPlayDrop:
-            player.yOff = animPlayDrop.value
-
-        elif animCur is animCurLvlUp:
-            player.yOff = nexLvl.y
-
-
-
-        ### OBJECTS ###
-        for row in objBuff:
-            for obj in row:
-                for dung in range(4):
-                    if obj.dungs[dung] != None:
-                        # PLAYER
-                        if obj is player:
-                            ### SPECIFIC STUFF FOR NEXT LEVEL TRANSITION ###
-                            if animCur is animCurLvlUp:
-                                x = nexLvl.dungX[dung] + obj.col * TILE - TILE + obj.xOff
-                                y = nexLvl.dungY[dung] + obj.row * TILE - TILE + obj.yOff
-
-                                if player.dung == dung:
-                                    playAnim.blitFrame(preDisplay, (x, y))
-                                else:
-                                    ghostAnim.blitFrame(preDisplay, (x, y))
-
-                                # WALL BENEATH PLAYER AT NEXT LEVEL
-                                if nexLvl.tileAt(dung, player.col, player.row + 1) == WALL:
-                                    # draw a single-block shadow onto the wall
-                                    x = nexLvl.dungX[dung] + player.col * TILE
-                                    y = nexLvl.dungY[dung] + player.row * TILE + TILE + player.yOff
-                                    var = nexLvl.tileVars[dung][player.col][player.row + 1]
-
-                                    nexLvl.tileSheet.drawTile(preDisplay, (x, y), WALL, var)
-                                    shadowAlpha = - NEXTSHADOWINTERVAL * animCur.frame + SHADOWINTERVAL
-                                    shadow.set_alpha(shadowAlpha)
-                                    preDisplay.blit(shadow, (x, y), (0, 0, TILE, TILE))
-
-                                # COLUMN OF TILES BELOW PLAYER
-                                # first half, only draw the tiles below player
-                                if animCur.frame < animCur.lastFrame / 2:
-                                    start = player.row + 1
-
-                                # second half, draw all tiles in player's column
-                                else:
-                                    start = 0
-
-                                for row in range(start, HEIGHT):
-                                    x = curLvl.x + curLvl.dungX[dung] + player.col * TILE
-                                    y = curLvl.y + curLvl.dungY[dung] + row * TILE
-                                    tile = curLvl.tileAt(dung, player.col, row)
-                                    var = curLvl.tileVars[dung][player.col][row]
-
-                                    if tile == WALL:
-                                        curLvl.tileSheet.drawTile(preDisplay, (x, y), WALL, var)
-                                        curLvl.tileSheet.drawTile(preDisplay, (x, y + TILE), WALLSIDE, var)
-                                    else:
-                                        curLvl.tileSheet.drawTile(preDisplay, (x, y + SIDE), tile, var)
-
-
-                            else:
-                                x = curLvl.dungX[dung] + obj.col * TILE - TILE + obj.xOff
-                                y = curLvl.dungY[dung] + obj.row * TILE - TILE + obj.yOff
-
-                                if player.dung == dung:
-                                    playAnim.blitFrame(preDisplay, (x, y))
-                                else:
-                                    ghostAnim.blitFrame(preDisplay, (x, y))
-
-                        # BOXES
-                        else:
-                            x = curLvl.dungX[dung] + obj.col * TILE + obj.xOff
-                            y = curLvl.dungY[dung] + obj.row * TILE + obj.yOff + curLvl.y
-
-                            curTileSheet.drawTile(preDisplay, (x, y), BOX, obj.variant)
-
-                        # WALLS THAT SHOULD COVER THE OBJECT
-                        if obj.direction != DOWN:
-                            curWalls.append((dung, obj.col, obj.row + 1))
-
-                            if obj.direction == LEFT:
-                                curWalls.append((dung, obj.col - 1, obj.row + 1))
-                            elif obj.direction == RIGHT:
-                                curWalls.append((dung, obj.col + 1, obj.row + 1))
-
-                        else:
-                            curWalls.append((dung, obj.col, obj.row + 2))
-
-
-
-        ### SPECIAL INSTRUCTIONS DURING PLAYER DROP ANIMATION ###
-        if animCur is animPlayDrop:
+            # redraws all current dungeons
             for dung in range(4):
-                # draws block directly below player.  no exceptions
+                rect = (origDungX[dung], origDungY[dung] - SIDE, DUNGW, DUNGH + SIDE * 2)
+                preDisplay.fill((0, 0, 0), rect)
+                preDisplay.blit(curDungs, (curLvl.dungX[dung], curLvl.dungY[dung]), alignRects[dung])
+
+                drawObjs(preDisplay, dung, curLvl.dungX[dung], curLvl.dungY[dung], True)
+
+
+
+
+
+        elif animCur is animPlayDrop:
+            player.yOff = animPlayDrop.value
+            for dung in range(4):
+                # draws all the blocks above the player
+                for row in range(player.row + 1):
+                    curLvl.drawTile(preDisplay, dung, player.col, row)
+
+                x = curLvl.dungX[dung] + player.col * TILE - TILE
+                y = curLvl.dungY[dung] + player.row * TILE - TILE + player.yOff
+
+                if player.dung == dung:
+                    playAnim.blitFrame(preDisplay, (x, y))
+                else:
+                    ghostAnim.blitFrame(preDisplay, (x, y))
+
+                # draw block below player so that they "fall through" the hole
                 if player.row != HEIGHT - 1:
                     curLvl.drawTile(preDisplay, dung, player.col, player.row + 1)
 
-                # flat tiles will cover the wall below it so redraw that wall
-                curWalls.append((dung, player.col, player.row + 2))
+                    if player.row != HEIGHT - 2:
+
+                        # this will cover the wall below that tile so draw this
+                        if curLvl.tileAt(dung, player.col, player.row + 2) == WALL:
+                            x = curLvl.dungX[dung] + player.col * TILE
+                            y = curLvl.dungY[dung] + player.row * TILE + TILE
+                            var = curLvl.tileVars[dung][player.col][player.row + 2]
+                            curTileSheet.drawTile(preDisplay, (x, y), WALL, var)
+
+                        else:
+                            for box in objBuff[player.row + 2]:
+                                if box.col == player.col and box.dungs[dung]:
+                                    x = curLvl.dungX[dung] + box.col * TILE
+                                    y = curLvl.dungY[dung] + box.row * TILE
+                                    curTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
+                                    break
 
 
-        for wall in curWalls:
-            if curLvl.tileAt(wall[0], wall[1], wall[2]) == WALL:
-                curLvl.drawTile(preDisplay, wall[0], wall[1], wall[2])
+
+        elif animCur is animRotate:
+            # UPDATE DUNGEON POSITIONS
+            for dung in range(4):  # updates the dungeon positions
+                angle = (dung + 2) % 4 * 90
+                angle += animCur.value
+                angle = math.radians(angle)
+
+                x = ROTATEMIDX + math.cos(angle) * ROTATERADIUS
+                y = ROTATEMIDY + math.sin(angle) * ROTATERADIUS
+
+                curLvl.dungX[dung] = x
+                curLvl.dungY[dung] = y
+
+            # DRAW DUNGEONS IN UPDATED POSITIONS
+            preDisplay.fill((0, 0, 0))
+
+            # NEXT LEVEL
+            for dung in range(4):
+                x = nexLvl.dungX[dung] + nexLvl.x
+                y = nexLvl.dungY[dung] + nexLvl.y
+                preDisplay.blit(nexDungs, (x, y), nextRects[dung])
+
+            # CURRENT LEVEL
+            for dung in range(4):
+                x = curLvl.dungX[dung] + curLvl.x
+                y = curLvl.dungY[dung] + curLvl.y
+                preDisplay.blit(curDungs, (x, y), alignRects[dung])
+
+                # PLAYER
+                x = curLvl.dungX[dung] + player.col * TILE - TILE
+                y = curLvl.dungY[dung] + player.row * TILE - TILE + player.yOff
+                if player.dung == dung:
+                    playAnim.blitFrame(preDisplay, (x, y))
+                else:
+                    ghostAnim.blitFrame(preDisplay, (x, y))
+
+                # TILE THAT OVERLAPS THE PLAYER
+                if player.row != HEIGHT - 1:
+                    x += TILE
+                    y += TILE * 2
+                    if curLvl.tileAt(dung, player.col, player.row + 1) == WALL:
+                        var = curLvl.tileVars[dung][player.col][player.row + 1]
+                        curTileSheet.drawTile(preDisplay, (x, y), WALL, var)
+
+                    else:
+                        for box in objBuff[player.row + 1]:
+                            if box.dungs[dung]:
+                                curTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
+
+
+        elif animCur is animCurLvlUp:
+            ### MOVES EVERYTHING UP
+            curLvl.y = round(animCurLvlUp.value)
+            nexLvl.y = round(animNexLvlUp.value) + SIDE
+
+            player.yOff = nexLvl.y
+
+            # shadows are offset so that a gradual fade occurs
+            shadowOff = - NEXTSHADOWINTERVAL * animCur.frame
+
+            camXLock = 0  # resets camera
+            camYLock = 0
+
+
+            # DRAWS EVERYTHING MOVED UP
+            preDisplay.fill((0, 0, 0))
+
+            for dung in range(4):
+                # NEXT LEVEL
+                x = nexLvl.dungX[dung]
+                y = nexLvl.dungY[dung] + nexLvl.y
+                preDisplay.blit(nexDungs, (x, y), nextRects[dung])
+
+                # SHADOWS
+                x = nexLvl.dungX[dung]
+                y = nexLvl.dungY[dung] + nexLvl.y
+                drawNextShadow(preDisplay, dung, x, y, shadowOff)
+
+                # CURRENT LEVEL
+                x = curLvl.dungX[dung]
+                y = curLvl.dungY[dung] + curLvl.y
+                preDisplay.blit(curDungs, (x, y), alignRects[dung])
+
+                # PLAYER
+                x = nexLvl.dungX[dung] + player.col * TILE - TILE + player.xOff
+                y = nexLvl.dungY[dung] + player.row * TILE - TILE + player.yOff
+                if player.dung == dung:
+                    playAnim.blitFrame(preDisplay, (x, y))
+                else:
+                    ghostAnim.blitFrame(preDisplay, (x, y))
+
+                # WALL BENEATH PLAYER AT NEXT LEVEL
+                if nexLvl.tileAt(dung, player.col, player.row + 1) == WALL:
+                    x = nexLvl.x + nexLvl.dungX[dung] + player.col * TILE
+                    y = nexLvl.y + nexLvl.dungY[dung] + (player.row + 1) * TILE
+                    var = nexLvl.tileVars[dung][player.col][player.row + 1]
+
+                    nexTileSheet.drawTile(preDisplay, (x, y), WALL, var)
+
+                # COLUMN OF TILES ABOVE PLAYER
+                # first half, only draw the tiles below player
+                if animCur.frame < animCur.lastFrame / 2:
+                    if player.row != HEIGHT - 1:
+                        if curLvl.tileAt(dung, player.col, player.row + 1) == WALL:
+                            start = (player.row + 1) * TILE
+
+                        else:
+                            for box in objBuff[player.row + 1]:
+                                if box.col == player.col and box.dungs[dung]:
+                                    start = (player.row + 1) * TILE
+                                    break
+
+                            else:
+                                start = (player.row + 1) * TILE + SIDE
+
+                    else:
+                        start = DUNGH + SIDE
+
+                # second half, draw all tiles in player's column
+                else:
+                    start = 0
+
+                x = curLvl.x + curLvl.dungX[dung] + player.col * TILE
+                y = curLvl.y + curLvl.dungY[dung] + start
+
+                rect = (dung * DUNGW + player.col * TILE, start, TILE, DUNGH + SIDE - start)
+                preDisplay.blit(curDungs, (x, y), rect)
+
+
+
+        if False:
+            #preDisplay.fill((0, 0, 0))
+
+            ### SIDE OF NEXT DUNGEONS & NEXT LEVEL ###
+            if animCur is animRotate or animCur is animCurLvlUp:
+                rects = sideRects
+            else:
+                rects = nextRects
+
+            for dung in range(4):
+
+                x = nexLvl.dungX[dung]
+                y = nexLvl.dungY[dung]
+
+                preDisplay.blit(nexDungs, (x, y), rects[dung])
+
+
+            ### CURRENT LEVEL ###
+            for dung in range(4):
+                x = curLvl.dungX[dung]
+                y = curLvl.dungY[dung]
+                preDisplay.blit(curDungs, (x, y), alignRects[dung])
+
+
+            ### SPECIAL INSTRUCTIONS DURING PLAYER DROP ANIMATION ###
+            if animCur is animPlayDrop:
+                for dung in range(4):
+                    # draws block directly below player.  no exceptions
+                    if player.row != HEIGHT - 1:
+                        curLvl.drawTile(preDisplay, dung, player.col, player.row + 1)
+
+                    # flat tiles will cover the wall below it so redraw that wall
+                    curWalls.append((dung, player.col, player.row + 2))
+
+
+
 
 
 
@@ -1317,18 +1455,18 @@ while True:
 
 
         ### DEBUGGING ###
-        #postDisplay.blit(nexDungs, (0, 0))
+        #postDisplay.blit(curDungs, (0, 0))
 
         fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
         postDisplay.blit(fps, (10, 10))
 
-        #debug1 = TAHOMA.render(str(levelNum * 20), False, (255, 255, 255))
-        #debug2 = TAHOMA.render(str(player.direction), False, (255, 255, 255))
+        debug1 = TAHOMA.render(repr(animQueue), False, (255, 255, 255))
+        debug2 = TAHOMA.render(str(curLvl.dungX[UP]), False, (255, 255, 255))
         #debug3 = TAHOMA.render(repr(moveBoxes), False, (255, 255, 255))
         #debug4 = TAHOMA.render(repr(objBuff), False, (255, 255, 255))
 
-        #postDisplay.blit(debug1, (10, 20))
-        #postDisplay.blit(debug2, (10, 30))
+        postDisplay.blit(debug1, (10, 20))
+        postDisplay.blit(debug2, (10, 30))
         #postDisplay.blit(debug3, (10, 40))
         #postDisplay.blit(debug4, (10, 50))
 
@@ -1342,8 +1480,7 @@ while True:
         ### FINAL OUTPUT ###
         pygame.display.flip()        # display the screen
 
-        preDisplay.fill((0, 0, 0))   # clear the screen
-        postDisplay.fill((0, 0, 0))
+        postDisplay.fill((0, 0, 0))  # clear the screen
 
         clock.tick(clockTick)        # keeps the FPS at a consistent 60
 
