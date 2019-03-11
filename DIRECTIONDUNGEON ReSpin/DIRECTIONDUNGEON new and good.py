@@ -160,7 +160,7 @@ class Tilesheet:
         surf.blit(self.surface, pos, tileRect)
 
 # a test tilesheet.  multiple can be made
-TESTSHEET = Tilesheet("images\\testSheet.png", mult, (0, 2, 2, 2, 0, 0, 3))
+TESTSHEET = Tilesheet("images\\testSheet.png", mult, (0, 2, 0, 2, 0, 0, 3))
 
 
 
@@ -345,7 +345,7 @@ animNexLvlUp = Animation(34, RQUADRATIC, -SIDE)
 animCurLvlUp = Animation(34, QUADRATIC, -SCREENLENGTH, [animNexLvlUp])
 
 LEVELSDOWN = 8  # how many levels below current level to show
-SHADOWINTERVAL = 255 / (LEVELSDOWN - 1)
+SHADOWINTERVAL = 255 / LEVELSDOWN
 NEXTSHADOWINTERVAL = SHADOWINTERVAL / animNexLvlUp.lastFrame
 
 
@@ -361,17 +361,22 @@ def newSurf(dimensions):
 
 # SURFACE WHERE EACH DUNGEON IS DRAWN TO
 curDungs = newSurf((DUNGW * 4, DUNGH + SIDE))
-nexDungs = newSurf((DUNGW * 4, DUNGH + SIDE))
-normRects = []  # used to cut out each dungeon from curDungs
-alignRects = []
+nexDungs = newSurf((DUNGW * 4, DUNGH + SIDE * LEVELSDOWN))
+normRects = []  # cut dungs from normal positions
+alignRects = [] # cut dungeons from curDungs
+nextRects = []  # cut dungeons from nexDungs, including sides
+sideRects = []  # cut sides only from nexDungs
+
 for dung in range(4):
     normRects.append((origDungX[dung], origDungY[dung], DUNGW, DUNGH + TILE))
     alignRects.append((dung * DUNGW, 0, DUNGW, DUNGH + SIDE))
+    nextRects.append((dung * DUNGW, 0, DUNGW, DUNGH + SIDE * LEVELSDOWN))
+    sideRects.append((dung * DUNGW, DUNGH + SIDE, DUNGW, SIDE * LEVELSDOWN))
 
 
 # BLITS DUNGEON SIDES FROM SIDESURFS
 def blitSide(surf, dung, x, y):
-    segment = (dung * DUNGW, sideY, DUNGW, SIDE * LEVELSDOWN)
+    segment = (dung * DUNGW, (levelNum + 2) * SIDE, DUNGW, SIDE * LEVELSDOWN)
     surf.blit(sideSurfs, (x, y), segment)
 
 
@@ -732,8 +737,6 @@ while True:
     ### DRAWING LEVELS ###
     curLvl = levels[levelNum]  # stores reference to current level
     nexLvl = levels[levelNum + 1]  # stores reference to next level
-    curLay = newSurf(SCREENSIZE)   # current level's layer
-    nexLay = newSurf((SCREENLENGTH, SCREENLENGTH + SIDE))
 
     curTileSheet = curLvl.tileSheet
     nexTileSheet = nexLvl.tileSheet
@@ -744,7 +747,6 @@ while True:
     # NEXT LEVEL
     nexLvl.y = SIDE  # resets y values
     curLvl.y = 0
-    sideY = (levelNum + 2) * SIDE
 
     animCur = None
 
@@ -752,8 +754,6 @@ while True:
     ### PREDRAWS BOTH THE CURRENT LEVEL AND THE NEXT LEVEL ###
     curDungs.fill((0, 255, 0))
     nexDungs.fill((0, 255, 0))
-    curLay.fill((0, 255, 0))
-    nexLay.fill((0, 255, 0))
 
     # for drawing all the boxes onto the next level
     nexObjBuff = [[] for x in range(HEIGHT)]
@@ -762,31 +762,35 @@ while True:
 
     for dung in range(4):
         ### DRAW CURRENT LEVEL ###
-        curLvl.drawDung(curLay, dung)
-        curDungs.blit(curLay, (dung * DUNGW, 0), normRects[dung])
+        # postDisplay is used temporarily to draw dungeons in position
+        curLvl.drawDung(postDisplay, dung)
+        curDungs.blit(postDisplay, (dung * DUNGW, 0), normRects[dung])
+        postDisplay.fill((0, 0, 0))
+
+
 
         ### DRAW NEXT LEVEL ###
-        nexLvl.drawDung(nexLay, dung)
+        nexLvl.drawDung(postDisplay, dung)
 
-        # DRAW BOXES ONTO NEXLAY
+        # DRAW BOXES ONTO NEXT LEVEL (aren't constantly updated like cur level)
         for row in nexObjBuff:
             for box in row:
                 if box.dungs[dung] != None:
                     x = nexLvl.dungX[dung] + box.col * TILE
                     y = nexLvl.dungY[dung] + box.row * TILE
-                    nexTileSheet.drawTile(nexLay, (x, y), BOX, box.variant)
+                    nexTileSheet.drawTile(postDisplay, (x, y), BOX, box.variant)
 
                     if nexLvl.tileAt(dung, box.col, box.row + 1) == WALL:
-                        nexLvl.drawTile(nexLay, dung, box.col, box.row + 1)
+                        nexLvl.drawTile(postDisplay, dung, box.col, box.row + 1)
 
-        nexDungs.blit(nexLay, (dung * DUNGW, 0), normRects[dung])
+        nexDungs.blit(postDisplay, (dung * DUNGW, 0), normRects[dung])
+        postDisplay.fill((0, 0, 0))
 
-        x = nexLvl.dungX[dung]
-        y = nexLvl.dungY[dung]
-        blitSide(nexLay, dung, x, y + DUNGH)
+        x = dung * DUNGW
+        blitSide(nexDungs, dung, x, DUNGH + SIDE)
 
         # DRAWS SHADOWS
-        drawNextShadow(nexLay, dung, x, y, 0)
+        drawNextShadow(nexDungs, dung, x, 0, 0)
 
 
     # MISC
@@ -799,6 +803,8 @@ while True:
     player.origCol = player.col
     player.origRow = player.row
     player.origDung = player.dung
+
+    shadowOff = 0
 
 
 
@@ -838,15 +844,16 @@ while True:
                     camYLock = 0
 
                     # resets layout and redraws dungeons
-                    curLay.fill((0, 255, 0))
                     curDungs.fill((0, 255, 0))
 
                     curLvl.layout = copy.deepcopy(curLvl.origLayout)
                     curLvl.tileVars = copy.deepcopy(curLvl.origTileVars)
                     for dung in range(4):
                         rect = (curLvl.dungX[dung], curLvl.dungY[dung], DUNGW, DUNGH + TILE)
-                        curLvl.drawDung(curLay, dung)
-                        curDungs.blit(curLay, (dung * DUNGW, 0), rect)
+                        curLvl.drawDung(postDisplay, dung)
+                        curDungs.blit(postDisplay, (dung * DUNGW, 0), rect)
+
+                    postDisplay.fill((0, 0, 0))
 
                     # resets all boxes and player
                     player.col = player.origCol
@@ -1017,10 +1024,11 @@ while True:
 
                     # UPDATE (REDRAW) THE DUNGEONS IN THEIR RESET POSITIONS
                     curDungs.fill((0, 255, 0))
-                    curLay.fill((0, 255, 0))
                     for dung in range(4):
-                        curLvl.drawDung(curLay, dung)
-                        curDungs.blit(curLay, (dung * DUNGW, 0), normRects[dung])
+                        curLvl.drawDung(postDisplay, dung)
+                        curDungs.blit(postDisplay, (dung * DUNGW, 0), normRects[dung])
+
+                    postDisplay.fill((0, 0, 0))
 
 
 
@@ -1094,31 +1102,16 @@ while True:
                     curLvl.y = round(animCurLvlUp.value) # move everything up
                     nexLvl.y = round(animNexLvlUp.value) + SIDE
 
-                    nexLay.fill((0, 0, 0))
-
-                    # REDRAW DUNGEONS AND SIDE LAYER
-                    for dung in range(4):
-
-                        # DRAW DUNGEONS
-                        x = nexLvl.dungX[dung]
-                        y = nexLvl.dungY[dung]
-
-                        nexLay.blit(nexDungs, (x, y), alignRects[dung])
-                        blitSide(nexLay, dung, x, y + DUNGH)
 
 
-
-                        # shadows are offset so that a gradual fade occurs
-                        shadowOff = - NEXTSHADOWINTERVAL * animCur.frame
-                        drawNextShadow(nexLay, dung, x, y, shadowOff)
-
-
-
-                    camXLock = 0  # resets camera
-                    camYLock = 0
+                    # shadows are offset so that a gradual fade occurs
+                    shadowOff = - NEXTSHADOWINTERVAL * animCur.frame
 
                     shadowAlpha = SHADOWINTERVAL
                     shadow.set_alpha(shadowAlpha)
+
+                    camXLock = 0  # resets camera
+                    camYLock = 0
 
 
 
@@ -1140,17 +1133,25 @@ while True:
         ##########################
 
         ### SIDE OF NEXT DUNGEONS & NEXT LEVEL ###
-        preDisplay.blit(nexLay, (0, nexLvl.y))
 
+        if animCur is animRotate or animCur is animCurLvlUp:
+            rects = sideRects
+        else:
+            rects = nextRects
+
+        for dung in range(4):
+
+            x = nexLvl.dungX[dung]
+            y = nexLvl.dungY[dung]
+
+            preDisplay.blit(nexDungs, (x, y), rects[dung])
 
 
         ### CURRENT LEVEL ###
-        curLay.fill((0, 255, 0))  # clear the level layer
         for dung in range(4):
             x = curLvl.dungX[dung]
             y = curLvl.dungY[dung]
-            curLay.blit(curDungs, (x, y), alignRects[dung])
-        preDisplay.blit(curLay, (0, curLvl.y))
+            preDisplay.blit(curDungs, (x, y), alignRects[dung])
 
 
 
@@ -1336,7 +1337,6 @@ while True:
         else:
             clockTick = 60
 
-        #postDisplay.blit(nexLay, (0, -200))
 
 
         ### FINAL OUTPUT ###

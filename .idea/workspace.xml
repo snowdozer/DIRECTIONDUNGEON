@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" line="504" />
-    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" line="1261" />
+    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" line="509" />
+    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" line="1262" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b473aad1-d247-4772-a8e5-fe79a4a57641" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,8 +20,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="235">
-              <caret line="1185" lean-forward="true" selection-start-line="1185" selection-end-line="1185" />
+            <state relative-caret-position="265">
+              <caret line="393" column="46" selection-start-line="393" selection-start-column="46" selection-end-line="393" selection-end-column="46" />
             </state>
           </provider>
         </entry>
@@ -30,7 +29,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="453">
+            <state relative-caret-position="748">
               <caret line="44" column="17" selection-start-line="44" selection-start-column="17" selection-end-line="44" selection-end-column="17" />
             </state>
           </provider>
@@ -49,14 +48,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>drawnextshadow</find>
-      <find>levelNu</find>
-      <find>levelNum</find>
-      <find>LEVELnUM</find>
-      <find>drawCov</find>
-      <find>walls</find>
-      <find>covers</find>
-      <find>objBuff</find>
       <find>moveDirection</find>
       <find>animNexLvlUp</find>
       <find>nexlvl.y</find>
@@ -65,13 +56,11 @@
       <find>curLay</find>
       <find>def blitSide</find>
       <find>nexLvl.y</find>
-      <find>blitSide</find>
       <find>normRects</find>
       <find>animPlayDrop</find>
       <find>animPlayDrop =</find>
       <find>player.origC</find>
       <find>def drawNextShadow</find>
-      <find>drawNextShadow</find>
       <find>def drawDung</find>
       <find>def drawTile</find>
       <find>print</find>
@@ -79,6 +68,16 @@
       <find>predraw</find>
       <find>nextRects</find>
       <find>drawTile</find>
+      <find>sideSurf</find>
+      <find>nexDungs =</find>
+      <find>postDisplay.fill((0, 255</find>
+      <find>sideY</find>
+      <find>blitSide</find>
+      <find>nexDungs</find>
+      <find>shadow =</find>
+      <find>shadow</find>
+      <find>drawNe</find>
+      <find>drawNextShadow</find>
     </findStrings>
     <replaceStrings>
       <replace>SET0</replace>
@@ -301,7 +300,14 @@
       <option name="project" value="LOCAL" />
       <updated>1552237820105</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Boxes Part 8 most of it's done">
+      <created>1552277248479</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1552277248479</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -317,7 +323,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1641791" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16577825" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="0" sideWeight="0.49947312" weight="0.32286024" />
@@ -343,7 +349,8 @@
     <MESSAGE value="Levels: Swirl Basics" />
     <MESSAGE value="Boxes Part 6 wew neato" />
     <MESSAGE value="Boxes Part 7 yeetus" />
-    <option name="LAST_COMMIT_MESSAGE" value="Boxes Part 7 yeetus" />
+    <MESSAGE value="Boxes Part 8 most of it's done" />
+    <option name="LAST_COMMIT_MESSAGE" value="Boxes Part 8 most of it's done" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON level class attempt.py" />
@@ -377,24 +384,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/leveltemplates.txt">
+    <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" selection-start-line="2" selection-end-line="16" selection-end-column="19" />
+        <state relative-caret-position="265">
+          <caret line="393" column="46" selection-start-line="393" selection-start-column="46" selection-end-line="393" selection-end-column="46" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="453">
+        <state relative-caret-position="748">
           <caret line="44" column="17" selection-start-line="44" selection-start-column="17" selection-end-line="44" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py">
+    <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/leveltemplates.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="1185" lean-forward="true" selection-start-line="1185" selection-end-line="1185" />
+        <state relative-caret-position="34">
+          <caret line="2" selection-start-line="2" selection-end-line="16" selection-end-column="19" />
         </state>
       </provider>
     </entry>
