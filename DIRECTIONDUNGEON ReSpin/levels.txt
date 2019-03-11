@@ -37,6 +37,26 @@ E E E E E           E E E E E
 EMPTY None UP None DOWN   EMPTY LEFT UP None DOWN   EMPTY None UP RIGHT None
 
 
+SET00boxtest
+TESTSHEET
+          E E E E S
+          E E E E E
+          E E E E E
+          E E E B E
+          B B B B E
+E E E E S           E E E E S
+E E E E E           E E E E E
+G E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+          E E E E S
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+EMPTY None UP None DOWN   EMPTY LEFT UP None DOWN   EMPTY None UP RIGHT None
+EMPTY LEFT UP RIGHT DOWN  EMPTY LEFT UP RIGHT DOWN
+
 SET00level00
 TESTSHEET
           W W W W W

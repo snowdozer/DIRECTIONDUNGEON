@@ -338,7 +338,7 @@ ROTATERADIUS = DUNGW + MARG
 ROTATEMIDX = DUNGW + MARG*2 + SIDE // 2
 ROTATEMIDY = DUNGH + MARG*2
 
-animPlayDrop = Animation(8, LINEAR, SIDE)
+animPlayDrop = Animation(8, QUADRATIC, SIDE)
 
 # these two animations are "tied" together and will play at the same time
 animNexLvlUp = Animation(34, RQUADRATIC, -SIDE)
@@ -371,7 +371,7 @@ for dung in range(4):
 
 # BLITS DUNGEON SIDES FROM SIDESURFS
 def blitSide(surf, dung, x, y):
-    segment = (dung * DUNGW, sideY + SIDE*2, DUNGW, SIDE * LEVELSDOWN)
+    segment = (dung * DUNGW, sideY, DUNGW, SIDE * LEVELSDOWN)
     surf.blit(sideSurfs, (x, y), segment)
 
 
@@ -503,8 +503,8 @@ class Level:
 
     ### DRAWS A TILE FROM THE LEVEL ###
     def drawTile(self, surf, dung, col, row):
-        x = self.x + self.dungX[dung] + col * TILE
-        y = self.y + self.dungY[dung] + row * TILE
+        x = self.dungX[dung] + col * TILE
+        y = self.dungY[dung] + row * TILE
 
         # pulls some variables from self
         tile      = self.tileAt(dung, col, row)
@@ -637,14 +637,17 @@ debugPressed = False  # tracks if the debug button is being pressed
 
 # DRAWS SHADOW ON THE NEXT LAYER & SIDES
 def drawNextShadow(surf, dung, x, y, shadowOffset):
-    oldY = y
-
     # blit over entire dungeon first
     shadowAlpha = shadowOffset
     shadowAlpha += SHADOWINTERVAL
 
     shadow.set_alpha(shadowAlpha)
     surf.blit(shadow, (x, y))
+
+    # chops off the darkened green above non-wall tiles
+    for col in range(WIDTH):
+        if nexLvl.tileAt(dung, col, 0) != WALL:
+            pygame.draw.rect(surf, (0, 255, 0), (x + col * TILE, y, TILE, SIDE))
 
     y += DUNGH + SIDE
 
@@ -657,11 +660,7 @@ def drawNextShadow(surf, dung, x, y, shadowOffset):
 
         y += SIDE
 
-    # this fixes the green showing overtop of empty tiles during swirl
-    for col in range(WIDTH):
-        if nexLvl.tileAt(dung, col, 0) != WALL:
-            pygame.draw.rect(surf, (0, 255, 0), (x, oldY, TILE, SIDE))
-        x += TILE
+
 
 
 
@@ -705,10 +704,21 @@ for level in reversed(levels):
     y -= SIDE
     for dung in range(4):
         for col in range(WIDTH):
-            x = dung*DUNGW + col*TILE
+            x = dung * DUNGW + col * TILE
             tile = level.tileAt(dung, col, HEIGHT - 1)
             var = level.tileVars[dung][col][HEIGHT - 1]
-            level.tileSheet.drawTile(sideSurfs, (x, y), tile, var)
+            if tile == WALL:
+                level.tileSheet.drawTile(sideSurfs, (x, y + SIDE), WALLSIDE, var)
+            else:
+                level.tileSheet.drawTile(sideSurfs, (x, y), tile, var)
+
+    for box in level.boxes:
+        if box.row == HEIGHT - 1:
+            for dung in range(4):
+                if box.dungs[dung]:
+                    x = dung * DUNGW + box.col * TILE
+                    level.tileSheet.drawTile(sideSurfs, (x, y - SIDE), BOX, box.variant)
+
 
 
 
@@ -744,11 +754,31 @@ while True:
     nexDungs.fill((0, 255, 0))
     curLay.fill((0, 255, 0))
     nexLay.fill((0, 255, 0))
+
+    # for drawing all the boxes onto the next level
+    nexObjBuff = [[] for x in range(HEIGHT)]
+    for box in nexLvl.boxes:
+        nexObjBuff[box.row].append(box)
+
     for dung in range(4):
+        ### DRAW CURRENT LEVEL ###
         curLvl.drawDung(curLay, dung)
         curDungs.blit(curLay, (dung * DUNGW, 0), normRects[dung])
 
+        ### DRAW NEXT LEVEL ###
         nexLvl.drawDung(nexLay, dung)
+
+        # DRAW BOXES ONTO NEXLAY
+        for row in nexObjBuff:
+            for box in row:
+                if box.dungs[dung] != None:
+                    x = nexLvl.dungX[dung] + box.col * TILE
+                    y = nexLvl.dungY[dung] + box.row * TILE
+                    nexTileSheet.drawTile(nexLay, (x, y), BOX, box.variant)
+
+                    if nexLvl.tileAt(dung, box.col, box.row + 1) == WALL:
+                        nexLvl.drawTile(nexLay, dung, box.col, box.row + 1)
+
         nexDungs.blit(nexLay, (dung * DUNGW, 0), normRects[dung])
 
         x = nexLvl.dungX[dung]
@@ -765,6 +795,10 @@ while True:
         objBuff[box.row].append(box)
 
     objBuff[player.row].append(player)
+
+    player.origCol = player.col
+    player.origRow = player.row
+    player.origDung = player.dung
 
 
 
@@ -884,8 +918,8 @@ while True:
                 animQueue.append(playAnim)
 
 
-        # MOVE CAMERA EVEN IF YOU'RE BUSY WITH ANOTHER ANIMATION
-        elif moveQueue:
+        # MOVE CAMERA EVEN IF YOU CAN'T MOVE IN THAT DIRECTION
+        if moveQueue:
             camDir = moveQueue[0]
             if camDir == LEFT or camDir == RIGHT:
                 camXLock = CAMMAXFRAME
@@ -1064,18 +1098,30 @@ while True:
 
                     # REDRAW DUNGEONS AND SIDE LAYER
                     for dung in range(4):
+
+                        # DRAW DUNGEONS
                         x = nexLvl.dungX[dung]
                         y = nexLvl.dungY[dung]
 
                         nexLay.blit(nexDungs, (x, y), alignRects[dung])
                         blitSide(nexLay, dung, x, y + DUNGH)
 
+
+
                         # shadows are offset so that a gradual fade occurs
                         shadowOff = - NEXTSHADOWINTERVAL * animCur.frame
                         drawNextShadow(nexLay, dung, x, y, shadowOff)
 
+
+
                     camXLock = 0  # resets camera
                     camYLock = 0
+
+                    shadowAlpha = SHADOWINTERVAL
+                    shadow.set_alpha(shadowAlpha)
+
+
+
 
 
 
@@ -1092,23 +1138,6 @@ while True:
         ##########################
         ### DRAWING EVERYTHING ###
         ##########################
-
-        # DRAW BOXES ON NEXT LEVEL
-        if animCur == animCurLvlUp:
-            nexObjBuff = [[] for x in range(HEIGHT)]
-            for box in nexLvl.boxes:
-                nexObjBuff[box.row].append(box)
-
-            for row in nexObjBuff:
-                for box in row:
-                    for dung in range(4):
-                        if box.dungs[dung] != None:
-                            x = nexLvl.dungX[dung] + box.col * TILE
-                            y = nexLvl.dungY[dung] + box.row * TILE
-                            nexTileSheet.drawTile(nexLay, (x, y), BOX, box.variant)
-
-                            if nexLvl.tileAt(dung, box.col, box.row + 1) == WALL:
-                                nexLvl.drawTile(nexLay, dung, box.col, box.row + 1)
 
         ### SIDE OF NEXT DUNGEONS & NEXT LEVEL ###
         preDisplay.blit(nexLay, (0, nexLvl.y))
@@ -1134,7 +1163,7 @@ while True:
             player.yOff = animPlayDrop.value
 
         elif animCur is animCurLvlUp:
-            player.yOff = nexLvl.y + SIDE
+            player.yOff = nexLvl.y
 
 
 
@@ -1145,13 +1174,58 @@ while True:
                     if obj.dungs[dung] != None:
                         # PLAYER
                         if obj is player:
-                            x = curLvl.dungX[dung] + obj.col * TILE - TILE + obj.xOff
-                            y = curLvl.dungY[dung] + obj.row * TILE - TILE + obj.yOff
+                            ### SPECIFIC STUFF FOR NEXT LEVEL TRANSITION ###
+                            if animCur is animCurLvlUp:
+                                x = nexLvl.dungX[dung] + obj.col * TILE - TILE + obj.xOff
+                                y = nexLvl.dungY[dung] + obj.row * TILE - TILE + obj.yOff
 
-                            if player.dung == dung:
-                                playAnim.blitFrame(preDisplay, (x, y))
+                                if player.dung == dung:
+                                    playAnim.blitFrame(preDisplay, (x, y))
+                                else:
+                                    ghostAnim.blitFrame(preDisplay, (x, y))
+
+                                # WALL BENEATH PLAYER AT NEXT LEVEL
+                                if nexLvl.tileAt(dung, player.col, player.row + 1) == WALL:
+                                    # draw a single-block shadow onto the wall
+                                    x = nexLvl.dungX[dung] + player.col * TILE
+                                    y = nexLvl.dungY[dung] + player.row * TILE + TILE + player.yOff
+                                    var = nexLvl.tileVars[dung][player.col][player.row + 1]
+
+                                    nexLvl.tileSheet.drawTile(preDisplay, (x, y), WALL, var)
+                                    shadowAlpha = - NEXTSHADOWINTERVAL * animCur.frame + SHADOWINTERVAL
+                                    shadow.set_alpha(shadowAlpha)
+                                    preDisplay.blit(shadow, (x, y), (0, 0, TILE, TILE))
+
+                                # COLUMN OF TILES BELOW PLAYER
+                                # first half, only draw the tiles below player
+                                if animCur.frame < animCur.lastFrame / 2:
+                                    start = player.row + 1
+
+                                # second half, draw all tiles in player's column
+                                else:
+                                    start = 0
+
+                                for row in range(start, HEIGHT):
+                                    x = curLvl.x + curLvl.dungX[dung] + player.col * TILE
+                                    y = curLvl.y + curLvl.dungY[dung] + row * TILE
+                                    tile = curLvl.tileAt(dung, player.col, row)
+                                    var = curLvl.tileVars[dung][player.col][row]
+
+                                    if tile == WALL:
+                                        curLvl.tileSheet.drawTile(preDisplay, (x, y), WALL, var)
+                                        curLvl.tileSheet.drawTile(preDisplay, (x, y + TILE), WALLSIDE, var)
+                                    else:
+                                        curLvl.tileSheet.drawTile(preDisplay, (x, y + SIDE), tile, var)
+
+
                             else:
-                                ghostAnim.blitFrame(preDisplay, (x, y))
+                                x = curLvl.dungX[dung] + obj.col * TILE - TILE + obj.xOff
+                                y = curLvl.dungY[dung] + obj.row * TILE - TILE + obj.yOff
+
+                                if player.dung == dung:
+                                    playAnim.blitFrame(preDisplay, (x, y))
+                                else:
+                                    ghostAnim.blitFrame(preDisplay, (x, y))
 
                         # BOXES
                         else:
@@ -1173,32 +1247,9 @@ while True:
                             curWalls.append((dung, obj.col, obj.row + 2))
 
 
-        # SPECIAL INSTRUCTIONS DURING NEXT LEVEL TRANSITION
-        if animCur is animCurLvlUp:
-            for dung in range(4):
-                # draws wall beneath player on next level
-                if nexLvl.tileAt(dung, player.col, player.row + 1) == WALL:
-                    nexLvl.drawTile(preDisplay, dung, player.col, player.row + 1)
-
-                    # draw a single-block shadow onto the wall
-                    x = curLvl.dungX[dung] + player.col * TILE
-                    y = curLvl.dungY[dung] + player.row * TILE + player.yOff
-                    shadowAlpha = - NEXTSHADOWINTERVAL * animCur.frame + SHADOWINTERVAL
-                    shadow.set_alpha(shadowAlpha)
-                    preDisplay.blit(shadow, (x, y), tileShadow)
-
-                # first half, only draw the tiles below player
-                if animCur.frame < animCur.lastFrame / 2:
-                    for row in range(player.col + 1, HEIGHT):
-                        curLvl.drawTile(preDisplay, dung, player.col, row)
-
-                # second half, draw all tiles in player's column
-                else:
-                    for row in range(HEIGHT):
-                        curLvl.drawTile(preDisplay, dung, player.col, row)
 
         ### SPECIAL INSTRUCTIONS DURING PLAYER DROP ANIMATION ###
-        elif animCur is animPlayDrop:
+        if animCur is animPlayDrop:
             for dung in range(4):
                 # draws block directly below player.  no exceptions
                 if player.row != HEIGHT - 1:
@@ -1265,20 +1316,20 @@ while True:
 
 
         ### DEBUGGING ###
-        #postDisplay.blit(sideSurfs, (-100, 0))
+        #postDisplay.blit(nexDungs, (0, 0))
 
         fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
         postDisplay.blit(fps, (10, 10))
 
-        debug1 = TAHOMA.render(str(levelNum * 20), False, (255, 255, 255))
-        debug2 = TAHOMA.render(str(player.direction), False, (255, 255, 255))
-        debug3 = TAHOMA.render(repr(moveBoxes), False, (255, 255, 255))
-        debug4 = TAHOMA.render(repr(objBuff), False, (255, 255, 255))
+        #debug1 = TAHOMA.render(str(levelNum * 20), False, (255, 255, 255))
+        #debug2 = TAHOMA.render(str(player.direction), False, (255, 255, 255))
+        #debug3 = TAHOMA.render(repr(moveBoxes), False, (255, 255, 255))
+        #debug4 = TAHOMA.render(repr(objBuff), False, (255, 255, 255))
 
-        postDisplay.blit(debug1, (10, 20))
-        postDisplay.blit(debug2, (10, 30))
-        postDisplay.blit(debug3, (10, 40))
-        postDisplay.blit(debug4, (10, 50))
+        #postDisplay.blit(debug1, (10, 20))
+        #postDisplay.blit(debug2, (10, 30))
+        #postDisplay.blit(debug3, (10, 40))
+        #postDisplay.blit(debug4, (10, 50))
 
         if debugPressed:
             clockTick = 5   # slow down game when the debug button is pressed
