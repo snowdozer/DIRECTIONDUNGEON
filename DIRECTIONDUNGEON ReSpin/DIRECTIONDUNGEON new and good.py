@@ -681,6 +681,13 @@ def drawObjs(surf, dung, x, y, drawPlayer):
             goalY = y + goal[1] * TILE + SIDE + curLvl.y
             curTileSheet.drawTile(surf, (goalX, goalY), GOALLOCK, 0)
 
+    ### PLAYER ALPHA FIX ###
+    if drawPlayer and player.row == 0:
+        if curLvl.tileAt(dung, player.col, 0) != WALL:
+            fixX = x + curLvl.x + player.col * TILE
+            fixY = y + curLvl.y
+            pygame.draw.rect(preDisplay, (0, 0, 0), (fixX, fixY, TILE, SIDE))
+
     ### OBJECTS ###
     for row in objBuff:
         for obj in row:
@@ -749,7 +756,7 @@ postDisplay.fill((0, 255, 0))
 
 
 # levelNum can be changed later with the level select
-levelNum = 0
+levelNum = 46
 if levelNum == 0:
     initPlayer(RIGHT, 0, 2)
 
@@ -859,7 +866,8 @@ while True:
 
     for dung in range(4):
         ### DRAW NEXT LEVEL ###
-        # postDisplay is used temporarily to draw dungeons in position
+        # postDisplay is
+        # used temporarily to draw dungeons in position
         nexLvl.drawDung(postDisplay, dung)
 
         # DRAW BOXES ONTO NEXT LEVEL (aren't constantly updated like cur level)
@@ -1299,53 +1307,6 @@ while True:
 
 
 
-
-
-        elif animCur is animPlayDrop:
-            player.yOff = animPlayDrop.value
-            for dung in range(4):
-                # draws all the blocks above the player
-                for row in range(player.row + 1):
-                    curLvl.drawTile(preDisplay, dung, player.col, row)
-
-                x = curLvl.dungX[dung] + player.col * TILE - TILE
-                y = curLvl.dungY[dung] + player.row * TILE - TILE + player.yOff
-
-                if player.dung == dung:
-                    playAnim.blitFrame(preDisplay, (x, y))
-                else:
-                    ghostAnim.blitFrame(preDisplay, (x, y))
-
-                # draw block below player so that they "fall through" the hole
-                if player.row != HEIGHT - 1:
-                    for box in objBuff[player.row + 1]:
-                        if box.col == player.col and box.dungs[dung]:
-                            x = curLvl.dungX[dung] + box.col * TILE
-                            y = curLvl.dungY[dung] + box.row * TILE
-                            curTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
-                            break
-                    else:
-                        curLvl.drawTile(preDisplay, dung, player.col, player.row + 1)
-
-                    if player.row != HEIGHT - 2:
-
-                        # this will cover the wall below that tile so draw this
-                        if curLvl.tileAt(dung, player.col, player.row + 2) == WALL:
-                            x = curLvl.dungX[dung] + player.col * TILE
-                            y = curLvl.dungY[dung] + player.row * TILE + TILE
-                            var = curLvl.tileVars[dung][player.col][player.row + 2]
-                            curTileSheet.drawTile(preDisplay, (x, y), WALL, var)
-
-                        else:
-                            for box in objBuff[player.row + 2]:
-                                if box.col == player.col and box.dungs[dung]:
-                                    x = curLvl.dungX[dung] + box.col * TILE
-                                    y = curLvl.dungY[dung] + box.row * TILE
-                                    curTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
-                                    break
-
-
-
         elif animCur is animRotate:
             # UPDATE DUNGEON POSITIONS
             for dung in range(4):  # updates the dungeon positions
@@ -1396,6 +1357,58 @@ while True:
                                 curTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
 
 
+
+        elif animCur is animPlayDrop:
+            player.yOff = animPlayDrop.value
+            for dung in range(4):
+                # fixes previous movement frames showing up uninvited
+                if player.row == 0:
+                    x = curLvl.x + curLvl.dungX[dung] + player.col * TILE
+                    y = curLvl.y + curLvl.dungY[dung]
+                    pygame.draw.rect(preDisplay, (0, 0, 0), (x, y, TILE, SIDE))
+
+                # draws all the blocks above the player
+                for row in range(player.row + 1):
+                    curLvl.drawTile(preDisplay, dung, player.col, row)
+
+                x = curLvl.dungX[dung] + player.col * TILE - TILE
+                y = curLvl.dungY[dung] + player.row * TILE - TILE + player.yOff
+
+                if player.dung == dung:
+                    playAnim.blitFrame(preDisplay, (x, y))
+                else:
+                    ghostAnim.blitFrame(preDisplay, (x, y))
+
+                # draw block below player so that they "fall through" the hole
+                if player.row != HEIGHT - 1:
+                    for box in objBuff[player.row + 1]:
+                        if box.col == player.col and box.dungs[dung]:
+                            x = curLvl.dungX[dung] + box.col * TILE
+                            y = curLvl.dungY[dung] + box.row * TILE
+                            curTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
+                            break
+                    else:
+                        curLvl.drawTile(preDisplay, dung, player.col, player.row + 1)
+
+                    if player.row != HEIGHT - 2:
+
+                        # this will cover the wall below that tile so draw this
+                        if curLvl.tileAt(dung, player.col, player.row + 2) == WALL:
+                            x = curLvl.dungX[dung] + player.col * TILE
+                            y = curLvl.dungY[dung] + player.row * TILE + TILE * 2
+                            var = curLvl.tileVars[dung][player.col][player.row + 2]
+                            curTileSheet.drawTile(preDisplay, (x, y), WALL, var)
+
+                        else:
+                            for box in objBuff[player.row + 2]:
+                                if box.col == player.col and box.dungs[dung]:
+                                    x = curLvl.dungX[dung] + box.col * TILE
+                                    y = curLvl.dungY[dung] + box.row * TILE
+                                    curTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
+                                    break
+
+
+
         elif animCur is animCurLvlUp:
             ### MOVES EVERYTHING UP
             curLvl.y = round(animCurLvlUp.value)
@@ -1424,17 +1437,17 @@ while True:
                 y = nexLvl.dungY[dung] + nexLvl.y
                 drawNextShadow(preDisplay, dung, x, y, shadowOff)
 
-                # CURRENT LEVEL
-                x = curLvl.dungX[dung]
-                y = curLvl.dungY[dung] + curLvl.y
-                preDisplay.blit(curDungs, (x, y), alignRects[dung])
-
                 # FIXES GREEN APPEARING BEHIND PLAYER
                 if player.row == 0:
                     if nexLvl.tileAt(dung, player.col, player.row) != WALL:
                         x = nexLvl.x + nexLvl.dungX[dung] + player.col * TILE
                         y = nexLvl.y + nexLvl.dungY[dung] + player.row * TILE
                         pygame.draw.rect(preDisplay, (0, 0, 0), (x, y, TILE, SIDE))
+
+                # CURRENT LEVEL
+                x = curLvl.dungX[dung]
+                y = curLvl.dungY[dung] + curLvl.y
+                preDisplay.blit(curDungs, (x, y), alignRects[dung])
 
                 # PLAYER
                 x = nexLvl.dungX[dung] + player.col * TILE - TILE + player.xOff
@@ -1464,7 +1477,7 @@ while True:
                                 nexTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
                                 break
 
-                # COLUMN OF TILES ABOVE PLAYER
+                # COLUMN OF TILES ABOVE PLAYER IN CUR LEVEL
                 # first half, only draw the tiles below player
                 if animCur.frame < animCur.lastFrame / 2:
                     if player.row != HEIGHT - 1:
@@ -1551,14 +1564,14 @@ while True:
         fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
         postDisplay.blit(fps, (10, 10))
 
-        debug1 = TAHOMA.render(str(locked), False, (255, 255, 255))
-        debug2 = TAHOMA.render(repr(player.dungs), False, (255, 255, 255))
-        debug3 = TAHOMA.render(str(plates), False, (255, 255, 255))
-        #debug4 = TAHOMA.render(repr(objBuff), False, (255, 255, 255))
+        #debug1 = TAHOMA.render(str(locked), False, (255, 255, 255))
+        #debug2 = TAHOMA.render(repr(player.dungs), False, (255, 255, 255))
+        #debug3 = TAHOMA.render(str(plates), False, (255, 255, 255))
+        #debug4 = TAHOMA.render(str(levelNum) + " " + str(levelNum * 20), False, (255, 255, 255))
 
-        postDisplay.blit(debug1, (10, 20))
-        postDisplay.blit(debug2, (10, 30))
-        postDisplay.blit(debug3, (10, 40))
+        #postDisplay.blit(debug1, (10, 20))
+        #postDisplay.blit(debug2, (10, 30))
+        #postDisplay.blit(debug3, (10, 40))
         #postDisplay.blit(debug4, (10, 50))
 
         if debugPressed:
