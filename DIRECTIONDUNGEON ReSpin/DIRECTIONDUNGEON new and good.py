@@ -103,6 +103,7 @@ GOAL = 4
 SWIRL = 5
 BOX = 6
 BOXSIDE = 7
+PLATE = 8
 
 # DUNGEON POSITIONS
 origDungX = [MARG, DUNGW + MARG*2, DUNGW*2 + MARG*3, DUNGW + MARG*2]
@@ -159,7 +160,7 @@ class Tilesheet:
         surf.blit(self.surface, pos, tileRect)
 
 # a test tilesheet.  multiple can be made
-TESTSHEET = Tilesheet("images\\testSheet.png", mult, (0, 2, 0, 2, 0, 0, 3, 3))
+TESTSHEET = Tilesheet("images\\testSheet.png", mult, (0, 2, 0, 2, 0, 0, 3, 3, 0))
 
 
 
@@ -554,6 +555,7 @@ W = WALL
 G = GOAL
 S = SWIRL
 B = BOX
+P = PLATE
 
 # READ FILE
 levels = []
@@ -1032,10 +1034,28 @@ while True:
 
                         box.direction = None
 
+
                     # re-add objects that moved in the y-buffer
                     if direction == UP or direction == DOWN:
                         for box in moveBoxes:
                             objBuff[box.row].append(box)
+
+                    # check if any box landed on a swirl
+                    for box in moveBoxes:
+                        if animRotate not in animQueue and box is not player:
+                            for dung in range(4):
+                                if box.dungs[dung]:
+                                    tile = curLvl.tileAt(dung, box.col, box.row)
+                                    if tile == SWIRL:
+                                        for dung in range(4):
+                                            drawObjs(curDungs, dung, dung * DUNGW, 0, False)
+
+                                        animQueue.append(animRotate)
+
+                                        break
+
+                                    elif tile == PLATE:
+                                        pass
 
                     moveBoxes = []
 
@@ -1045,15 +1065,12 @@ while True:
                     ghostAnim = ghostIdle
 
 
-                    ### INTERACT WITH TILES ###
                     tile = curLvl.tileAt(player.dung, player.col, player.row)
-                    if tile == SWIRL:
-                        for dung in range(4):
-                            drawObjs(curDungs, dung, dung * DUNGW, 0, False)
 
-                        animQueue.append(animRotate)
-
-                    elif tile == GOAL:
+                    ### WIN THE LEVEL ###
+                    if tile == GOAL:
+                        if animRotate in animQueue:
+                            animQueue.remove(animRotate)
                         for dung in range(4):
                             drawObjs(curDungs, dung, dung * DUNGW, 0, False)
 
@@ -1080,11 +1097,23 @@ while True:
                         animQueue.append(animPlayDrop)
                         animQueue.append(animCurLvlUp)
 
-                    else:
+                    elif tile == SWIRL and animRotate not in animQueue:
                         for dung in range(4):
-                            preDisplay.blit(curDungs, (curLvl.dungX[dung], curLvl.dungY[dung]), alignRects[dung])
+                            drawObjs(curDungs, dung, dung * DUNGW, 0, False)
 
-                            drawObjs(preDisplay, dung, curLvl.dungX[dung], curLvl.dungY[dung], True)
+                        animQueue.append(animRotate)
+
+
+
+                    for dung in range(4):
+                        x = curLvl.dungX[dung]
+                        y = curLvl.dungY[dung]
+
+                        # fix for extra pixels appearing above level
+                        pygame.draw.rect(preDisplay, (0, 0, 0), (x, y - SIDE, DUNGW, SIDE))
+
+                        preDisplay.blit(curDungs, (x, y), alignRects[dung])
+                        drawObjs(preDisplay, dung, x, y, True)
 
 
 
@@ -1214,7 +1243,14 @@ while True:
 
                 # draw block below player so that they "fall through" the hole
                 if player.row != HEIGHT - 1:
-                    curLvl.drawTile(preDisplay, dung, player.col, player.row + 1)
+                    for box in objBuff[player.row + 1]:
+                        if box.col == player.col and box.dungs[dung]:
+                            x = curLvl.dungX[dung] + box.col * TILE
+                            y = curLvl.dungY[dung] + box.row * TILE
+                            curTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
+                            break
+                    else:
+                        curLvl.drawTile(preDisplay, dung, player.col, player.row + 1)
 
                     if player.row != HEIGHT - 2:
 
@@ -1281,7 +1317,7 @@ while True:
 
                     else:
                         for box in objBuff[player.row + 1]:
-                            if box.dungs[dung]:
+                            if box.col == player.col and box.dungs[dung]:
                                 curTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
 
 
@@ -1318,6 +1354,13 @@ while True:
                 y = curLvl.dungY[dung] + curLvl.y
                 preDisplay.blit(curDungs, (x, y), alignRects[dung])
 
+                # FIXES GREEN APPEARING BEHIND PLAYER
+                if player.row == 0:
+                    if nexLvl.tileAt(dung, player.col, player.row) != WALL:
+                        x = nexLvl.x + nexLvl.dungX[dung] + player.col * TILE
+                        y = nexLvl.y + nexLvl.dungY[dung] + player.row * TILE
+                        pygame.draw.rect(preDisplay, (0, 0, 0), (x, y, TILE, SIDE))
+
                 # PLAYER
                 x = nexLvl.dungX[dung] + player.col * TILE - TILE + player.xOff
                 y = nexLvl.dungY[dung] + player.row * TILE - TILE + player.yOff
@@ -1327,12 +1370,24 @@ while True:
                     ghostAnim.blitFrame(preDisplay, (x, y))
 
                 # WALL BENEATH PLAYER AT NEXT LEVEL
-                if nexLvl.tileAt(dung, player.col, player.row + 1) == WALL:
+                if player.row != HEIGHT - 1:
                     x = nexLvl.x + nexLvl.dungX[dung] + player.col * TILE
                     y = nexLvl.y + nexLvl.dungY[dung] + (player.row + 1) * TILE
-                    var = nexLvl.tileVars[dung][player.col][player.row + 1]
 
-                    nexTileSheet.drawTile(preDisplay, (x, y), WALL, var)
+                    if nexLvl.tileAt(dung, player.col, player.row + 1) == WALL:
+                        var = nexLvl.tileVars[dung][player.col][player.row + 1]
+
+                        nexTileSheet.drawTile(preDisplay, (x, y), WALL, var)
+
+                        shadow.set_alpha((- NEXTSHADOWINTERVAL * animCur.frame) + SHADOWINTERVAL)
+                        preDisplay.blit(shadow, (x, y), (0, 0, TILE, TILE))
+
+                    else:
+                        for box in nexObjBuff[player.row + 1]:
+                            if box.col == player.col and box.dungs[dung] != None:
+
+                                nexTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
+                                break
 
                 # COLUMN OF TILES ABOVE PLAYER
                 # first half, only draw the tiles below player
@@ -1362,45 +1417,6 @@ while True:
 
                 rect = (dung * DUNGW + player.col * TILE, start, TILE, DUNGH + SIDE - start)
                 preDisplay.blit(curDungs, (x, y), rect)
-
-
-
-        if False:
-            #preDisplay.fill((0, 0, 0))
-
-            ### SIDE OF NEXT DUNGEONS & NEXT LEVEL ###
-            if animCur is animRotate or animCur is animCurLvlUp:
-                rects = sideRects
-            else:
-                rects = nextRects
-
-            for dung in range(4):
-
-                x = nexLvl.dungX[dung]
-                y = nexLvl.dungY[dung]
-
-                preDisplay.blit(nexDungs, (x, y), rects[dung])
-
-
-            ### CURRENT LEVEL ###
-            for dung in range(4):
-                x = curLvl.dungX[dung]
-                y = curLvl.dungY[dung]
-                preDisplay.blit(curDungs, (x, y), alignRects[dung])
-
-
-            ### SPECIAL INSTRUCTIONS DURING PLAYER DROP ANIMATION ###
-            if animCur is animPlayDrop:
-                for dung in range(4):
-                    # draws block directly below player.  no exceptions
-                    if player.row != HEIGHT - 1:
-                        curLvl.drawTile(preDisplay, dung, player.col, player.row + 1)
-
-                    # flat tiles will cover the wall below it so redraw that wall
-                    curWalls.append((dung, player.col, player.row + 2))
-
-
-
 
 
 
