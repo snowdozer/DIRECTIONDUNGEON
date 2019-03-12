@@ -104,6 +104,7 @@ SWIRL = 5
 BOX = 6
 BOXSIDE = 7
 PLATE = 8
+GOALLOCK = 9
 
 # DUNGEON POSITIONS
 origDungX = [MARG, DUNGW + MARG*2, DUNGW*2 + MARG*3, DUNGW + MARG*2]
@@ -160,7 +161,7 @@ class Tilesheet:
         surf.blit(self.surface, pos, tileRect)
 
 # a test tilesheet.  multiple can be made
-TESTSHEET = Tilesheet("images\\testSheet.png", mult, (0, 2, 0, 2, 0, 0, 3, 3, 0))
+TESTSHEET = Tilesheet("images\\testSheet.png", mult, (0, 2, 0, 2, 0, 0, 3, 3, 0, 0))
 
 
 
@@ -338,7 +339,7 @@ ROTATERADIUS = DUNGW + MARG
 ROTATEMIDX = DUNGW + MARG*2 + SIDE // 2
 ROTATEMIDY = DUNGH + MARG*2
 
-animPlayDrop = Animation(8, QUADRATIC, SIDE)
+animPlayDrop = Animation(16, QUADRATIC, SIDE)
 
 # these two animations are "tied" together and will play at the same time
 animNexLvlUp = Animation(34, RQUADRATIC, -SIDE)
@@ -403,7 +404,7 @@ tileShadow = (0, 0, TILE, TILE)  # used as a fix during next level transition
 ##############
 class Box:
     def __init__(self, dungs, col, row, variant):
-        self.origDungs = dungs
+        self.origDungs = copy.copy(dungs)
         self.origCol = col
         self.origRow = row
         self.dungs = dungs
@@ -420,7 +421,8 @@ player = None
 def initPlayer(dung, col, row):
     global player
     # only col and row are important
-    player = Box([True, True, True, True], col, row, 0)
+    player = Box([False, False, False, False], col, row, 0)
+    player.dungs[dung] = True
     player.dung = dung
     player.origDung = dung
 
@@ -671,40 +673,60 @@ def drawNextShadow(surf, dung, x, y, shadowOffset):
 def drawObjs(surf, dung, x, y, drawPlayer):
     curWalls = []
 
+    ### LOCKED GOALS ###
+    if locked:
+        for goal in goals[dung]:
+            curWalls.append((dung, goal[0], goal[1] + 1))
+            goalX = x + goal[0] * TILE
+            goalY = y + goal[1] * TILE + SIDE + curLvl.y
+            curTileSheet.drawTile(surf, (goalX, goalY), GOALLOCK, 0)
+
     ### OBJECTS ###
     for row in objBuff:
         for obj in row:
-            if obj.dungs[dung] != None:
-                # PLAYER
-                if obj is player:
-                    if drawPlayer:
-                        objX = x + obj.col * TILE - TILE
-                        objY = y + obj.row * TILE - TILE
+            # PLAYER
+            if obj is player:
+                if drawPlayer:
+                    objX = x + obj.col * TILE - TILE
+                    objY = y + obj.row * TILE - TILE
 
-                        if player.dung == dung:
-                            playAnim.blitFrame(surf, (objX, objY))
-                        else:
-                            ghostAnim.blitFrame(surf, (objX, objY))
+                    if player.dung == dung:
+                        playAnim.blitFrame(surf, (objX, objY))
+                    else:
+                        ghostAnim.blitFrame(surf, (objX, objY))
 
-                # BOXES
-                else:
+                    # WALLS THAT SHOULD COVER THE PLAYER
+                    if obj.direction != DOWN:
+                        curWalls.append((dung, obj.col, obj.row + 1))
+
+                        if obj.direction == LEFT:
+                            curWalls.append((dung, obj.col - 1, obj.row + 1))
+                        elif obj.direction == RIGHT:
+                            curWalls.append((dung, obj.col + 1, obj.row + 1))
+
+                    else:
+                        curWalls.append((dung, obj.col, obj.row + 2))
+
+            # BOXES
+            else:
+                if obj.dungs[dung] != None:
                     objX = x + obj.col * TILE + obj.xOff
                     objY = y + obj.row * TILE + obj.yOff + curLvl.y
 
                     curTileSheet.drawTile(surf, (objX, objY), BOX, obj.variant)
                     curTileSheet.drawTile(surf, (objX, objY + TILE), BOXSIDE, obj.variant)
 
-                # WALLS THAT SHOULD COVER THE OBJECT
-                if obj.direction != DOWN:
-                    curWalls.append((dung, obj.col, obj.row + 1))
+                    # WALLS THAT SHOULD COVER THE OBJECT
+                    if obj.direction != DOWN:
+                        curWalls.append((dung, obj.col, obj.row + 1))
 
-                    if obj.direction == LEFT:
-                        curWalls.append((dung, obj.col - 1, obj.row + 1))
-                    elif obj.direction == RIGHT:
-                        curWalls.append((dung, obj.col + 1, obj.row + 1))
+                        if obj.direction == LEFT:
+                            curWalls.append((dung, obj.col - 1, obj.row + 1))
+                        elif obj.direction == RIGHT:
+                            curWalls.append((dung, obj.col + 1, obj.row + 1))
 
-                else:
-                    curWalls.append((dung, obj.col, obj.row + 2))
+                    else:
+                        curWalls.append((dung, obj.col, obj.row + 2))
 
     for wall in curWalls:
         if curLvl.tileAt(wall[0], wall[1], wall[2]) == WALL:
@@ -798,6 +820,34 @@ while True:
     animCur = None
 
 
+
+    ### PLATES AND LOCKED GOALS ###
+    goals = [[], [], [], []]
+    totPlates = 0
+    origPlates = 0
+    for dung in range(4):
+        for col in range(WIDTH):
+            for row in range(HEIGHT):
+                tile = curLvl.layout[dung][col][row]
+                if tile == PLATE:
+                    totPlates += 1
+                elif tile == GOAL:
+                    goals[dung].append((col, row))
+
+    for box in level.boxes:
+        for dung in range(4):
+            if box.dungs[dung]:
+                if curLvl.tileAt(dung, box.col, box.row) == PLATE:
+                    origPlates += 1
+
+    plates = origPlates
+    if plates == totPlates:
+        locked = False
+    else:
+        locked = True
+
+
+
     ### PREDRAWS BOTH THE CURRENT LEVEL AND THE NEXT LEVEL ###
     curDungs.fill((0, 255, 0))
     nexDungs.fill((0, 255, 0))
@@ -856,6 +906,7 @@ while True:
     player.origCol = player.col
     player.origRow = player.row
     player.origDung = player.dung
+    player.origDungs = copy.copy(player.dungs)
 
     for dung in range(4):
         drawObjs(preDisplay, dung, curLvl.dungX[dung], curLvl.dungY[dung], True)
@@ -913,6 +964,7 @@ while True:
                     player.col = player.origCol
                     player.row = player.origRow
                     player.dung = player.origDung
+                    player.dungs = copy.copy(player.origDungs)
 
                     # resets all boxes
                     for box in curLvl.boxes:
@@ -925,6 +977,13 @@ while True:
                         objBuff[box.row].append(box)
 
                     objBuff[player.row].append(player)
+
+                    # resets plates
+                    plates = origPlates
+                    if plates == totPlates:
+                        locked = False
+                    else:
+                        locked = True
 
                     # resets what is drawn in preDisplay
                     for dung in range(4):
@@ -973,7 +1032,12 @@ while True:
                 for box in moveBoxes:
                     box.direction = moveQueue[0]
 
+                if curLvl.tileAt(player.dung, player.col, player.row) == PLATE:
+                    plates -= 1
+
                 player.dung = moveQueue[0]   # player changes dung immediately
+                player.dungs = [False] * 4
+                player.dungs[moveQueue[0]] = True
 
                 playAnim = playMovement[player.direction]
                 ghostAnim = ghostMovement[player.direction]
@@ -1018,8 +1082,15 @@ while True:
                         for box in moveBoxes:
                             objBuff[box.row].remove(box)
 
-                    # updates box (and also player)
+
                     for box in moveBoxes:
+                        if box is not player:
+                            for dung in range(4):
+                                if box.dungs[dung]:
+                                    if curLvl.tileAt(dung, box.col, box.row) == PLATE:
+                                        plates -= 1
+
+                        # updates box (and also player)
                         if direction == LEFT:
                             box.col -= 1
                         elif direction == RIGHT:
@@ -1040,13 +1111,13 @@ while True:
                         for box in moveBoxes:
                             objBuff[box.row].append(box)
 
-                    # check if any box landed on a swirl
+                    # check if any box landed on a swirl or plate
                     for box in moveBoxes:
-                        if animRotate not in animQueue and box is not player:
-                            for dung in range(4):
-                                if box.dungs[dung]:
-                                    tile = curLvl.tileAt(dung, box.col, box.row)
-                                    if tile == SWIRL:
+                        for dung in range(4):
+                            if box.dungs[dung]:
+                                tile = curLvl.tileAt(dung, box.col, box.row)
+                                if tile == SWIRL:
+                                    if animRotate not in animQueue:
                                         for dung in range(4):
                                             drawObjs(curDungs, dung, dung * DUNGW, 0, False)
 
@@ -1054,8 +1125,13 @@ while True:
 
                                         break
 
-                                    elif tile == PLATE:
-                                        pass
+                                elif tile == PLATE:
+                                    plates += 1
+
+                    if plates == totPlates:
+                        locked = False
+                    else:
+                        locked = True
 
                     moveBoxes = []
 
@@ -1068,9 +1144,10 @@ while True:
                     tile = curLvl.tileAt(player.dung, player.col, player.row)
 
                     ### WIN THE LEVEL ###
-                    if tile == GOAL:
+                    if tile == GOAL and not locked:
                         if animRotate in animQueue:
                             animQueue.remove(animRotate)
+
                         for dung in range(4):
                             drawObjs(curDungs, dung, dung * DUNGW, 0, False)
 
@@ -1096,12 +1173,6 @@ while True:
 
                         animQueue.append(animPlayDrop)
                         animQueue.append(animCurLvlUp)
-
-                    elif tile == SWIRL and animRotate not in animQueue:
-                        for dung in range(4):
-                            drawObjs(curDungs, dung, dung * DUNGW, 0, False)
-
-                        animQueue.append(animRotate)
 
 
 
@@ -1132,6 +1203,10 @@ while True:
                     for box in curLvl.boxes:
                         box.dungs.insert(0, box.dungs[3])
                         del box.dungs[4]
+
+                    # UPDATE GOAL LOCKS
+                    goals.insert(0, goals[3])
+                    del goals[4]
 
                     # UPDATE TILE VARIANTS
                     curLvl.tileVars.insert(0, curLvl.tileVars[3])
@@ -1476,14 +1551,14 @@ while True:
         fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
         postDisplay.blit(fps, (10, 10))
 
-        debug1 = TAHOMA.render(repr(animQueue), False, (255, 255, 255))
-        debug2 = TAHOMA.render(str(curLvl.dungX[UP]), False, (255, 255, 255))
-        #debug3 = TAHOMA.render(repr(moveBoxes), False, (255, 255, 255))
+        debug1 = TAHOMA.render(str(locked), False, (255, 255, 255))
+        debug2 = TAHOMA.render(repr(player.dungs), False, (255, 255, 255))
+        debug3 = TAHOMA.render(str(plates), False, (255, 255, 255))
         #debug4 = TAHOMA.render(repr(objBuff), False, (255, 255, 255))
 
         postDisplay.blit(debug1, (10, 20))
         postDisplay.blit(debug2, (10, 30))
-        #postDisplay.blit(debug3, (10, 40))
+        postDisplay.blit(debug3, (10, 40))
         #postDisplay.blit(debug4, (10, 50))
 
         if debugPressed:

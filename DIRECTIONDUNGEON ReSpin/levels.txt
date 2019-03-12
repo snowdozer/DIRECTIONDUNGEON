@@ -1,40 +1,40 @@
 SET00boxtest
 TESTSHEET
-          E E E E S
-          E E B E W
-          E E B E E
-          E E S E E
+          E E E E P
           E E E E E
-E E E E S           E E E E S
+          E E B E E
+          E E E E E
+          E E E E E
+E E E E E           E E E E P
 E E E E E           E E E E E
 G E E E E           E E E E E
 E E E E E           E E E E E
-E E E E E           E E E E E
-          E E E E S
+P E E E E           E E E E E
           E E E E E
           E E E E E
+          E E B E E
           E E E E E
-          E E S E E
-EMPTY None UP None DOWN   EMPTY None None None DOWN
+          P E E E E
+EMPTY None UP RIGHT None   EMPTY LEFT None None DOWN
 
 SET00boxtest
 TESTSHEET
-          E E E E S
-          E E E E W
-          E E B B E
           E E E E E
           E E E E E
-E E E E S           E E E E S
+          E E B E E
+          E E E E E
+          E E P E E
+E E P E E           E E P E E
 E E E E E           E E E E E
-G E E E E           E E E E E
-E E E E E           E W W W E
+G E E E S           E E E E S
 E E E E E           E E E E E
-          E E E E S
+E E E E E           E E E E E
+          E E P E E
+          E E E E E
+          E E B E E
           E E E E E
           E E E E E
-          E W W W E
-          E E E E B
-EMPTY None UP None DOWN   EMPTY LEFT UP None DOWN   EMPTY None UP RIGHT None
+EMPTY None UP None None   EMPTY LEFT None RIGHT DOWN
 
 
 SET00boxtest
