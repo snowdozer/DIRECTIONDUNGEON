@@ -80,10 +80,13 @@ DUNGH = TILE*HEIGHT # height in pixels of a dungeon
 # AFTERWARDS WINDOW SETUP
 # the size of the screen, based on how things are laid out
 SCREENLENGTH = DUNGH*3 + MARG*4 + SIDE
+print(SCREENLENGTH)
 SCREENSIZE = (SCREENLENGTH, SCREENLENGTH)
 
 # initializes the display so that sprites can be loaded
 postDisplay = pygame.display.set_mode(SCREENSIZE)
+
+plateLockColor = (200, 0, 0)
 
 
 
@@ -421,7 +424,7 @@ player = None
 def initPlayer(dung, col, row):
     global player
     # only col and row are important
-    player = Box([False, False, False, False], col, row, 0)
+    player = Box([None, None, None, None], col, row, 0)
     player.dungs[dung] = True
     player.dung = dung
     player.origDung = dung
@@ -457,7 +460,7 @@ def checkBox(direction, dung, col, row):
 
     # if there are no boxes, depending on the tile type, return if pushable
     if curLvl.tileAt(dung, col, row) in (WALL, VOID):
-        return False
+         False
     else:
         return True
 
@@ -698,7 +701,7 @@ def drawNextShadow(surf, dung, x, y, shadowOffset):
 
 
 def drawObjs(surf, dung, x, y, drawPlayer):
-    curWalls = []
+    walls = []
 
     for goal in goals[dung]:
         goalX = x + goal[0] * TILE
@@ -709,7 +712,7 @@ def drawObjs(surf, dung, x, y, drawPlayer):
             curTileSheet.drawTile(surf, (goalX, goalY), GOAL, 0)
 
         if goal[1] != HEIGHT - 1:
-            curWalls.append((dung, goal[0], goal[1] + 1))
+            walls.append((dung, goal[0], goal[1] + 1))
 
     ### PLAYER ALPHA FIX ###
     if drawPlayer and player.row == 0:
@@ -721,9 +724,11 @@ def drawObjs(surf, dung, x, y, drawPlayer):
     ### OBJECTS ###
     for row in objBuff:
         for obj in row:
-            # PLAYER
-            if obj is player:
-                if drawPlayer:
+            isPlayer = obj is player
+            if (not isPlayer and obj.dungs[dung] != None) or (isPlayer and drawPlayer):
+
+                # PLAYER
+                if isPlayer:
                     objX = x + obj.col * TILE - TILE
                     objY = y + obj.row * TILE - TILE
 
@@ -732,40 +737,37 @@ def drawObjs(surf, dung, x, y, drawPlayer):
                     else:
                         ghostAnim.blitFrame(surf, (objX, objY))
 
-                    # WALLS THAT SHOULD COVER THE PLAYER
-                    if obj.direction != DOWN:
-                        curWalls.append((dung, obj.col, obj.row + 1))
-
-                        if obj.direction == LEFT:
-                            curWalls.append((dung, obj.col - 1, obj.row + 1))
-                        elif obj.direction == RIGHT:
-                            curWalls.append((dung, obj.col + 1, obj.row + 1))
-
-                    else:
-                        curWalls.append((dung, obj.col, obj.row + 2))
-
-            # BOXES
-            else:
-                if obj.dungs[dung] != None:
+                # BOXES
+                else:
                     objX = x + obj.col * TILE + obj.xOff
                     objY = y + obj.row * TILE + obj.yOff + curLvl.y
 
                     curTileSheet.drawTile(surf, (objX, objY), BOX, obj.variant)
                     curTileSheet.drawTile(surf, (objX, objY + TILE), BOXSIDE, obj.variant)
 
-                    # WALLS THAT SHOULD COVER THE OBJECT
-                    if obj.direction != DOWN:
-                        curWalls.append((dung, obj.col, obj.row + 1))
+                # WALLS THAT SHOULD COVER THE OBJECT
+                if obj.direction != DOWN:
+                    walls.append((dung, obj.col, obj.row + 1))
 
-                        if obj.direction == LEFT:
-                            curWalls.append((dung, obj.col - 1, obj.row + 1))
-                        elif obj.direction == RIGHT:
-                            curWalls.append((dung, obj.col + 1, obj.row + 1))
+                    if obj.direction == LEFT:
+                        walls.append((dung, obj.col - 1, obj.row + 1))
+                    elif obj.direction == RIGHT:
+                        walls.append((dung, obj.col + 1, obj.row + 1))
 
-                    else:
-                        curWalls.append((dung, obj.col, obj.row + 2))
+                else:
+                    walls.append((dung, obj.col, obj.row + 2))
 
-    for wall in curWalls:
+                if obj.dungs[dung] != None and obj.direction == None:
+                    # PLATE "LOCK" which doesn't actually lock anything
+                    if curLvl.tileAt(dung, obj.col, obj.row) == PLATE:
+                        covRect = (x + obj.col * TILE + mult,
+                                   y + obj.row * TILE + TILE + SIDE - mult,
+                                   mult * 2, mult)
+                        pygame.draw.rect(surf, plateLockColor, covRect)
+
+
+
+    for wall in walls:
         if curLvl.tileAt(wall[0], wall[1], wall[2]) == WALL:
             wallX = x + wall[1] * TILE
             wallY = y + wall[2] * TILE
@@ -786,7 +788,7 @@ postDisplay.fill((0, 255, 0))
 
 
 # levelNum can be changed later with the level select
-levelNum = 60
+levelNum = 69
 if levelNum == 0:
     initPlayer(RIGHT, 0, 2)
 
@@ -809,7 +811,6 @@ else:
 # makes a surface that stores level sides for all four dungeons
 sideSurfs = newSurf((DUNGW * 4, (len(levels) + 1)*SIDE + TILE+SIDE))
 
-# draws the four dungeons for each level
 y = len(levels) * SIDE
 for level in reversed(levels):
     y -= SIDE
@@ -834,6 +835,11 @@ for level in reversed(levels):
                 if box.dungs[dung]:
                     x = dung * DUNGW + box.col * TILE
                     level.tileSheet.drawTile(sideSurfs, (x, y + SIDE), BOXSIDE, box.variant)
+
+                    if level.tileAt(dung, box.col, HEIGHT - 1) == PLATE:
+                        covRect = (x + mult, y + SIDE + SIDE - mult,
+                                   mult * 2, mult)
+                        pygame.draw.rect(sideSurfs, plateLockColor, covRect)
 
 
 
@@ -918,8 +924,7 @@ while True:
 
     for dung in range(4):
         ### DRAW NEXT LEVEL ###
-        # postDisplay is
-        # used temporarily to draw dungeons in position
+        # postDisplay is used temporarily to draw dungeons in position
         nexLvl.drawDung(postDisplay, dung)
 
         # DRAW BOXES ONTO NEXT LEVEL (aren't constantly updated like cur level)
@@ -930,8 +935,15 @@ while True:
                     y = nexLvl.dungY[dung] + box.row * TILE
                     nexTileSheet.drawTile(postDisplay, (x, y), BOX, box.variant)
 
-                    if nexLvl.tileAt(dung, box.col, box.row + 1) != WALL:
+                    tile = nexLvl.tileAt(dung, box.col, box.row + 1)
+
+                    if tile != WALL:
                         nexTileSheet.drawTile(postDisplay, (x, y + TILE), BOXSIDE, box.variant)
+
+                        if nexLvl.tileAt(dung, box.col, box.row) == PLATE:
+                            covRect = (x + mult, y + TILE + SIDE - mult,
+                                       mult * 2, mult)
+                            pygame.draw.rect(postDisplay, plateLockColor, covRect)
 
         nexDungs.blit(postDisplay, (dung * DUNGW, 0), normRects[dung])
         postDisplay.fill((0, 255, 0))
@@ -1096,7 +1108,7 @@ while True:
                     plates -= 1
 
                 player.dung = moveQueue[0]   # player changes dung immediately
-                player.dungs = [False] * 4
+                player.dungs = [None] * 4
                 player.dungs[moveQueue[0]] = True
 
                 playAnim = playMovement[player.direction]
@@ -1225,6 +1237,11 @@ while True:
 
                                         if nexLvl.tileAt(dung, box.col, box.row + 1) != WALL:
                                             nexTileSheet.drawTile(postDisplay, (x, y + TILE), BOXSIDE, box.variant)
+
+                                            if nexLvl.tileAt(dung, box.col, box.row) == PLATE:
+                                                covRect = (x + mult, y + TILE + SIDE - mult,
+                                                           mult * 2, mult)
+                                                pygame.draw.rect(postDisplay, plateLockColor, covRect)
 
                             nexDungs.blit(postDisplay, (dung * DUNGW, 0), normRects[dung])
                             postDisplay.fill((0, 0, 0))
@@ -1630,12 +1647,12 @@ while True:
         #debug1 = TAHOMA.render(str(locked), False, (255, 255, 255))
         #debug2 = TAHOMA.render(repr(player.dungs), False, (255, 255, 255))
         #debug3 = TAHOMA.render(str(plates), False, (255, 255, 255))
-        debug4 = TAHOMA.render(str(levelNum) + " " + str(levelNum * 20), False, (255, 255, 255))
+        #debug4 = TAHOMA.render(str(levelNum) + " " + str(levelNum * 20), False, (255, 255, 255))
 
         #postDisplay.blit(debug1, (10, 20))
         #postDisplay.blit(debug2, (10, 30))
         #postDisplay.blit(debug3, (10, 40))
-        postDisplay.blit(debug4, (10, 50))
+        #postDisplay.blit(debug4, (10, 50))
 
         if debugPressed:
             clockTick = 5   # slow down game when the debug button is pressed

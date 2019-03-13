@@ -1336,7 +1336,7 @@ P E E E E           E E E E E
           P E E E E
 EMPTY None UP RIGHT None   EMPTY LEFT None None DOWN
 
-SET05boxtest
+SET05level??
 TESTSHEET
           E E E E E
           E E E E E
@@ -1355,6 +1355,46 @@ E E E E E           E E E E E
           E E E E E
 EMPTY None UP None None   EMPTY LEFT None RIGHT DOWN
 
+
+
+SET05boxtest
+TESTSHEET
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          P P P P P
+E E P E E           E E P E E
+E E E E E           E E E E E
+G E E E S           E E E E S
+E E E E E           E E E E E
+P P P P P           P P P P P
+          E E P E E
+          E E E E E
+          E E E E E
+          E E E E E
+          P B B P P
+PLATE None UP None None   PLATE LEFT None RIGHT DOWN
+
+
+SET05boxtest
+TESTSHEET
+          E E E E E
+          E E E E E
+          E E B E E
+          E E E E E
+          E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+EMPTY LEFT UP RIGHT DOWN
 
 
 SET00level06(SCRAPPED)

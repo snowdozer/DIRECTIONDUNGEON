@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" line="1218" />
+    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" line="1230" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b473aad1-d247-4772-a8e5-fe79a4a57641" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/ZIP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ZIP.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/leveltemplates.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/leveltemplates.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,8 +22,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="677">
-              <caret line="660" column="50" selection-start-line="660" selection-start-column="50" selection-end-line="660" selection-end-column="50" />
+            <state relative-caret-position="121">
+              <caret line="1657" column="3" lean-forward="true" selection-start-line="1657" selection-start-column="3" selection-end-line="1657" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -30,8 +31,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="776">
-              <caret line="1313" column="11" selection-start-line="1313" selection-start-column="11" selection-end-line="1313" selection-end-column="11" />
+            <state relative-caret-position="267">
+              <caret line="1396" column="24" selection-start-line="1396" selection-start-column="24" selection-end-line="1396" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -39,8 +40,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/leveltemplates.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="41" selection-start-line="41" selection-end-line="55" selection-end-column="19" />
+            <state relative-caret-position="129">
+              <caret line="21" selection-start-line="21" selection-end-line="35" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -49,36 +50,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>shadowOff</find>
-      <find>shadow.set_alpha(+</find>
-      <find>def tileat</find>
-      <find>player.dung</find>
-      <find>if plates ==</find>
-      <find>player.dungs =</find>
-      <find>origDungs</find>
-      <find>locked =</find>
       <find>if tile == GOAL</find>
       <find>levelNUm</find>
-      <find>levelNum =</find>
-      <find>levelNum</find>
       <find>LEVELnUM</find>
       <find>LEVELnUM =</find>
       <find>shadow</find>
       <find>def drawobjs</find>
-      <find>levelNum =</find>
       <find>nexLvl</find>
       <find>for goal in</find>
       <find>locked</find>
       <find>drawTile</find>
       <find>def drawTile</find>
       <find>goals</find>
-      <find>drawObjs</find>
       <find>drawDung</find>
       <find>if animCur is animRotate</find>
       <find>def drawObjs</find>
       <find>print</find>
       <find>while True</find>
       <find>SIDEsURFS</find>
+      <find>tempBuff</find>
+      <find>levelnum</find>
+      <find>predraw</find>
+      <find>(100, 100, 100</find>
+      <find>predraws</find>
+      <find>covRect =</find>
+      <find>covRect</find>
+      <find>drawObjs</find>
+      <find>False</find>
+      <find>mult =</find>
+      <find>levelNum =</find>
+      <find>levelNum</find>
     </findStrings>
     <replaceStrings>
       <replace>SET0</replace>
@@ -103,7 +104,7 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="44" />
+    <option name="x" value="43" />
     <option name="width" value="1797" />
     <option name="height" value="1020" />
   </component>
@@ -113,7 +114,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -126,15 +126,11 @@
               <item name="DIRECTIONDUNGEON" type="462c0819:PsiDirectoryNode" />
               <item name="DIRECTIONDUNGEON ReSpin" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="DIRECTIONDUNGEON" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DIRECTIONDUNGEON" type="462c0819:PsiDirectoryNode" />
-              <item name="Scrapped Stuff" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -356,13 +352,13 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="55" y="-7" width="1233" height="735" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1705757" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1543052" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="0" sideWeight="0.49947312" weight="0.32286024" />
+      <window_info anchor="bottom" id="Version Control" order="0" sideWeight="0.49947312" weight="0.3217247" />
       <window_info anchor="bottom" id="Python Console" order="1" />
       <window_info anchor="bottom" id="Terminal" order="2" />
       <window_info anchor="bottom" id="Event Log" order="3" sideWeight="0.50052685" side_tool="true" weight="0.30552545" />
@@ -375,7 +371,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info active="true" anchor="right" id="Run" order="3" visible="true" weight="0.28198293" />
+      <window_info active="true" anchor="right" id="Run" order="3" visible="true" weight="0.25490198" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1705757" />
@@ -444,31 +440,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.PyCharmCE2018.3/system/python_stubs/-2134935895/builtins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="62067">
-          <caret line="3651" column="8" selection-start-line="3651" selection-start-column="8" selection-end-line="3651" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2018.3/system/python_stubs/-2134935895/builtins.py" />
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/leveltemplates.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="41" selection-start-line="41" selection-end-line="55" selection-end-column="19" />
+        <state relative-caret-position="129">
+          <caret line="21" selection-start-line="21" selection-end-line="35" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="776">
-          <caret line="1313" column="11" selection-start-line="1313" selection-start-column="11" selection-end-line="1313" selection-end-column="11" />
+        <state relative-caret-position="267">
+          <caret line="1396" column="24" selection-start-line="1396" selection-start-column="24" selection-end-line="1396" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="677">
-          <caret line="660" column="50" selection-start-line="660" selection-start-column="50" selection-end-line="660" selection-end-column="50" />
+        <state relative-caret-position="121">
+          <caret line="1657" column="3" lean-forward="true" selection-start-line="1657" selection-start-column="3" selection-end-line="1657" selection-end-column="3" />
         </state>
       </provider>
     </entry>
