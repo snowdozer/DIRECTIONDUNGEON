@@ -37,6 +37,66 @@ E E E E E           E E E E E
 
 
 
+templateCourtyard
+TESTSHEET
+          W W E W W
+          W E E E W
+          E E E E E
+          W E E E W
+          W W E W W
+W W E W W           W W E W W
+W E E E W           W E E E W
+E E E E E           E E E E E
+W E E E W           W E E E W
+W W E W W           W W E W W
+          W W E W W
+          W E E E W
+          E E E E E
+          W E E E W
+          W W E W W
+
+
+
+templateColumn
+TESTSHEET
+          W W E W W
+          W W E W W
+          W W E W W
+          W W E W W
+          W W E W W
+W W E W W           W W E W W
+W W E W W           W W E W W
+W W E W W           W W E W W
+W W E W W           W W E W W
+W W E W W           W W E W W
+          W W E W W
+          W W E W W
+          W W E W W
+          W W E W W
+          W W E W W
+
+
+
+templateRow
+TESTSHEET
+          W W W W W
+          W W W W W
+          E E E E E
+          W W W W W
+          W W W W W
+W W W W W           W W W W W
+W W W W W           W W W W W
+E E E E E           E E E E E
+W W W W W           W W W W W
+W W W W W           W W W W W
+          W W W W W
+          W W W W W
+          E E E E E
+          W W W W W
+          W W W W W
+
+
+
 templateBoxes
 TESTSHEET
           E E E E E

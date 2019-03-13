@@ -937,7 +937,7 @@ E E E E E           E E G E E
 
 
 
-SET04level04
+SET04level00
 TESTSHEET
           W W G W W
           W W W W W
@@ -977,7 +977,7 @@ E E G W W           W W W W W
 
 
 
-SET04level00
+SET04level02
 TESTSHEET
           W W W W W
           W W W W W
@@ -997,7 +997,7 @@ W W W W W           W W W W W
 
 
 
-SET04level01
+SET04level03
 TESTSHEET
           S E E E S
           W W E W W
@@ -1017,7 +1017,7 @@ W W G W W           W W W W W
 
 
 
-SET04level01
+SET04level04
 TESTSHEET
           W W G W W
           W W E W W
@@ -1037,7 +1037,7 @@ S E E E S           S E E E S
 
 
 
-SET04level02
+SET04level05
 TESTSHEET
           S E E E S
           W W W W W
@@ -1057,7 +1057,7 @@ W W G W W           W W G W W
 
 
 
-SET04level03
+SET04level06
 TESTSHEET
           W W W W W
           W W W W W
@@ -1077,27 +1077,27 @@ W W W W W           W W W W W
           W W W W W
 
 
-SET04level04
+SET04level07
 TESTSHEET
           W W W W S
           W W W W E
           W W S E E
-          W W E W E
-          W W G W S
+          W W W W E
+          W W W W S
 W W W W S           W W W W S
 W W W W E           W W W W E
-W W W W E           W W W W E
-W W W W E           W W W W E
-W W W W S           W W W W S
-          W W G W S
-          W W E W E
+W W S E E           W W S E E
+W W E W E           W W W W E
+W W G W S           W W W W S
+          W W W W S
+          W W W W E
           W W S E E
           W W W W E
           W W W W S
 
 
 
-SET04level04
+SET04level08
 TESTSHEET
           W W W W W
           W W W W W
@@ -1117,38 +1117,78 @@ S E E E S           S E E E S
 
 
 
-SET04level??
+SET04level09
+TESTSHEET
+          W W W W S
+          W W W W E
+          W W S S E
+          W W W W E
+          W W W W S
+W W W W S           W W G W S
+W W W W E           W W E W E
+W W S S E           W W S S E
+W W W W E           W W W W E
+W W W W S           W W W W S
+          W W W W S
+          W W W W E
+          W W S S E
+          W W W W E
+          W W W W S
+
+
+
+SET04level10
+TESTSHEET
+          S E E E S
+          W W S W W
+          W W S W W
+          W W S W W
+          W W S E G
+S E E E S           S E E E S
+W W S W W           W W S W W
+W W S W W           W W S W W
+W W S W W           W W S W W
+W W S W W           W W S W W
+          S E E E S
+          W W S W W
+          W W S W W
+          W W S W W
+          W W S W W
+
+
+
+SET04level11
 TESTSHEET
           S S S S S
           S S S S S
           S S E S S
-          S S S S S
-          S S S S S
-S S S S S           S S S S S
-S S S S S           S S S S S
-S S E S S           S S E S S
-S S S S S           S S S S S
-S S S S S           S S S S G
-          S S S S S
-          S S S S S
-          S S E S S
-          S S S S S
-          S S S S S
-
-
-
-SET04level??
-TESTSHEET
-          S S S S S
-          S S S S S
-          S S S S S
           S S S S S
           S S S S S
 G S S S S           S S S S S
 S S S S S           S S S S S
+S S E S S           S S E S S
+S S S S S           S S S S S
+S S S S S           S S S S S
+          S S S S S
+          S S S S S
+          S S E S S
+          S S S S S
+          S S S S S
+
+
+
+SET04level12
+TESTSHEET
+          S S S S S
+          S S S S S
+          S S S S S
+          S S S S S
+          S S S S S
 S S S S S           S S S S S
 S S S S S           S S S S S
 S S S S S           S S S S S
+S S S S S           S S S S S
+S S S S S           S S S S G
           S S S S S
           S S S S S
           S S S S S
@@ -1157,27 +1197,127 @@ S S S S S           S S S S S
 
 
 
-SET04level??
+SET04level13
+TESTSHEET
+          W W G W W
+          W E E E W
+          E E E E E
+          W E E E E
+          W W E E E
+W W E W W           W W E W W
+W E E E W           W E E E W
+E E E E E           E E E E E
+W E E E E           W E E E E
+W W E E E           W W E E E
+          W W E W W
+          W E E E W
+          E E E E E
+          W E E E E
+          W W E E E
+
+
+
+SET05level00
 TESTSHEET
           W W E W W
-          W W S W W
-          W W S W W
-          W W W W W
-          W W W W W
+          W E E E W
+          E E E E E
+          W E E E W
+          W W E W W
 W W E W W           W W E W W
-W W S W W           W W S W W
-W W S W W           W W S W W
-W W W W W           W W W W W
-W W W W W           W W W W W
+W E E E W           W E E E W
+E E E E E           E E E E E
+W E E E W           W E E E W
+W W E W W           W W E W W
           W W E W W
-          W W S W W
-          W W S W W
-          W W E W W
+          W E E E W
+          E E B E E
+          W E E E W
           W W G W W
+EMPTY LEFT UP RIGHT DOWN
 
 
+SET05level00
+TESTSHEET
+          W W E W W
+          W E E E W
+          S E E E S
+          W E E E W
+          W W E W W
+W W E W W           W W E W W
+W E E E W           W E E E W
+S E E E S           S E E E S
+W E E E W           W E E E W
+W W E W W           W W E W W
+          W W G W W
+          W E E E W
+          S B E B S
+          W E E E W
+          W W E W W
+EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
 
-SET05boxtest
+
+SET05level00
+TESTSHEET
+          W W E W W
+          W E E E W
+          S E E E S
+          W E E E W
+          W W E W W
+W W E W W           W W E W W
+W E E E W           W E E E W
+S E E E S           S E E E S
+W E E E W           W E E E W
+W W G W W           W W E W W
+          W W E W W
+          W E E E W
+          S B E B S
+          W E E E W
+          W W E W W
+EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level00(MULTI-BLOCKPUSHING!!!!)(NEEDALEVELBEFORETHIS)
+TESTSHEET
+          W W W W E
+          W W W W E
+          S E E E E
+          W W W W E
+          W W W W E
+W W W W G           W W W W E
+W W W W E           W W W W E
+S E E E E           S E E E E
+W W W W E           W W W W E
+W W W W E           W W W W E
+          W W W W E
+          W W W W E
+          S B B B E
+          W W W W E
+          W W W W E
+EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level00(MULTI-BLOCKPUSHING!!!!)(NEEDALEVELBEFORETHIS)
+TESTSHEET
+          W W W W E
+          W W W W E
+          P E E E E
+          W W W W E
+          W W W W E
+W W W W E           W W W W E
+W W W W E           W W W W E
+P E E E E           P E E E E
+W W W W E           W W W W E
+W W W W E           W W W W E
+          W W W W E
+          W W W W E
+          P B B B E
+          W W W W E
+          W W W W G
+EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level??
 TESTSHEET
           E E E E P
           E E E E E

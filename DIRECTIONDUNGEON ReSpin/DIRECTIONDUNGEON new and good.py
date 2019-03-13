@@ -481,6 +481,11 @@ class Level:
         self.dungX = copy.copy(origDungX)
         self.dungY = copy.copy(origDungY)
 
+        # manages the plates and the locking of goals in the level
+        self.locked = False
+        self.plates = 0
+        self.totPlates = 0
+
         tileVars = [[[0, 0, 0, 0, 0] for x in range(WIDTH)] for x in range(4)]
 
         for dung in range(4):
@@ -526,7 +531,11 @@ class Level:
             if self.tileAt(dung, col, row + 1) != WALL:
                 tileSheet.drawTile(surf, (x, y + TILE), WALLSIDE, variant)
 
-
+        elif tile == GOAL:
+            if self.locked:
+                tileSheet.drawTile(surf, (x, y + SIDE), GOALLOCK, variant)
+            else:
+                tileSheet.drawTile(surf, (x, y + SIDE), GOAL, variant)
 
         # all other tiles only consist of one part, and are drawn lower
         elif tile != VOID:
@@ -633,6 +642,24 @@ while levelFile:   # stops loading once there is nothing to load
     levels.append(Level(buildLayout, buildSheet, finalBoxes))
 
 
+# IMPROMPTU PLATE COUNTING
+for level in levels:
+    for dung in range(4):
+        for col in range(WIDTH):
+            for row in range(HEIGHT):
+                tile = level.layout[dung][col][row]
+
+                if tile == PLATE:
+                    level.totPlates += 1
+
+    for box in level.boxes:
+        for dung in range(4):
+            if box.dungs[dung]:
+                if level.tileAt(dung, box.col, box.row) == PLATE:
+                    level.plates += 1
+
+    level.locked = level.plates != level.totPlates
+
 
 #######################
 ### MISC / UNSORTED ###
@@ -673,13 +700,16 @@ def drawNextShadow(surf, dung, x, y, shadowOffset):
 def drawObjs(surf, dung, x, y, drawPlayer):
     curWalls = []
 
-    ### LOCKED GOALS ###
-    if locked:
-        for goal in goals[dung]:
-            curWalls.append((dung, goal[0], goal[1] + 1))
-            goalX = x + goal[0] * TILE
-            goalY = y + goal[1] * TILE + SIDE + curLvl.y
+    for goal in goals[dung]:
+        goalX = x + goal[0] * TILE
+        goalY = y + goal[1] * TILE + SIDE
+        if curLvl.locked:
             curTileSheet.drawTile(surf, (goalX, goalY), GOALLOCK, 0)
+        else:
+            curTileSheet.drawTile(surf, (goalX, goalY), GOAL, 0)
+
+        if goal[1] != HEIGHT - 1:
+            curWalls.append((dung, goal[0], goal[1] + 1))
 
     ### PLAYER ALPHA FIX ###
     if drawPlayer and player.row == 0:
@@ -756,7 +786,7 @@ postDisplay.fill((0, 255, 0))
 
 
 # levelNum can be changed later with the level select
-levelNum = 46
+levelNum = 60
 if levelNum == 0:
     initPlayer(RIGHT, 0, 2)
 
@@ -790,6 +820,11 @@ for level in reversed(levels):
             var = level.tileVars[dung][col][HEIGHT - 1]
             if tile == WALL:
                 level.tileSheet.drawTile(sideSurfs, (x, y + SIDE), WALLSIDE, var)
+            elif tile == GOAL:
+                if level.locked:
+                    level.tileSheet.drawTile(sideSurfs, (x, y), GOALLOCK, var)
+                else:
+                    level.tileSheet.drawTile(sideSurfs, (x, y), GOAL, var)
             else:
                 level.tileSheet.drawTile(sideSurfs, (x, y), tile, var)
 
@@ -799,7 +834,6 @@ for level in reversed(levels):
                 if box.dungs[dung]:
                     x = dung * DUNGW + box.col * TILE
                     level.tileSheet.drawTile(sideSurfs, (x, y + SIDE), BOXSIDE, box.variant)
-
 
 
 
@@ -829,6 +863,25 @@ while True:
 
 
     ### PLATES AND LOCKED GOALS ###
+    # check next level so that it can be drawn properly
+    nexPlates = 0
+    nexTotPlates = 0
+    for dung in range(4):
+        for col in range(WIDTH):
+            for row in range(HEIGHT):
+                tile = nexLvl.layout[dung][col][row]
+
+                if tile == PLATE:
+                    nexTotPlates += 1
+
+    for box in nexLvl.boxes:
+        for dung in range(4):
+            if box.dungs[dung]:
+                if nexLvl.tileAt(dung, box.col, box.row) == PLATE:
+                    nexPlates += 1
+
+    nexLvl.locked = nexPlates != nexTotPlates
+
     goals = [[], [], [], []]
     totPlates = 0
     origPlates = 0
@@ -841,17 +894,16 @@ while True:
                 elif tile == GOAL:
                     goals[dung].append((col, row))
 
-    for box in level.boxes:
+    origGoals = copy.copy(goals)
+
+    for box in curLvl.boxes:
         for dung in range(4):
             if box.dungs[dung]:
                 if curLvl.tileAt(dung, box.col, box.row) == PLATE:
                     origPlates += 1
 
     plates = origPlates
-    if plates == totPlates:
-        locked = False
-    else:
-        locked = True
+    curLvl.locked = plates != totPlates
 
 
 
@@ -986,12 +1038,12 @@ while True:
 
                     objBuff[player.row].append(player)
 
+                    # resets goals
+                    goals = copy.copy(origGoals)
+
                     # resets plates
                     plates = origPlates
-                    if plates == totPlates:
-                        locked = False
-                    else:
-                        locked = True
+                    curLvl.locked = plates != totPlates
 
                     # resets what is drawn in preDisplay
                     for dung in range(4):
@@ -1136,10 +1188,7 @@ while True:
                                 elif tile == PLATE:
                                     plates += 1
 
-                    if plates == totPlates:
-                        locked = False
-                    else:
-                        locked = True
+                    curLvl.locked = plates != totPlates
 
                     moveBoxes = []
 
@@ -1152,7 +1201,7 @@ while True:
                     tile = curLvl.tileAt(player.dung, player.col, player.row)
 
                     ### WIN THE LEVEL ###
-                    if tile == GOAL and not locked:
+                    if tile == GOAL and not curLvl.locked:
                         if animRotate in animQueue:
                             animQueue.remove(animRotate)
 
@@ -1162,6 +1211,10 @@ while True:
                             ### REDRAWS NEXT LEVEL WITHOUT SHADOWS ###
                             postDisplay.fill((0, 255, 0))
                             nexLvl.drawDung(postDisplay, dung)
+
+                            # determine if the next level should be locked or not
+                            if nexLvl.layout[player.dung][player.col][player.row] == PLATE:
+                                nexPlates += 1
 
                             for row in nexObjBuff:
                                 for box in row:
@@ -1196,8 +1249,6 @@ while True:
 
 
 
-
-
                 ### SPECIFIC TO DUNGEON ROTATION ###
                 elif animCur is animRotate:
                     # UPDATE PLAYER DUNG
@@ -1212,7 +1263,7 @@ while True:
                         box.dungs.insert(0, box.dungs[3])
                         del box.dungs[4]
 
-                    # UPDATE GOAL LOCKS
+                    # UPDATE LEVEL GOALS
                     goals.insert(0, goals[3])
                     del goals[4]
 
@@ -1368,12 +1419,24 @@ while True:
                     pygame.draw.rect(preDisplay, (0, 0, 0), (x, y, TILE, SIDE))
 
                 # draws all the blocks above the player
-                for row in range(player.row + 1):
-                    curLvl.drawTile(preDisplay, dung, player.col, row)
+                x = curLvl.x + curLvl.dungX[dung] + player.col * TILE
+                y = curLvl.y + curLvl.dungY[dung]
+                rect = (dung * DUNGW + player.col * TILE, 0, TILE, player.row * TILE + TILE + SIDE)
 
+                preDisplay.blit(curDungs, (x, y), rect)
+
+                # draws block on next level below player
+                if player.row == HEIGHT - 1:
+                    y = nexLvl.y + nexLvl.dungY[dung] + HEIGHT * TILE
+                    rect = (dung * DUNGW + player.col * TILE, HEIGHT * TILE, TILE, SIDE)
+                    preDisplay.blit(nexDungs, (x, y), rect)
+
+                    shadow.set_alpha(SHADOWINTERVAL)
+                    preDisplay.blit(shadow, (x, y), (0, 0, TILE, SIDE))
+
+                # finally draws the player
                 x = curLvl.dungX[dung] + player.col * TILE - TILE
                 y = curLvl.dungY[dung] + player.row * TILE - TILE + player.yOff
-
                 if player.dung == dung:
                     playAnim.blitFrame(preDisplay, (x, y))
                 else:
@@ -1410,7 +1473,7 @@ while True:
 
 
         elif animCur is animCurLvlUp:
-            ### MOVES EVERYTHING UP
+            ### MOVES EVERYTHING UP ###
             curLvl.y = round(animCurLvlUp.value)
             nexLvl.y = round(animNexLvlUp.value) + SIDE
 
@@ -1477,7 +1540,7 @@ while True:
                                 nexTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
                                 break
 
-                # COLUMN OF TILES ABOVE PLAYER IN CUR LEVEL
+                # COLUMN OF TILES BELOW PLAYER IN CUR LEVEL
                 # first half, only draw the tiles below player
                 if animCur.frame < animCur.lastFrame / 2:
                     if player.row != HEIGHT - 1:
@@ -1567,12 +1630,12 @@ while True:
         #debug1 = TAHOMA.render(str(locked), False, (255, 255, 255))
         #debug2 = TAHOMA.render(repr(player.dungs), False, (255, 255, 255))
         #debug3 = TAHOMA.render(str(plates), False, (255, 255, 255))
-        #debug4 = TAHOMA.render(str(levelNum) + " " + str(levelNum * 20), False, (255, 255, 255))
+        debug4 = TAHOMA.render(str(levelNum) + " " + str(levelNum * 20), False, (255, 255, 255))
 
         #postDisplay.blit(debug1, (10, 20))
         #postDisplay.blit(debug2, (10, 30))
         #postDisplay.blit(debug3, (10, 40))
-        #postDisplay.blit(debug4, (10, 50))
+        postDisplay.blit(debug4, (10, 50))
 
         if debugPressed:
             clockTick = 5   # slow down game when the debug button is pressed
