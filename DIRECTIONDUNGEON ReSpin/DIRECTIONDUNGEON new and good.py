@@ -80,7 +80,7 @@ DUNGH = TILE*HEIGHT # height in pixels of a dungeon
 # AFTERWARDS WINDOW SETUP
 # the size of the screen, based on how things are laid out
 SCREENLENGTH = DUNGH*3 + MARG*4 + SIDE
-print(SCREENLENGTH)
+
 SCREENSIZE = (SCREENLENGTH, SCREENLENGTH)
 
 # initializes the display so that sprites can be loaded
@@ -172,7 +172,8 @@ TESTSHEET = Tilesheet("images\\testSheet.png", mult, (0, 2, 0, 2, 0, 0, 3, 3, 0,
 ### ANIMATIONS ###
 ##################
 
-animQueue = []   # a queue that plays animations in order
+animQueue = []    # a queue that plays animations in order
+animSameTime = [] # a queue for animations that play at the same time
 
 ### THE ANIMATION CLASS ###
 # THERE ARE DIFFERENT TYPES OF ANIMATIONS
@@ -303,6 +304,9 @@ class Animation:
         for anim in self.tied:
             anim.resetAnim()
 
+# PLATE LOCKS
+animLockBox = Animation(8, RQUADRATIC, mult)
+animUnlockBox = Animation(7, LINEAR, mult)
 
 
 ### PLAYER ANIMATIONS ###
@@ -324,7 +328,7 @@ for direction in directionStrings:
     ghostMovement.append(tempGhostAnim)
 
     # the ghost animation is then tied to the player animation
-    tempPlayAnim = Animation(6, SPRITE, path, 12, 14, mult, [tempGhostAnim, animBoxSlide])
+    tempPlayAnim = Animation(6, SPRITE, path, 12, 14, mult, [tempGhostAnim, animBoxSlide, animUnlockBox])
     playMovement.append(tempPlayAnim)
 
 # idle doesn't have to be animation, but it just makes things easier
@@ -343,6 +347,8 @@ ROTATEMIDX = DUNGW + MARG*2 + SIDE // 2
 ROTATEMIDY = DUNGH + MARG*2
 
 animPlayDrop = Animation(16, QUADRATIC, SIDE)
+
+
 
 # these two animations are "tied" together and will play at the same time
 animNexLvlUp = Animation(34, RQUADRATIC, -SIDE)
@@ -417,6 +423,10 @@ class Box:
         self.yOff = 0
         self.variant = variant
         self.direction = None
+
+        # only if it is visually locked (as in no wall / other box covers it)
+        self.locked = [False, False, False, False]
+        self.origLocked = [False, False, False, False]
 
 moveBoxes = [] # all boxes that should be moved during animation
 
@@ -518,8 +528,8 @@ class Level:
 
     ### DRAWS A TILE FROM THE LEVEL ###
     def drawTile(self, surf, dung, col, row):
-        x = self.dungX[dung] + col * TILE
-        y = self.dungY[dung] + row * TILE
+        x = math.ceil(self.dungX[dung] + col * TILE)
+        y = math.ceil(self.dungY[dung] + row * TILE)
 
         # pulls some variables from self
         tile      = self.tileAt(dung, col, row)
@@ -721,6 +731,19 @@ def drawObjs(surf, dung, x, y, drawPlayer):
             fixY = y + curLvl.y
             pygame.draw.rect(preDisplay, (0, 0, 0), (fixX, fixY, TILE, SIDE))
 
+    ### LOCKS UNLOCKING ###
+    if animCur is playAnim:
+        # draws plate locks
+        for plate in platesToUnlock:
+            if plate[0] == dung:
+                curLvl.drawTile(preDisplay, plate[0], plate[1], plate[2])
+
+                h = math.ceil(mult - animUnlockBox.value)
+                plateX = x + plate[1] * TILE + mult
+                plateY = y + plate[2] * TILE + TILE + SIDE - mult + (mult - h)
+
+                pygame.draw.rect(preDisplay, plateLockColor, (plateX, plateY, mult * 2, h))
+
     ### OBJECTS ###
     for row in objBuff:
         for obj in row:
@@ -739,8 +762,8 @@ def drawObjs(surf, dung, x, y, drawPlayer):
 
                 # BOXES
                 else:
-                    objX = x + obj.col * TILE + obj.xOff
-                    objY = y + obj.row * TILE + obj.yOff + curLvl.y
+                    objX = math.ceil(x + obj.col * TILE + obj.xOff)
+                    objY = math.ceil(y + obj.row * TILE + obj.yOff + curLvl.y)
 
                     curTileSheet.drawTile(surf, (objX, objY), BOX, obj.variant)
                     curTileSheet.drawTile(surf, (objX, objY + TILE), BOXSIDE, obj.variant)
@@ -757,13 +780,20 @@ def drawObjs(surf, dung, x, y, drawPlayer):
                 else:
                     walls.append((dung, obj.col, obj.row + 2))
 
-                if obj.dungs[dung] != None and obj.direction == None:
-                    # PLATE "LOCK" which doesn't actually lock anything
-                    if curLvl.tileAt(dung, obj.col, obj.row) == PLATE:
-                        covRect = (x + obj.col * TILE + mult,
-                                   y + obj.row * TILE + TILE + SIDE - mult,
-                                   mult * 2, mult)
-                        pygame.draw.rect(surf, plateLockColor, covRect)
+                # if obj.dungs[dung] != None and obj.direction == None:
+                #     # PLATE "LOCK" which doesn't actually lock anything
+                #     if curLvl.tileAt(dung, obj.col, obj.row) == PLATE:
+                #         covRect = (x + obj.col * TILE + mult,
+                #                    y + obj.row * TILE + TILE + SIDE - mult,
+                #                    mult * 2, mult)
+                #         pygame.draw.rect(surf, plateLockColor, covRect)
+
+                # LOCKS
+                if obj.locked[dung] and notCover(dung, box.col, box.row + 1):
+                    lockX = x + obj.col * TILE + mult
+                    lockY = y + obj.row * TILE + TILE + SIDE - mult
+
+                    pygame.draw.rect(surf, plateLockColor, (lockX, lockY, mult * 2, mult))
 
 
 
@@ -788,7 +818,7 @@ postDisplay.fill((0, 255, 0))
 
 
 # levelNum can be changed later with the level select
-levelNum = 69
+levelNum = 66
 if levelNum == 0:
     initPlayer(RIGHT, 0, 2)
 
@@ -840,6 +870,20 @@ for level in reversed(levels):
                         covRect = (x + mult, y + SIDE + SIDE - mult,
                                    mult * 2, mult)
                         pygame.draw.rect(sideSurfs, plateLockColor, covRect)
+
+def notCover(dung, col, row):
+    if curLvl.tileAt(dung, col, row) == WALL:
+        return False
+
+    for box in curLvl.boxes:
+        if box.dungs[dung]:
+            if box.row == row:
+                return False
+
+    if player.dung == dung and player.col == col and player.row == row:
+        return False
+
+    return True
 
 
 
@@ -908,8 +952,19 @@ while True:
                 if curLvl.tileAt(dung, box.col, box.row) == PLATE:
                     origPlates += 1
 
+    player.origLocked = [False, False, False, False]
+    if curLvl.tileAt(player.dung, player.col, player.row) == PLATE:
+        origPlates += 1
+
+        if notCover(player.dung, player.col, player.row + 1):
+            player.origLocked[player.dung] = True
+
+    player.locked = copy.copy(player.origLocked)
+
     plates = origPlates
     curLvl.locked = plates != totPlates
+
+
 
 
 
@@ -985,6 +1040,11 @@ while True:
 
     shadowOff = 0
 
+    platesToLock = []
+    platesToUnlock = []
+
+
+
 
 
     ############################################################################
@@ -1043,6 +1103,9 @@ while True:
                         box.col = box.origCol
                         box.row = box.origRow
                         box.dungs = copy.copy(box.origDungs)
+                        box.locked = copy.copy(box.origLocked)
+
+                    player.locked = copy.copy(player.origLocked)
 
                     objBuff = [[] for x in range(HEIGHT)]
                     for box in curLvl.boxes:
@@ -1104,8 +1167,18 @@ while True:
                 for box in moveBoxes:
                     box.direction = moveQueue[0]
 
-                if curLvl.tileAt(player.dung, player.col, player.row) == PLATE:
-                    plates -= 1
+                    # UNLOCKS PLATES
+                    for dung in range(4):
+                        if box.dungs[dung]:
+                            if curLvl.tileAt(dung, box.col, box.row) == PLATE:
+                                plates -= 1
+
+                                if notCover(dung, box.col, box.row + 1):
+                                    platesToUnlock.append((dung, box.col, box.row))
+
+                                box.locked[dung] = False
+
+
 
                 player.dung = moveQueue[0]   # player changes dung immediately
                 player.dungs = [None] * 4
@@ -1156,11 +1229,6 @@ while True:
 
 
                     for box in moveBoxes:
-                        if box is not player:
-                            for dung in range(4):
-                                if box.dungs[dung]:
-                                    if curLvl.tileAt(dung, box.col, box.row) == PLATE:
-                                        plates -= 1
 
                         # updates box (and also player)
                         if direction == LEFT:
@@ -1199,6 +1267,12 @@ while True:
 
                                 elif tile == PLATE:
                                     plates += 1
+
+                                    if notCover(dung, box.col, box.row + 1):
+                                        platesToLock.append((dung, box))
+
+                    player.locked = [False, False, False, False]
+                    platesToUnlock = []
 
                     curLvl.locked = plates != totPlates
 
@@ -1252,8 +1326,10 @@ while True:
                         animQueue.append(animPlayDrop)
                         animQueue.append(animCurLvlUp)
 
+                    animSameTime.append(animLockBox)
 
 
+                    ### REDRAWS THE LEVEL ###
                     for dung in range(4):
                         x = curLvl.dungX[dung]
                         y = curLvl.dungY[dung]
@@ -1557,6 +1633,14 @@ while True:
                                 nexTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
                                 break
 
+                        else:
+                            if nexLvl.tileAt(dung, player.col, player.row) == PLATE:
+                                x = nexLvl.x + nexLvl.dungX[dung] + player.col * TILE + mult
+                                y = nexLvl.y + nexLvl.dungY[dung] + player.row * TILE + TILE + SIDE - mult
+
+                                pygame.draw.rect(preDisplay, plateLockColor, (x, y, mult * 2, mult))
+
+
                 # COLUMN OF TILES BELOW PLAYER IN CUR LEVEL
                 # first half, only draw the tiles below player
                 if animCur.frame < animCur.lastFrame / 2:
@@ -1585,6 +1669,39 @@ while True:
 
                 rect = (dung * DUNGW + player.col * TILE, start, TILE, DUNGH + SIDE - start)
                 preDisplay.blit(curDungs, (x, y), rect)
+
+
+
+        for anim in animSameTime:
+            anim.nextFrame()
+
+            # DRAWS PLATE LOCKS
+            if anim is animLockBox:
+                if anim.frame == anim.lastFrame:
+                    anim.resetAnim()
+
+                    # UPDATES THE LOCKEDNESS OF ALL BOXES
+                    for box in curLvl.boxes:
+                        for dung in range(4):
+                            if box.dungs[dung]:
+                                if curLvl.tileAt(dung, box.col, box.row) == PLATE:
+                                    box.locked[dung] = True
+
+                    platesToLock = []
+                    platesToUnlock = []
+
+                    animSameTime.remove(animLockBox)
+
+                else:
+                    for plate in platesToLock:
+                        box = plate[1]
+
+                        h = math.floor(anim.value)
+
+                        x = curLvl.x + curLvl.dungX[plate[0]] + box.col * TILE + mult
+                        y = curLvl.y + curLvl.dungY[plate[0]] + box.row * TILE + TILE + SIDE - mult + (mult - h)
+
+                        pygame.draw.rect(preDisplay, plateLockColor, (x, y, mult * 2, h))
 
 
 
@@ -1644,15 +1761,15 @@ while True:
         fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
         postDisplay.blit(fps, (10, 10))
 
-        #debug1 = TAHOMA.render(str(locked), False, (255, 255, 255))
-        #debug2 = TAHOMA.render(repr(player.dungs), False, (255, 255, 255))
-        #debug3 = TAHOMA.render(str(plates), False, (255, 255, 255))
-        #debug4 = TAHOMA.render(str(levelNum) + " " + str(levelNum * 20), False, (255, 255, 255))
+        debug1 = TAHOMA.render(str(plates), False, (255, 255, 255))
+        debug2 = TAHOMA.render(repr(player.dungs), False, (255, 255, 255))
+        debug3 = TAHOMA.render(repr(curLvl.boxes[0].locked), False, (255, 255, 255))
+        debug4 = TAHOMA.render(str(levelNum) + " " + str(levelNum * 20), False, (255, 255, 255))
 
-        #postDisplay.blit(debug1, (10, 20))
-        #postDisplay.blit(debug2, (10, 30))
-        #postDisplay.blit(debug3, (10, 40))
-        #postDisplay.blit(debug4, (10, 50))
+        postDisplay.blit(debug1, (10, 20))
+        postDisplay.blit(debug2, (10, 30))
+        postDisplay.blit(debug3, (10, 40))
+        postDisplay.blit(debug4, (10, 50))
 
         if debugPressed:
             clockTick = 5   # slow down game when the debug button is pressed

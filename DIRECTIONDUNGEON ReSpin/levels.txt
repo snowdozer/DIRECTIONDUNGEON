@@ -1340,17 +1340,17 @@ SET05level??
 TESTSHEET
           E E E E E
           E E E E E
-          E E B E E
+          E E B E S
           E E E E E
           E E P E E
 E E P E E           E E P E E
 E E E E E           E E E E E
-G E E E S           E E E E S
+P E E E E           E E E E G
 E E E E E           E E E E E
 E E E E E           E E E E E
           E E P E E
           E E E E E
-          E E B E E
+          E E B E S
           E E E E E
           E E E E E
 EMPTY None UP None None   EMPTY LEFT None RIGHT DOWN
