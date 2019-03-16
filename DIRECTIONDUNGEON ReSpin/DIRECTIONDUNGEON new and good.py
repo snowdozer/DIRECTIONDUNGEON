@@ -305,8 +305,10 @@ class Animation:
             anim.resetAnim()
 
 # PLATE LOCKS
-animLockBox = Animation(8, RQUADRATIC, mult)
-animUnlockBox = Animation(7, LINEAR, mult)
+animLockBox = Animation(6, RQUADRATIC, mult)
+animUnlockBox = Animation(6, LINEAR, mult)
+animGoalUnlock = Animation(6, RQUADRATIC, SIDE)
+animGoalLock = Animation(6, RQUADRATIC, SIDE)
 
 
 ### PLAYER ANIMATIONS ###
@@ -789,7 +791,8 @@ def drawObjs(surf, dung, x, y, drawPlayer):
                 #         pygame.draw.rect(surf, plateLockColor, covRect)
 
                 # LOCKS
-                if obj.locked[dung] and notCover(dung, box.col, box.row + 1):
+
+                if obj.locked[dung] and notCover(dung, obj.col, obj.row + 1):
                     lockX = x + obj.col * TILE + mult
                     lockY = y + obj.row * TILE + TILE + SIDE - mult
 
@@ -818,7 +821,7 @@ postDisplay.fill((0, 255, 0))
 
 
 # levelNum can be changed later with the level select
-levelNum = 66
+levelNum = 68
 if levelNum == 0:
     initPlayer(RIGHT, 0, 2)
 
@@ -872,13 +875,15 @@ for level in reversed(levels):
                         pygame.draw.rect(sideSurfs, plateLockColor, covRect)
 
 def notCover(dung, col, row):
+    if row == HEIGHT - 1:
+        return False
+
     if curLvl.tileAt(dung, col, row) == WALL:
         return False
 
     for box in curLvl.boxes:
-        if box.dungs[dung]:
-            if box.row == row:
-                return False
+        if box.dungs[dung] and box.col == col and box.row == row:
+            return False
 
     if player.dung == dung and player.col == col and player.row == row:
         return False
@@ -886,6 +891,25 @@ def notCover(dung, col, row):
     return True
 
 
+def debugCircle(surf, x, y, col):
+    if col == 0:
+        color = (255, 255, 0)
+    elif col == 1:
+        color = (255, 0, 255)
+    else:
+        color = (0, 255, 255)
+
+    pygame.draw.circle(surf, color, (int(x), int(y)), 5)
+
+def debugRect(surf, rect, col):
+    if col == 0:
+        color = (255, 255, 0)
+    elif col == 1:
+        color = (255, 0, 255)
+    else:
+        color = (0, 255, 255)
+
+    pygame.draw.rect(surf, color, rect)
 
 ### PER-LEVEL LOOP ###
 while True:
@@ -1082,6 +1106,8 @@ while True:
 
                     # resets layout and redraws dungeons
                     curDungs.fill((0, 255, 0))
+                    postDisplay.fill((0, 255, 0))
+                    # again, postDisplay is used as a temporary surface
 
                     curLvl.layout = copy.deepcopy(curLvl.origLayout)
                     curLvl.tileVars = copy.deepcopy(curLvl.origTileVars)
@@ -1122,9 +1148,17 @@ while True:
 
                     # resets what is drawn in preDisplay
                     for dung in range(4):
+                        for tile in range(WIDTH):
+                            if curLvl.layout[dung][tile][0] != WALL:
+                                x = curLvl.dungX[dung] + tile * TILE
+                                y = curLvl.dungY[dung]
+                                preDisplay.fill((0, 0, 0), (x, y, TILE, SIDE))
+
                         preDisplay.blit(curDungs, (curLvl.dungX[dung], curLvl.dungY[dung]), alignRects[dung])
 
                         drawObjs(preDisplay, dung, curLvl.dungX[dung], curLvl.dungY[dung], True)
+
+
 
 
 
@@ -1274,7 +1308,15 @@ while True:
                     player.locked = [False, False, False, False]
                     platesToUnlock = []
 
-                    curLvl.locked = plates != totPlates
+                    previouslyLocked = curLvl.locked
+                    currentlyLocked = plates != totPlates
+
+                    if previouslyLocked and not currentlyLocked:
+                        animSameTime.append(animGoalUnlock)
+                        curLvl.locked = False
+                    elif not previouslyLocked and currentlyLocked:
+                        animSameTime.append(animGoalLock)
+                        # locked only after the animation plays
 
                     moveBoxes = []
 
@@ -1675,10 +1717,75 @@ while True:
         for anim in animSameTime:
             anim.nextFrame()
 
-            # DRAWS PLATE LOCKS
+            ### EVERY FRAME STUFF ###
+            # DRAWS ALL LOCKS ON BOXES ON PLATES
             if anim is animLockBox:
-                if anim.frame == anim.lastFrame:
-                    anim.resetAnim()
+                for plate in platesToLock:
+                    box = plate[1]
+
+                    h = math.floor(anim.value)
+
+                    x = curLvl.x + curLvl.dungX[plate[0]] + box.col * TILE + mult
+                    y = curLvl.y + curLvl.dungY[plate[0]] + box.row * TILE + TILE + SIDE - mult + (mult - h)
+
+                    pygame.draw.rect(preDisplay, plateLockColor, (x, y, mult * 2, h))
+
+            # LOCKS GOALS WHEN ALL PLATES ARE COVERED
+            elif anim is animGoalLock:
+                w = math.ceil(anim.value)
+                for dung in range(4):
+                    for goal in goals[dung]:
+                        if notCover(dung, goal[0], goal[1] + 1):
+                            h = TILE
+                        else:
+                            h = SIDE
+
+                        # left half
+                        x = curLvl.dungX[dung] + goal[0] * TILE
+                        y = curLvl.dungY[dung] + goal[1] * TILE + SIDE
+                        rect = (GOALLOCK * TILE - TILE + (SIDE - w), 0, w, h)
+
+                        preDisplay.blit(curTileSheet.surface, (x, y), rect)
+
+                        # right half
+                        x += SIDE + (SIDE - w)
+                        rect = (GOALLOCK * TILE - TILE + SIDE, 0, w, h)
+
+                        preDisplay.blit(curTileSheet.surface, (x, y), rect)
+
+            # UNLOCK GOALS IF ANY PLATE IS UNCOVERED
+            elif anim is animGoalUnlock:
+                w = math.ceil(SIDE - anim.value)
+                for dung in range(4):
+                    for goal in goals[dung]:
+
+                        if notCover(dung, goal[0], goal[1] + 1):
+                            h = TILE
+                        else:
+                            h = SIDE
+
+                        # goal
+                        x = curLvl.dungX[dung] + goal[0] * TILE
+                        y = curLvl.dungY[dung] + goal[1] * TILE + SIDE
+                        rect = (GOAL * TILE - TILE, 0, TILE, h)
+                        preDisplay.blit(curTileSheet.surface, (x, y), rect)
+
+                        # left half
+                        rect = (GOALLOCK * TILE - TILE + (SIDE - w), 0, w, h)
+
+                        preDisplay.blit(curTileSheet.surface, (x, y), rect)
+
+                        # right half
+                        x += SIDE + (SIDE - w)
+                        rect = (GOALLOCK * TILE - TILE + SIDE, 0, w, h)
+
+                        preDisplay.blit(curTileSheet.surface, (x, y), rect)
+
+            ### LAST FRAME STUFF ###
+            if anim.frame == anim.lastFrame:
+
+                # RESETS PLATE LOCKS
+                if anim is animLockBox:
 
                     # UPDATES THE LOCKEDNESS OF ALL BOXES
                     for box in curLvl.boxes:
@@ -1687,21 +1794,23 @@ while True:
                                 if curLvl.tileAt(dung, box.col, box.row) == PLATE:
                                     box.locked[dung] = True
 
+                    # CLEARS ALL PLATES THAT NEED TO BE LOCKED
                     platesToLock = []
                     platesToUnlock = []
 
-                    animSameTime.remove(animLockBox)
+                elif anim is animGoalLock:
+                    # LOCK THE LEVEL
+                    curLvl.locked = True
 
-                else:
-                    for plate in platesToLock:
-                        box = plate[1]
+                elif anim is animGoalUnlock:
+                    # BEAT THE LEVEL IF THE GOAL BENEATH PLAYER OPENS
+                    if curLvl.tileAt(player.dung, player.col, player.row) == GOAL:
+                        if animCur is not playAnim:
+                            animQueue.append(animPlayDrop)
+                            animQueue.append(animCurLvlUp)
 
-                        h = math.floor(anim.value)
-
-                        x = curLvl.x + curLvl.dungX[plate[0]] + box.col * TILE + mult
-                        y = curLvl.y + curLvl.dungY[plate[0]] + box.row * TILE + TILE + SIDE - mult + (mult - h)
-
-                        pygame.draw.rect(preDisplay, plateLockColor, (x, y, mult * 2, h))
+                anim.resetAnim()
+                animSameTime.remove(anim)
 
 
 
@@ -1756,14 +1865,14 @@ while True:
 
 
         ### DEBUGGING ###
-        #postDisplay.blit(curDungs, (0, 0))
+        #postDisplay.blit(curTileSheet.surface, (0, 0))
 
         fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
         postDisplay.blit(fps, (10, 10))
 
         debug1 = TAHOMA.render(str(plates), False, (255, 255, 255))
-        debug2 = TAHOMA.render(repr(player.dungs), False, (255, 255, 255))
-        debug3 = TAHOMA.render(repr(curLvl.boxes[0].locked), False, (255, 255, 255))
+        debug2 = TAHOMA.render(repr(animSameTime), False, (255, 255, 255))
+        debug3 = TAHOMA.render(repr(curLvl.boxes[1].locked), False, (255, 255, 255))
         debug4 = TAHOMA.render(str(levelNum) + " " + str(levelNum * 20), False, (255, 255, 255))
 
         postDisplay.blit(debug1, (10, 20))

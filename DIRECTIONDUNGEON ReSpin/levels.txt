@@ -1317,6 +1317,26 @@ W W W W E           W W W W E
 EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
 
 
+SET05test
+TESTSHEET
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+P B E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+GOAL LEFT UP RIGHT DOWN
+
+
 SET05level??
 TESTSHEET
           E E E E P
@@ -1345,7 +1365,7 @@ TESTSHEET
           E E P E E
 E E P E E           E E P E E
 E E E E E           E E E E E
-P E E E E           E E E E G
+G E E E E           E E E E E
 E E E E E           E E E E E
 E E E E E           E E E E E
           E E P E E
