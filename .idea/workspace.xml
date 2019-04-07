@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" line="1203" />
-    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" line="1336" />
-    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" line="1154" />
+    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" line="1207" />
+    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" line="1158" />
+    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" line="1415" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b473aad1-d247-4772-a8e5-fe79a4a57641" name="Default Changelist" comment="">
+    <list default="true" id="b473aad1-d247-4772-a8e5-fe79a4a57641" name="Default Changelist" comment="GOAL LOCK ANIMATION !!!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/testSheet.png" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/testSheet.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -23,8 +22,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="1753" column="40" selection-start-line="1753" selection-start-column="40" selection-end-line="1753" selection-end-column="40" />
+            <state relative-caret-position="333">
+              <caret line="1374" lean-forward="true" selection-start-line="1374" selection-end-line="1374" />
             </state>
           </provider>
         </entry>
@@ -32,8 +31,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="742">
-              <caret line="1372" column="19" lean-forward="true" selection-start-line="1372" selection-start-column="19" selection-end-line="1372" selection-end-column="19" />
+            <state relative-caret-position="419">
+              <caret line="1353" column="19" lean-forward="true" selection-start-line="1353" selection-start-column="19" selection-end-line="1353" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -49,41 +48,49 @@
       </file>
     </leaf>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>levelNum</find>
-      <find>drawobjs</find>
-      <find>animQueue</find>
-      <find>boxesTol</find>
-      <find>boxesToUnlock</find>
-      <find>boxesTo</find>
-      <find>platesTolock</find>
-      <find>platesToUnlock</find>
-      <find>def drawObjs</find>
-      <find>levelNum =</find>
-      <find>mult</find>
-      <find>drawDung</find>
-      <find>mult =</find>
-      <find>plates -= 1</find>
       <find>input</find>
       <find>animPlayDrop</find>
-      <find>curLvlUp</find>
       <find>box.locked</find>
       <find>obj.locked</find>
       <find>platesToLock</find>
       <find>box.locked[dung</find>
       <find>animLockBox</find>
       <find>notCover</find>
-      <find>drawObjs</find>
       <find>goals</find>
       <find>goals[dung].append</find>
-      <find>print</find>
       <find>anim</find>
       <find>curLvl.locked =</find>
       <find>.append(animPlay</find>
+      <find>loadImage</find>
+      <find>loade</find>
+      <find>tahoma =</find>
+      <find>id</find>
+      <find>refs</find>
+      <find>vng</find>
+      <find>length</find>
+      <find>print</find>
+      <find>fps</find>
+      <find>box.origLocked</find>
+      <find>NOTcOVER</find>
+      <find>curLvlUp</find>
+      <find>curDungs</find>
+      <find>drawObjs</find>
+      <find>win the level</find>
+      <find>WIN THE LEVEL</find>
+      <find>animrotate</find>
     </findStrings>
     <replaceStrings>
       <replace>SET0</replace>
+      <replace>v</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -99,6 +106,8 @@
         <option value="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels/0intro06.txt" />
         <option value="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/test.py" />
         <option value="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/leveltemplates.txt" />
+        <option value="$PROJECT_DIR$/../Moon Project/moon.py" />
+        <option value="$PROJECT_DIR$/../Moon Project/vngine.py" />
         <option value="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" />
         <option value="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" />
       </list>
@@ -116,12 +125,28 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="ProjectPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="DIRECTIONDUNGEON" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DIRECTIONDUNGEON" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DIRECTIONDUNGEON" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DIRECTIONDUNGEON" type="462c0819:PsiDirectoryNode" />
+              <item name="DIRECTIONDUNGEON ReSpin" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Moon Project" />
     <property name="restartRequiresConfirmation" value="false" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -136,7 +161,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.DIRECTIONDUNGEON new and good">
+  <component name="RunManager" selected="Python.DIRECTIONDUNGEON level class attempt">
     <configuration name="DIRECTIONDUNGEON level class attempt" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ZIP" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -223,9 +248,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.DIRECTIONDUNGEON level class attempt" />
         <item itemvalue="Python.DIRECTIONDUNGEON new and good" />
         <item itemvalue="Python.ye olde DIRECTIONDUNGEON" />
-        <item itemvalue="Python.DIRECTIONDUNGEON level class attempt" />
         <item itemvalue="Python.test" />
       </list>
     </recent_temporary>
@@ -332,7 +357,14 @@
       <option name="project" value="LOCAL" />
       <updated>1552624456019</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="GOAL LOCK ANIMATION !!!">
+      <created>1552749859519</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1552749859519</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TodoView">
@@ -348,7 +380,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17537314" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16471216" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="0" sideWeight="0.49947312" weight="0.3206934" />
@@ -364,18 +396,18 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info active="true" anchor="right" id="Run" order="3" visible="true" weight="0.27985075" />
+      <window_info active="true" anchor="right" id="Run" order="3" visible="true" weight="0.19083156" />
     </layout>
     <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1705757" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17492098" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="0" sideWeight="0.49947312" weight="0.32286024" />
+      <window_info anchor="bottom" id="Version Control" order="0" sideWeight="0.49947312" weight="0.3206934" />
       <window_info anchor="bottom" id="Python Console" order="1" />
       <window_info anchor="bottom" id="Terminal" order="2" />
       <window_info anchor="bottom" id="Event Log" order="3" sideWeight="0.50052685" side_tool="true" weight="0.30552545" />
       <window_info anchor="bottom" id="Message" order="4" />
-      <window_info anchor="bottom" id="Find" order="5" />
+      <window_info anchor="bottom" id="Find" order="5" weight="0.32936078" />
       <window_info anchor="bottom" id="Debug" order="6" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="7" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
@@ -383,7 +415,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info active="true" anchor="right" id="Run" order="3" visible="true" weight="0.28198293" />
+      <window_info anchor="right" id="Run" order="3" weight="0.27985075" />
     </layout-to-restore>
   </component>
   <component name="VcsManagerConfiguration">
@@ -400,7 +432,8 @@
     <MESSAGE value="Plates: That Was So Much Easier" />
     <MESSAGE value="mINOR fIXES AND sEVERAL lEVELS" />
     <MESSAGE value="okay i take it back plates are hard" />
-    <option name="LAST_COMMIT_MESSAGE" value="okay i take it back plates are hard" />
+    <MESSAGE value="GOAL LOCK ANIMATION !!!" />
+    <option name="LAST_COMMIT_MESSAGE" value="GOAL LOCK ANIMATION !!!" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON level class attempt.py" />
@@ -435,6 +468,23 @@
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/.PyCharmCE2018.3/system/python_stubs/-2134935895/builtins.py" />
+    <entry file="file://$PROJECT_DIR$/../Moon Project/vngine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+          <folding>
+            <element signature="e#68#77#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Moon Project/moon.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/leveltemplates.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
@@ -444,15 +494,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="742">
-          <caret line="1372" column="19" lean-forward="true" selection-start-line="1372" selection-start-column="19" selection-end-line="1372" selection-end-column="19" />
+        <state relative-caret-position="419">
+          <caret line="1353" column="19" lean-forward="true" selection-start-line="1353" selection-start-column="19" selection-end-line="1353" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="1753" column="40" selection-start-line="1753" selection-start-column="40" selection-end-line="1753" selection-end-column="40" />
+        <state relative-caret-position="333">
+          <caret line="1374" lean-forward="true" selection-start-line="1374" selection-end-line="1374" />
         </state>
       </provider>
     </entry>

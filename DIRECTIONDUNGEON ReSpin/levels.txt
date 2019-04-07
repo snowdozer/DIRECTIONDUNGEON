@@ -1366,14 +1366,14 @@ TESTSHEET
 E E P E E           E E P E E
 E E E E E           E E E E E
 G E E E E           E E E E E
-E E E E E           E E E E E
+B E E E E           E E E E E
 E E E E E           E E E E E
           E E P E E
           E E E E E
           E E B E S
           E E E E E
           E E E E E
-EMPTY None UP None None   EMPTY LEFT None RIGHT DOWN
+EMPTY None UP None None   EMPTY LEFT UP None DOWN   EMPTY LEFT None RIGHT DOWN
 
 
 
