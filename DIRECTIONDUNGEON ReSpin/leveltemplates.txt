@@ -97,6 +97,25 @@ W W W W W           W W W W W
 
 
 
+templateCross
+TESTSHEET
+          W W E W W
+          W W E W W
+          E E E E E
+          W W E W W
+          W W E W W
+W W E W W           W W E W W
+W W E W W           W W E W W
+E E E E E           E E E E E
+W W E W W           W W E W W
+W W E W W           W W E W W
+          W W E W W
+          W W E W W
+          E E E E E
+          W W E W W
+          W W E W W
+
+
 templateBoxes
 TESTSHEET
           E E E E E

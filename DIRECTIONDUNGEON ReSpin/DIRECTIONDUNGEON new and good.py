@@ -547,6 +547,7 @@ class Level:
                 tileSheet.drawTile(surf, (x, y + TILE), WALLSIDE, variant)
 
         elif tile == GOAL:
+            print(self.locked)
             if self.locked:
                 tileSheet.drawTile(surf, (x, y + SIDE), GOALLOCK, variant)
             else:
@@ -718,13 +719,21 @@ def drawObjs(surf, dung, x, y, drawPlayer):
     for goal in goals[dung]:
         goalX = x + goal[0] * TILE
         goalY = y + goal[1] * TILE + SIDE
-        if curLvl.locked:
-            curTileSheet.drawTile(surf, (goalX, goalY), GOALLOCK, 0)
-        else:
-            curTileSheet.drawTile(surf, (goalX, goalY), GOAL, 0)
 
-        if goal[1] != HEIGHT - 1:
-            walls.append((dung, goal[0], goal[1] + 1))
+        width = TILE
+        if notCover(dung, goal[0], goal[1] + 1):
+            height = TILE
+        else:
+            height = SIDE
+
+        var = curLvl.tileVars[dung][goal[0]][goal[1]]
+
+        if curLvl.locked:
+            rect = (GOALLOCK * TILE - TILE, var * TILE, width, height)
+        else:
+            rect = (GOAL * TILE - TILE, var * TILE, width, height)
+
+        surf.blit(curTileSheet.surface, (goalX, goalY), rect)
 
     ### PLAYER ALPHA FIX ###
     if drawPlayer and player.row == 0:
@@ -772,15 +781,15 @@ def drawObjs(surf, dung, x, y, drawPlayer):
 
                 # WALLS THAT SHOULD COVER THE OBJECT
                 if obj.direction != DOWN:
-                    walls.append((dung, obj.col, obj.row + 1))
+                    walls.append((obj.col, obj.row + 1))
 
                     if obj.direction == LEFT:
-                        walls.append((dung, obj.col - 1, obj.row + 1))
+                        walls.append((obj.col - 1, obj.row + 1))
                     elif obj.direction == RIGHT:
-                        walls.append((dung, obj.col + 1, obj.row + 1))
+                        walls.append((obj.col + 1, obj.row + 1))
 
                 else:
-                    walls.append((dung, obj.col, obj.row + 2))
+                    walls.append((obj.col, obj.row + 2))
 
                 # if obj.dungs[dung] != None and obj.direction == None:
                 #     # PLATE "LOCK" which doesn't actually lock anything
@@ -797,14 +806,14 @@ def drawObjs(surf, dung, x, y, drawPlayer):
 
                     pygame.draw.rect(surf, plateLockColor, (lockX, lockY, mult * 2, mult))
 
-
-
     for wall in walls:
-        if curLvl.tileAt(wall[0], wall[1], wall[2]) == WALL:
-            wallX = x + wall[1] * TILE
-            wallY = y + wall[2] * TILE
-            var = curLvl.tileVars[wall[0]][wall[1]][wall[2]]
 
+        if curLvl.tileAt(dung, wall[0], wall[1]) == WALL:
+            wallX = x + wall[0] * TILE
+            wallY = y + wall[1] * TILE
+            var = curLvl.tileVars[dung][wall[0]][wall[1]]
+
+            # error drawing this wall
             curTileSheet.drawTile(surf, (wallX, wallY), WALL, var)
 
 
@@ -820,7 +829,7 @@ postDisplay.fill((0, 255, 0))
 
 
 # levelNum can be changed later with the level select
-levelNum = 66
+levelNum = 67
 if levelNum == 0:
     initPlayer(RIGHT, 0, 2)
 
@@ -1318,6 +1327,28 @@ while True:
                     if previouslyLocked and not currentlyLocked:
                         animSameTime.append(animGoalUnlock)
                         curLvl.locked = False
+
+                        # UPDATES THE GOALS ON CURDUNGS
+                        for dung in range(4):
+                            for goal in goals[dung]:
+                                x = goal[0] * TILE + DUNGW * dung
+                                y = goal[1] * TILE + SIDE
+
+                                width = TILE
+                                if notCover(dung, goal[0], goal[1] + 1):
+                                    height = TILE
+                                else:
+                                    height = SIDE
+
+                                var = curLvl.tileVars[dung][goal[0]][goal[1]]
+
+                                if curLvl.locked:
+                                    rect = (GOALLOCK * TILE - TILE, var * TILE, width, height)
+                                else:
+                                    rect = (GOAL * TILE - TILE, var * TILE, width, height)
+
+                                curDungs.blit(curTileSheet.surface, (x, y), rect)
+
                     elif not previouslyLocked and currentlyLocked:
                         animSameTime.append(animGoalLock)
                         # locked only after the animation plays
@@ -1568,14 +1599,18 @@ while True:
 
                 preDisplay.blit(curDungs, (x, y), rect)
 
+                for box in curLvl.boxes:
+                    if box.col == player.col:
+                        x = curLvl.x + curLvl.dungX[dung] + box.col * TILE
+                        y = curLvl.y + curLvl.dungY[dung] + box.row * TILE
+                        curTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
+                        curTileSheet.drawTile(preDisplay, (x, y + TILE), BOXSIDE, box.variant)
+
                 # draws block on next level below player
                 if player.row == HEIGHT - 1:
                     y = nexLvl.y + nexLvl.dungY[dung] + HEIGHT * TILE
                     rect = (dung * DUNGW + player.col * TILE, HEIGHT * TILE, TILE, SIDE)
                     preDisplay.blit(nexDungs, (x, y), rect)
-
-                    shadow.set_alpha(SHADOWINTERVAL)
-                    preDisplay.blit(shadow, (x, y), (0, 0, TILE, SIDE))
 
                 # finally draws the player
                 x = curLvl.dungX[dung] + player.col * TILE - TILE
@@ -1877,14 +1912,14 @@ while True:
         fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
         postDisplay.blit(fps, (10, 10))
 
-        debug1 = TAHOMA.render(str(plates), False, (255, 255, 255))
-        debug2 = TAHOMA.render(repr(animSameTime), False, (255, 255, 255))
-        debug3 = TAHOMA.render(repr(curLvl.boxes[0].locked), False, (255, 255, 255))
+        debug1 = TAHOMA.render(str(curLvl.locked), False, (255, 255, 255))
+        #debug2 = TAHOMA.render(repr(animSameTime), False, (255, 255, 255))
+        #debug3 = TAHOMA.render(repr(curLvl.boxes[0].locked), False, (255, 255, 255))
         debug4 = TAHOMA.render(str(levelNum) + " " + str(levelNum * 20), False, (255, 255, 255))
 
         postDisplay.blit(debug1, (10, 20))
-        postDisplay.blit(debug2, (10, 30))
-        postDisplay.blit(debug3, (10, 40))
+        #postDisplay.blit(debug2, (10, 30))
+        #postDisplay.blit(debug3, (10, 40))
         postDisplay.blit(debug4, (10, 50))
 
         if debugPressed:
