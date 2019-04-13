@@ -547,7 +547,6 @@ class Level:
                 tileSheet.drawTile(surf, (x, y + TILE), WALLSIDE, variant)
 
         elif tile == GOAL:
-            print(self.locked)
             if self.locked:
                 tileSheet.drawTile(surf, (x, y + SIDE), GOALLOCK, variant)
             else:
@@ -699,6 +698,7 @@ def drawNextShadow(surf, dung, x, y, shadowOffset):
     for col in range(WIDTH):
         if nexLvl.tileAt(dung, col, 0) != WALL:
             pygame.draw.rect(surf, (0, 255, 0), (x + col * TILE, y, TILE, SIDE))
+            pygame.draw.rect(surf, (0, 255, 0), (x + col * TILE, y, TILE, SIDE))
 
     y += DUNGH + SIDE
 
@@ -829,7 +829,7 @@ postDisplay.fill((0, 255, 0))
 
 
 # levelNum can be changed later with the level select
-levelNum = 67
+levelNum = 71
 if levelNum == 0:
     initPlayer(RIGHT, 0, 2)
 
@@ -1604,7 +1604,8 @@ while True:
                         x = curLvl.x + curLvl.dungX[dung] + box.col * TILE
                         y = curLvl.y + curLvl.dungY[dung] + box.row * TILE
                         curTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
-                        curTileSheet.drawTile(preDisplay, (x, y + TILE), BOXSIDE, box.variant)
+                        if notCover(dung, box.col, box.row + 1):
+                            curTileSheet.drawTile(preDisplay, (x, y + TILE), BOXSIDE, box.variant)
 
                 # draws block on next level below player
                 if player.row == HEIGHT - 1:
@@ -1677,6 +1678,13 @@ while True:
                 x = nexLvl.dungX[dung]
                 y = nexLvl.dungY[dung] + nexLvl.y
                 drawNextShadow(preDisplay, dung, x, y, shadowOff)
+
+                # FIXES BOXES BEING CUT OFF BY SHADOW
+                for box in nexLvl.boxes:
+                    if box.row == 0:
+                        x = nexLvl.dungX[dung] + box.col * TILE
+                        y = nexLvl.dungY[dung] + nexLvl.y
+                        nexTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
 
                 # FIXES GREEN APPEARING BEHIND PLAYER
                 if player.row == 0:
@@ -1907,7 +1915,7 @@ while True:
 
 
         ### DEBUGGING ###
-        #postDisplay.blit(curDungs, (0, 0))
+        postDisplay.blit(curDungs, (0, 0))
 
         fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
         postDisplay.blit(fps, (10, 10))

@@ -57,6 +57,26 @@ W W E W W           W W E W W
 
 
 
+templateBox
+TESTSHEET
+          W W W W W
+          W E E E W
+          W E E E W
+          W E E E W
+          W W W W W
+W W W W W           W W W W W
+W E E E W           W E E E W
+W E E E W           W E E E W
+W E E E W           W E E E W
+W W W W W           W W W W W
+          W W W W W
+          W E E E W
+          W E E E W
+          W E E E W
+          W W W W W
+
+
+
 templateColumn
 TESTSHEET
           W W E W W
