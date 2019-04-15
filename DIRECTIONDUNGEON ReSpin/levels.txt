@@ -1281,20 +1281,220 @@ SET05level00(differentcolor?)
 TESTSHEET
           W W W E E
           W E E E E
-          E E E E W
+          W E E E W
           W E E E W
           W W W W W
 W W W E E           W W W E E
 W E E E E           W E E E E
-G E E E W           E E E E W
+G E E E W           W E E E W
 W E E E W           W E E E W
 W W W W W           W W W W W
           W W W E E
           W E B E E
-          E E B E W
+          W E B E W
           W E B E W
           W W W W W
 EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level00(differentcolor?)
+TESTSHEET
+          W W W W W
+          W E E E W
+          E E E E G
+          W E E E W
+          W W S W W
+W W W W W           W W W W W
+W E E E W           W E E E W
+E E E E W           E E E E W
+W E E E W           W E E E W
+W W E W W           W W E W W
+          W W W W W
+          W E E E W
+          E E B E W
+          W E E E W
+          W W E W W
+EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level00(differentcolor?)
+TESTSHEET
+          W W W W W
+          W E E E W
+          W E E E E
+          W E E E W
+          W W E W W
+W W W W W           W W W W W
+W E E E W           W E E E W
+W E E E E           G E E E E
+W E E E W           W E E E W
+W W E W W           W W E W W
+          W W W W W
+          W E E E W
+          W E B E E
+          W E E E W
+          W W S W W
+EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level00(differentcolor?)
+TESTSHEET
+          W E W E W
+          W E E E W
+          E E E E G
+          W E E E W
+          W S W S W
+W E W E W           W E W E W
+W E E E W           W E E E W
+E E E E W           E E E E W
+W E E E W           W E E E W
+W E W E W           W E W E W
+          W S W S W
+          W E E E W
+          E E B E W
+          W E E E W
+          W E W E W
+EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level00(differentcolor?)
+TESTSHEET
+          W E W E W
+          W E E E W
+          W E E E E
+          W E E E W
+          W S W S W
+W E W E W           W W W E W
+W E E E W           W E E E W
+W E E E E           W E E E E
+W E E E W           W E E E W
+W E W E W           W W W W W
+          W S W S W
+          W E E E W
+          G E B E E
+          W E E E W
+          W E W E W
+EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level00
+TESTSHEET
+          W E W E W
+          W W E E W
+          E E E E G
+          W E E E W
+          W S W S W
+W E W E W           W E W E W
+W E E E W           W E E E W
+E E E E W           E E E E W
+W W E E W           W E E E W
+W E W E W           W E W E W
+          W S W S W
+          W E E W W
+          E E B E W
+          W E E E W
+          W E W E W
+EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level00(payAttention,MultipleSolutions)
+TESTSHEET
+          W E W E W
+          W E E E W
+          W E E E E
+          W E E E W
+          W S W S W
+W E W E W           W E W E W
+W E E E W           W E E E W
+W E E E E           W E E E E
+W W W W W           W E E E W
+W E W E W           W E W E W
+          W S W S W
+          W E E E W
+          G E B E W
+          W E E E W
+          W E W E W
+EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level00(forcesSecondSolutionOfPreviousLevel)
+TESTSHEET
+          W E W E W
+          W E E E W
+          E E E E G
+          W E E E W
+          W S W S W
+W E W E W           W E W E W
+W E E E W           W W E E W
+E E E E W           E E E E W
+W E E E W           W W W W W
+W E W E W           W E W E W
+          W S W S W
+          W E E E W
+          E E B E W
+          W E E E W
+          W E W E W
+EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level00
+TESTSHEET
+          W E W W W
+          W E E E W
+          W E E E E
+          W E E E W
+          W S W S W
+W E W E W           W W W E W
+W E E E W           W E E E W
+W E E E E           W E E E E
+W E E E W           W E E E W
+W W W E W           W E W E W
+          W S W S W
+          W E E E W
+          G E B E E
+          W E E E W
+          W E W E W
+EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level00(differentcolor?)
+TESTSHEET
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+E E E E G           E E E E E
+E E E E E           E E E E E
+E E E E E           E B E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+          E E W S E
+          E E W E E
+          E E W E E
+          E E E E E
+          E E W E E
+EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level00(NOTEVENTESTEDPROBABLYBAD)
+TESTSHEET
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E S E E E
+E E E E E           E E E E E
+E E E E E           E E E B E
+E E E E E           E E E E E
+E E E E E           E E E B E
+E E E E E           G E E E E
+          E S W E E
+          E E E E E
+          E E W E E
+          E E E E E
+          E E W E E
+EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
 
 
 SET05level00(differentcolor?)

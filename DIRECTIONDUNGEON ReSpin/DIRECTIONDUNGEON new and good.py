@@ -883,7 +883,8 @@ for level in reversed(levels):
                         pygame.draw.rect(sideSurfs, plateLockColor, covRect)
 
 def notCover(dung, col, row):
-    if row == HEIGHT - 1:
+
+    if row == HEIGHT:
         return False
 
     if curLvl.tileAt(dung, col, row) == WALL:
@@ -1789,6 +1790,7 @@ while True:
                 for dung in range(4):
                     for goal in goals[dung]:
                         if notCover(dung, goal[0], goal[1]):
+
                             if notCover(dung, goal[0], goal[1] + 1):
                                 h = TILE
                             else:
@@ -1806,6 +1808,8 @@ while True:
                             rect = (GOALLOCK * TILE - TILE + SIDE, 0, w, h)
 
                             preDisplay.blit(curTileSheet.surface, (x, y), rect)
+
+
 
             # UNLOCK GOALS IF ANY PLATE IS UNCOVERED
             elif anim is animGoalUnlock:
@@ -1915,7 +1919,7 @@ while True:
 
 
         ### DEBUGGING ###
-        postDisplay.blit(curDungs, (0, 0))
+        # postDisplay.blit(curDungs, (0, 0))
 
         fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
         postDisplay.blit(fps, (10, 10))
