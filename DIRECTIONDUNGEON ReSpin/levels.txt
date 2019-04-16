@@ -1457,47 +1457,107 @@ W W W E W           W E W E W
 EMPTY LEFT UP RIGHT DOWN
 
 
-SET05level00(differentcolor?)
+SET05level00
 TESTSHEET
-          E E E E E
-          E E E E E
-          E E E E E
-          E E E E E
-          E E E E E
-E E E E G           E E E E E
-E E E E E           E E E E E
-E E E E E           E B E E E
-E E E E E           E E E E E
-E E E E E           E E E E E
-          E E W S E
-          E E W E E
-          E E W E E
-          E E E E E
-          E E W E E
+          W W E E E
+          W E E E E
+          G E P E P
+          W E E E E
+          W W E E E
+W W E E E           W W E E E
+W E E E E           W E E E E
+G E E E P           G E E E P
+W E E E E           W E E E E
+W W E E E           W W E E E
+          W W E E E
+          W E E E E
+          G E B E P
+          W E E E E
+          W W E E E
 EMPTY LEFT UP RIGHT DOWN
 
 
-SET05level00(NOTEVENTESTEDPROBABLYBAD)
+SET05level00
 TESTSHEET
-          E E E E E
-          E E E E E
-          E E E E E
-          E E E E E
-          E S E E E
-E E E E E           E E E E E
-E E E E E           E E E B E
-E E E E E           E E E E E
-E E E E E           E E E B E
-E E E E E           G E E E E
-          E S W E E
-          E E E E E
-          E E W E E
-          E E E E E
-          E E W E E
-EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+          W W E E E
+          W E E E E
+          G E E E P
+          W E E E E
+          W W E E E
+W W E E E           W W E E E
+W E E E E           W E E E E
+G E E E P           G E E E P
+W E E E E           W E E E E
+W W E E E           W W E E E
+          W W E E E
+          W E E E E
+          G E B W P
+          W E E E E
+          W W E E E
+EMPTY LEFT UP RIGHT DOWN
 
 
-SET05level00(differentcolor?)
+SET05level00
+TESTSHEET
+          W W E E S
+          W E E E E
+          G E E E E
+          W E E E E
+          W W E E S
+W W E E S           W W E E S
+W E E E E           W E E E E
+G E E E E           G E B W P
+W E E E E           W E E E E
+W W E E S           W W E E S
+          W W E E S
+          W E E E E
+          G E E E E
+          W E E E E
+          W W E E S
+EMPTY None None RIGHT None
+
+
+SET05level00
+TESTSHEET
+          W W E E E
+          W E E E E
+          G E E E E
+          W E E E E
+          W W E E E
+W W E E E           W W E E E
+W E E E E           W E S E E
+G E E E E           G E B W P
+W E E E E           W E S E E
+W W E E E           W W E E E
+          W W E E E
+          W E E E E
+          G E E E E
+          W E E E E
+          W W E E E
+EMPTY None None RIGHT None
+
+
+SET05level00(PROBABLYREMOVE)
+TESTSHEET
+          S E E E E
+          W W E E E
+          G E E E E
+          W W E E E
+          S E E E E
+S E E E E           S E E E E
+W W E E E           W W E E E
+G E E E E           G E B W P
+W W E E E           W W E E E
+S E E E E           S E E E E
+          S B E E E
+          W W E E E
+          G E E E E
+          W W E E E
+          S B E E E
+EMPTY None None RIGHT None   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level00(MULTIBLOCKPUSHING!)
 TESTSHEET
           W W E E E
           W E E E W
@@ -2154,4 +2214,63 @@ E E E E E           E E E E E
           E E B E E
           E E E E E
           E E E E E
+EMPTY LEFT UP RIGHT DOWN
+
+SET05level00
+TESTSHEET
+          E E E P G
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+E E E P G           E E E P G
+E E E E E           E E E E E
+E E E E E           E B E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+          E E W P G
+          E E W E E
+          E E W E E
+          E E E E E
+          E E W E E
+EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level00
+TESTSHEET
+          S E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+S E E E E           S E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+          S E W P E
+          E E W E E
+          E B W E E
+          E E E E E
+          E E W E E
+EMPTY None None DOWN None
+
+
+SET05level00(PROBABLYREMOVE)
+TESTSHEET
+          E E W E E
+          E E W E E
+          W E E E W
+          E E E E E
+          E S W E E
+E E W E E           E E W E E
+E E W E E           E E W E E
+W E E E W           W E E E W
+E E E E E           E E E B E
+E E W E E           G E W E E
+          E E W E E
+          E E W E E
+          W E E E W
+          E E E E E
+          E S W E E
 EMPTY LEFT UP RIGHT DOWN

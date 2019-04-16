@@ -305,10 +305,10 @@ class Animation:
             anim.resetAnim()
 
 # PLATE LOCKS
-animLockBox = Animation(6, RQUADRATIC, mult)
-animUnlockBox = Animation(6, LINEAR, mult)
-animGoalUnlock = Animation(6, RQUADRATIC, SIDE)
-animGoalLock = Animation(6, RQUADRATIC, SIDE)
+animLockBox = Animation(7, RQUADRATIC, mult)
+animUnlockBox = Animation(7, LINEAR, mult)
+animGoalUnlock = Animation(7, RQUADRATIC, SIDE)
+animGoalLock = Animation(7, RQUADRATIC, SIDE)
 
 
 ### PLAYER ANIMATIONS ###
@@ -829,7 +829,7 @@ postDisplay.fill((0, 255, 0))
 
 
 # levelNum can be changed later with the level select
-levelNum = 71
+levelNum = 73
 if levelNum == 0:
     initPlayer(RIGHT, 0, 2)
 
@@ -1240,6 +1240,9 @@ while True:
                 ghostAnim.frame = -1
 
                 animQueue.append(playAnim)
+
+            else:
+                moveBoxes = []
 
 
         # MOVE CAMERA EVEN IF YOU CAN'T MOVE IN THAT DIRECTION
@@ -1777,12 +1780,13 @@ while True:
                 for plate in platesToLock:
                     box = plate[1]
 
-                    h = math.floor(anim.value)
+                    if box not in moveBoxes:
+                        h = math.floor(anim.value)
 
-                    x = curLvl.x + curLvl.dungX[plate[0]] + box.col * TILE + mult
-                    y = curLvl.y + curLvl.dungY[plate[0]] + box.row * TILE + TILE + SIDE - mult + (mult - h)
+                        x = curLvl.x + curLvl.dungX[plate[0]] + box.col * TILE + mult
+                        y = curLvl.y + curLvl.dungY[plate[0]] + box.row * TILE + TILE + SIDE - mult + (mult - h)
 
-                    pygame.draw.rect(preDisplay, plateLockColor, (x, y, mult * 2, h))
+                        pygame.draw.rect(preDisplay, plateLockColor, (x, y, mult * 2, h))
 
             # LOCKS GOALS WHEN ALL PLATES ARE COVERED
             elif anim is animGoalLock:
@@ -1812,7 +1816,7 @@ while True:
 
 
             # UNLOCK GOALS IF ANY PLATE IS UNCOVERED
-            elif anim is animGoalUnlock:
+            elif anim is animGoalUnlock and anim.frame:
                 w = math.ceil(SIDE - anim.value)
                 for dung in range(4):
                     for goal in goals[dung]:
@@ -1850,10 +1854,11 @@ while True:
 
                     # UPDATES THE LOCKEDNESS OF ALL BOXES
                     for box in curLvl.boxes:
-                        for dung in range(4):
-                            if box.dungs[dung]:
-                                if curLvl.tileAt(dung, box.col, box.row) == PLATE:
-                                    box.locked[dung] = True
+                        if box not in moveBoxes:
+                            for dung in range(4):
+                                if box.dungs[dung]:
+                                    if curLvl.tileAt(dung, box.col, box.row) == PLATE:
+                                        box.locked[dung] = True
 
                     # CLEARS ALL PLATES THAT NEED TO BE LOCKED
                     platesToLock = []
@@ -1925,13 +1930,13 @@ while True:
         postDisplay.blit(fps, (10, 10))
 
         debug1 = TAHOMA.render(str(curLvl.locked), False, (255, 255, 255))
-        #debug2 = TAHOMA.render(repr(animSameTime), False, (255, 255, 255))
-        #debug3 = TAHOMA.render(repr(curLvl.boxes[0].locked), False, (255, 255, 255))
+        debug2 = TAHOMA.render(repr(animUnlockBox.frame), False, (255, 255, 255))
+        debug3 = TAHOMA.render(repr(curLvl.boxes[0].locked), False, (255, 255, 255))
         debug4 = TAHOMA.render(str(levelNum) + " " + str(levelNum * 20), False, (255, 255, 255))
 
         postDisplay.blit(debug1, (10, 20))
-        #postDisplay.blit(debug2, (10, 30))
-        #postDisplay.blit(debug3, (10, 40))
+        postDisplay.blit(debug2, (10, 30))
+        postDisplay.blit(debug3, (10, 40))
         postDisplay.blit(debug4, (10, 50))
 
         if debugPressed:
