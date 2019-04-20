@@ -857,26 +857,6 @@ E E E E E           E E W E E
 
 
 
-SET03level??
-TESTSHEET
-          E W S W E
-          E W E W E
-          E E E E E
-          E E E E E
-          W W W W W
-E W E W E           E W E W E
-E W E W E           E W E W E
-E E E E E           E E E E E
-E E E E E           E E E E E
-W W W W W           W W G W W
-          E W E W E
-          E W E W E
-          E E E E E
-          E E E E E
-          W W W W W
-
-
-
 SET03level??(Here'sTheSwirlLevel)
 TESTSHEET
           E W S W E
@@ -894,6 +874,7 @@ W W W W W           W W W W W
           E E E E E
           E E E E E
           W W W W W
+
 
 
 SET03level11
@@ -1256,41 +1237,40 @@ E W W W S           E W W W S
 
 
 
+SET05level00(differentcolor?)
+TESTSHEET
+          G E E E E
+          E W W W E
+          E W E W E
+          E W W W E
+          E E E E E
+E E E E E           E E E E E
+E W W W E           E W W W E
+E W E W E           E W B W E
+E W W W E           E W W W E
+E E E E E           E E E E E
+          E E E E E
+          W W W W E
+          E W E W E
+          E W W W E
+          E E E E E
+EMPTY LEFT UP RIGHT DOWN
+
 
 SET05level00(differentcolor?)
 TESTSHEET
-          W W W W W
-          W W W W W
-          W W W W W
-          W W W W W
-          W W W W W
-W W W W W           E E E E G
-W W W W W           W W W W W
-W W W W W           W W W W W
-W W W W W           W W W W W
-W W W W W           W W W W W
-          W W W W W
-          W W W W W
-          W W W W W
-          W W W W W
-          W W W W W
-
-
-
-SET05level00(differentcolor?)
-TESTSHEET
-          W W W E E
-          W E E E E
+          E E W W W
+          E E E E W
           W E E E W
           W E E E W
           W W W W W
-W W W E E           W W W E E
-W E E E E           W E E E E
-G E E E W           W E E E W
+E E W W W           E E W W W
+E E E E W           E E E E W
+W E E E W           W E E E G
 W E E E W           W E E E W
 W W W W W           W W W W W
-          W W W E E
-          W E B E E
+          E E W W W
+          E E B E W
           W E B E W
           W E B E W
           W W W W W
@@ -1299,19 +1279,99 @@ EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
 
 SET05level00(differentcolor?)
 TESTSHEET
+          W W E W W
+          W W E E W
+          S E E E E
+          W W E E W
+          W W E W W
+W W G W W           W W E W W
+W W E E W           W W E E W
+S E E E E           S E E E E
+W W E E W           W W E E W
+W W E W W           W W E W W
+          W W E W W
+          W W E E W
+          S B E E E
+          W W E E W
+          W W E W W
+EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level01
+TESTSHEET
+          W W E W W
+          W E E E W
+          S E E E S
+          W E E E W
+          W W G W W
+W W E W W           W W E W W
+W E E E W           W E E E W
+S E E E S           S E E E S
+W E E E W           W E E E W
+W W E W W           W W E W W
+          W W E W W
+          W E E E W
+          S B E B S
+          W E E E W
+          W W E W W
+EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level02
+TESTSHEET
+          W W E W W
+          W E E E W
+          S E E E S
+          W E E E W
+          W W E W W
+W W E W W           W W G W W
+W E E E W           W E E E W
+S E E E S           S E E E S
+W E E E W           W E E E W
+W W E W W           W W E W W
+          W W E W W
+          W E E E W
+          S B E B S
+          W E E E W
+          W W E W W
+EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level03(clever)
+TESTSHEET
+          W W E W W
+          E E E E E
+          S E E E S
+          E E E E E
+          W W E W W
+W W E W W           W W E W W
+W W E W W           W W E W W
+S E E E S           S E E E S
+W W E W W           W W E W W
+W W G W W           W W E W W
+          W W E W W
+          E E E E E
+          S B E B S
+          E E E E E
+          W W E W W
+EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level00(differentcolor?)
+TESTSHEET
           W W W W W
           W E E E W
-          E E E E G
+          W E E E G
           W E E E W
           W W S W W
 W W W W W           W W W W W
 W E E E W           W E E E W
-E E E E W           E E E E W
+W E E E W           E E E E W
 W E E E W           W E E E W
 W W E W W           W W E W W
           W W W W W
           W E E E W
-          E E B E W
+          W E B E W
           W E E E W
           W W E W W
 EMPTY LEFT UP RIGHT DOWN
@@ -1461,7 +1521,7 @@ SET05level00
 TESTSHEET
           W W E E E
           W E E E E
-          G E P E P
+          G E E E P
           W E E E E
           W W E E E
 W W E E E           W W E E E
@@ -1537,125 +1597,285 @@ W W E E E           W W E E E
 EMPTY None None RIGHT None
 
 
-SET05level00(PROBABLYREMOVE)
+SET05level00
 TESTSHEET
           S E E E E
-          W W E E E
-          G E E E E
-          W W E E E
+          W E E E E
+          G E B W P
+          W E E E E
           S E E E E
 S E E E E           S E E E E
-W W E E E           W W E E E
-G E E E E           G E B W P
-W W E E E           W W E E E
+W E E E E           W E E E E
+G E E E E           G E E E E
+W E E E E           W E E E E
 S E E E E           S E E E E
           S B E E E
-          W W E E E
+          W E E E E
           G E E E E
-          W W E E E
+          W E E E E
           S B E E E
-EMPTY None None RIGHT None   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+EMPTY None UP None None   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level00
+TESTSHEET
+          S E E E E
+          W E E E E
+          G E B W P
+          W E E E E
+          S E E E E
+S E E E E           S E E E E
+W E E E E           W E E E E
+G E E W P           G E E E E
+W E E E E           W E E E E
+S E E E E           S E E E E
+          S B E E E
+          W E E E E
+          G E E W P
+          W E E E E
+          S B E E E
+EMPTY LEFT UP None DOWN   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level00
+TESTSHEET
+          E E E E E
+          W E E E E
+          G E B W P
+          W E E E E
+          S E E E E
+E E E E E           E E E E E
+W E E E E           W E E E E
+G E E W P           G E E E E
+W E E E E           W E E E E
+S E E E E           S E E E E
+          E E E E E
+          W E E E E
+          G E E W P
+          W E E E E
+          S B E E E
+EMPTY LEFT UP None DOWN   EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level00
+TESTSHEET
+          S E E E E
+          W E E E E
+          G E E E E
+          W E E E E
+          S E E E E
+S E E E E           S E E E E
+W E E E E           W E E E E
+G E B W P           G E E E E
+W E E E E           W E E E E
+S E E E E           S E E E E
+          S B E E E
+          W E E E E
+          G E E W P
+          W E E E E
+          S B E E E
+EMPTY LEFT None None DOWN   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level??
+TESTSHEET
+          G E E E P
+          E E E E E
+          E E B E E
+          E E E E E
+          E E E E E
+G E E E E           G E E E P
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+P E E E E           E E E E E
+          G E E E E
+          E E E E E
+          E E B E E
+          E E E E E
+          P E E E E
+EMPTY None UP RIGHT None   EMPTY LEFT None None DOWN
+
+
+SET05level??
+TESTSHEET
+          G E E E P
+          E E E E E
+          E E B E E
+          E E E E E
+          E E E E S
+G E E E P           G E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E S           P E E E S
+          G E E E E
+          E E E E E
+          E E B E E
+          E E E E E
+          P E E E S
+EMPTY LEFT UP None None   EMPTY None None RIGHT DOWN
+
+
+SET05level??
+TESTSHEET
+          E E E E E
+          E E E E E
+          G E B E S
+          E E E E E
+          E E P E E
+E E P E E           E E P E E
+E E E E E           E E E E E
+G E E E S           G E E E S
+E E E E E           E E E E E
+E E E E E           E E E E E
+          E E P E E
+          E E E E E
+          G E B E S
+          E E E E E
+          E E E E E
+EMPTY None UP None None   EMPTY LEFT None RIGHT DOWN
+
+
+SET05level00(SOMEWEIRDREGULARSOKOBANLEVEL)
+TESTSHEET
+          W W W W W
+          E B B E E
+          E B B E E
+          E B B E E
+          W W W W W
+W W W W W           W W W W W
+E E E E E           E E E E E
+E E E E E           E E E E G
+E E E E E           E E E E E
+W W W W W           W W W W W
+          W W W W W
+          E E E E E
+          E E E E E
+          E E E E E
+          W W W W W
+EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+
+SET05level??
+TESTSHEET
+          E E E E E
+          E E E E E
+          G E E E E
+          E E E E E
+          E E P E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+G E E E E           G E E E E
+E E E E E           E E E E E
+E E P E E           E E P E E
+          E E P E E
+          E E B E E
+          G E E E E
+          E E B E E
+          E E P E E
+EMPTY None None None DOWN   EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level??(hard)
+TESTSHEET
+          E E E E E
+          E E B E E
+          E E E E G
+          P E E E E
+          E P E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E G           E E E B G
+P E E E E           P E E E E
+E E E E E           E P E E E
+          E E E E E
+          E E E E E
+          E E E E G
+          E E E E E
+          E P E E E
+EMPTY None UP RIGHT DOWN   EMPTY LEFT UP RIGHT None
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 SET05level00(MULTIBLOCKPUSHING!)
 TESTSHEET
-          W W E E E
-          W E E E W
           E E E E E
-          W E E E W
-          W W E E E
-W W E E E           W W E B E
-W E E E W           W E E B W
+          E E E E W
+          E E E E E
+          E E E E W
+          E E E E E
+E E E E E           E E E B E
+E E E E W           E E E B W
 E E E E E           E E E B G
-W E E E W           W E E B W
-W W E E E           W W E E E
-          W W E E E
-          W E E E W
+E E E E W           E E E B W
+E E E E E           E E E E E
           E E E E E
-          W E E E W
-          W W E E E
+          E E E E W
+          E E E E E
+          E E E E W
+          E E E E E
 EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
 EMPTY LEFT UP RIGHT DOWN
 
-SET05level00(differentcolor?)
+SET05level00
 TESTSHEET
-          W W E W W
-          W W E E W
-          S E E E E
-          W W E E W
-          W W E W W
-W W G W W           W W E W W
-W W E E W           W W E E W
-S E E E E           S E E E E
-W W E E W           W W E E W
-W W E W W           W W E W W
-          W W E W W
-          W W E E W
-          S B E E E
-          W W E E W
-          W W E W W
-EMPTY LEFT UP RIGHT DOWN
+          E B E E E
+          W B E E E
+          E B E E E
+          W B E E E
+          E E E E E
+E E E E E           E E E E E
+W E E E E           W E E E E
+G E E E E           E E E E E
+W E E E E           W E E E E
+E E E E E           E E E E E
+          E E E E E
+          W E E E E
+          E E E E E
+          W E E E E
+          E E E E E
+EMPTY None UP RIGHT DOWN   EMPTY None UP RIGHT DOWN   EMPTY None UP RIGHT DOWN
+EMPTY None UP RIGHT DOWN
 
-
-SET05level01
+SET05level00
 TESTSHEET
-          W W E W W
-          W E E E W
-          S E E E S
-          W E E E W
-          W W G W W
-W W E W W           W W E W W
-W E E E W           W E E E W
-S E E E S           S E E E S
-W E E E W           W E E E W
-W W E W W           W W E W W
-          W W E W W
-          W E E E W
-          S B E B S
-          W E E E W
-          W W E W W
-EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
-
-
-SET05level02
-TESTSHEET
-          W W E W W
-          W E E E W
-          S E E E S
-          W E E E W
-          W W E W W
-W W E W W           W W G W W
-W E E E W           W E E E W
-S E E E S           S E E E S
-W E E E W           W E E E W
-W W E W W           W W E W W
-          W W E W W
-          W E E E W
-          S B E B S
-          W E E E W
-          W W E W W
-EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
-
-
-SET05level03(clever)
-TESTSHEET
-          W W E W W
           E E E E E
-          S E E E S
+          E E E E W
           E E E E E
-          W W E W W
-W W E W W           W W E W W
-W W E W W           W W E W W
-S E E E S           S E E E S
-W W E W W           W W E W W
-W W G W W           W W E W W
-          W W E W W
+          E E E E W
           E E E E E
-          S B E B S
+E E E E E           E E E B E
+E E E E W           E E E B W
+E E E E E           E E E B G
+E E E E W           E E E B W
+E E E E E           E E E B E
           E E E E E
-          W W E W W
-EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
-
+          E E E E W
+          E E E E E
+          E E E E W
+          E E E E E
+EMPTY LEFT UP RIGHT None   EMPTY LEFT UP RIGHT None   EMPTY LEFT UP RIGHT None
+EMPTY LEFT UP RIGHT None   EMPTY LEFT UP RIGHT None
 
 SET05level05(PlateIntro)
 TESTSHEET
@@ -1895,46 +2115,6 @@ E E E E E           E E E E E
           E E E E E
           E E E E E
 GOAL LEFT UP RIGHT DOWN
-
-
-SET05level??
-TESTSHEET
-          E E E E P
-          E E E E E
-          E E B E E
-          E E E E E
-          E E E E E
-E E E E E           E E E E P
-E E E E E           E E E E E
-G E E E E           E E E E E
-E E E E E           E E E E E
-P E E E E           E E E E E
-          E E E E E
-          E E E E E
-          E E B E E
-          E E E E E
-          P E E E E
-EMPTY None UP RIGHT None   EMPTY LEFT None None DOWN
-
-SET05level??
-TESTSHEET
-          E E E E E
-          E E E E E
-          E E B E S
-          E E E E E
-          E E P E E
-E E P E E           E E P E E
-E E E E E           E E E E E
-G E E E E           E E E E E
-B E E E E           E E E E E
-E E E E E           E E E E E
-          E E P E E
-          E E E E E
-          E E B E S
-          E E E E E
-          E E E E E
-EMPTY None UP None None   EMPTY LEFT UP None DOWN   EMPTY LEFT None RIGHT DOWN
-
 
 
 SET05boxtest

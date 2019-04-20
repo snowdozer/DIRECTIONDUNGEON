@@ -714,8 +714,6 @@ def drawNextShadow(surf, dung, x, y, shadowOffset):
 
 
 def drawObjs(surf, dung, x, y, drawPlayer):
-    walls = []
-
     for goal in goals[dung]:
         goalX = x + goal[0] * TILE
         goalY = y + goal[1] * TILE + SIDE
@@ -757,6 +755,7 @@ def drawObjs(surf, dung, x, y, drawPlayer):
 
     ### OBJECTS ###
     for row in objBuff:
+        walls = []
         for obj in row:
             isPlayer = obj is player
             if (not isPlayer and obj.dungs[dung] != None) or (isPlayer and drawPlayer):
@@ -806,15 +805,14 @@ def drawObjs(surf, dung, x, y, drawPlayer):
 
                     pygame.draw.rect(surf, plateLockColor, (lockX, lockY, mult * 2, mult))
 
-    for wall in walls:
+        for wall in walls:
+            if curLvl.tileAt(dung, wall[0], wall[1]) == WALL:
+                wallX = x + wall[0] * TILE
+                wallY = y + wall[1] * TILE
+                var = curLvl.tileVars[dung][wall[0]][wall[1]]
 
-        if curLvl.tileAt(dung, wall[0], wall[1]) == WALL:
-            wallX = x + wall[0] * TILE
-            wallY = y + wall[1] * TILE
-            var = curLvl.tileVars[dung][wall[0]][wall[1]]
-
-            # error drawing this wall
-            curTileSheet.drawTile(surf, (wallX, wallY), WALL, var)
+                # error drawing this wall
+                curTileSheet.drawTile(surf, (wallX, wallY), WALL, var)
 
 
 
@@ -829,7 +827,7 @@ postDisplay.fill((0, 255, 0))
 
 
 # levelNum can be changed later with the level select
-levelNum = 73
+levelNum = 87
 if levelNum == 0:
     initPlayer(RIGHT, 0, 2)
 
@@ -882,10 +880,10 @@ for level in reversed(levels):
                                    mult * 2, mult)
                         pygame.draw.rect(sideSurfs, plateLockColor, covRect)
 
-def notCover(dung, col, row):
+def notCover(dung, col, row, skipPlayer = False):
 
     if row == HEIGHT:
-        return False
+        return True
 
     if curLvl.tileAt(dung, col, row) == WALL:
         return False
@@ -894,8 +892,9 @@ def notCover(dung, col, row):
         if box.dungs[dung] and box.col == col and box.row == row:
             return False
 
-    if player.dung == dung and player.col == col and player.row == row:
-        return False
+    if not skipPlayer:
+        if player.dung == dung and player.col == col and player.row == row:
+            return False
 
     return True
 
@@ -1171,7 +1170,6 @@ while True:
                         preDisplay.blit(curDungs, (curLvl.dungX[dung], curLvl.dungY[dung]), alignRects[dung])
 
                         drawObjs(preDisplay, dung, curLvl.dungX[dung], curLvl.dungY[dung], True)
-
 
 
 
@@ -1604,12 +1602,13 @@ while True:
                 preDisplay.blit(curDungs, (x, y), rect)
 
                 for box in curLvl.boxes:
-                    if box.col == player.col:
+                    if box.col == player.col and box.dungs[dung]:
                         x = curLvl.x + curLvl.dungX[dung] + box.col * TILE
                         y = curLvl.y + curLvl.dungY[dung] + box.row * TILE
                         curTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
-                        if notCover(dung, box.col, box.row + 1):
+                        if notCover(dung, box.col, box.row + 1, True):
                             curTileSheet.drawTile(preDisplay, (x, y + TILE), BOXSIDE, box.variant)
+
 
                 # draws block on next level below player
                 if player.row == HEIGHT - 1:
@@ -1685,7 +1684,7 @@ while True:
 
                 # FIXES BOXES BEING CUT OFF BY SHADOW
                 for box in nexLvl.boxes:
-                    if box.row == 0:
+                    if box.row == 0 and box.dungs[dung]:
                         x = nexLvl.dungX[dung] + box.col * TILE
                         y = nexLvl.dungY[dung] + nexLvl.y
                         nexTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
@@ -1817,7 +1816,7 @@ while True:
 
             # UNLOCK GOALS IF ANY PLATE IS UNCOVERED
             elif anim is animGoalUnlock and anim.frame:
-                w = math.ceil(SIDE - anim.value)
+                w = math.floor(SIDE - anim.value)
                 for dung in range(4):
                     for goal in goals[dung]:
                         if notCover(dung, goal[0], goal[1]):
@@ -1924,19 +1923,19 @@ while True:
 
 
         ### DEBUGGING ###
-        # postDisplay.blit(curDungs, (0, 0))
+        #postDisplay.blit(nexDungs, (0, 0))
 
         fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
         postDisplay.blit(fps, (10, 10))
 
         debug1 = TAHOMA.render(str(curLvl.locked), False, (255, 255, 255))
         debug2 = TAHOMA.render(repr(animUnlockBox.frame), False, (255, 255, 255))
-        debug3 = TAHOMA.render(repr(curLvl.boxes[0].locked), False, (255, 255, 255))
+        #debug3 = TAHOMA.render(repr(curLvl.boxes[0].locked), False, (255, 255, 255))
         debug4 = TAHOMA.render(str(levelNum) + " " + str(levelNum * 20), False, (255, 255, 255))
 
         postDisplay.blit(debug1, (10, 20))
         postDisplay.blit(debug2, (10, 30))
-        postDisplay.blit(debug3, (10, 40))
+        #postDisplay.blit(debug3, (10, 40))
         postDisplay.blit(debug4, (10, 50))
 
         if debugPressed:
