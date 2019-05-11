@@ -1780,7 +1780,7 @@ while True:
                     box = plate[1]
 
                     if box not in moveBoxes:
-                        h = math.floor(anim.value)
+                        h = math.ceil(anim.value)
 
                         x = curLvl.x + curLvl.dungX[plate[0]] + box.col * TILE + mult
                         y = curLvl.y + curLvl.dungY[plate[0]] + box.row * TILE + TILE + SIDE - mult + (mult - h)
