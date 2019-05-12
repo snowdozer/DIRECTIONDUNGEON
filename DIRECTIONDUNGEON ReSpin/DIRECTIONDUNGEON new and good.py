@@ -1601,6 +1601,7 @@ while True:
 
                 preDisplay.blit(curDungs, (x, y), rect)
 
+                # draws all boxes on the column
                 for box in curLvl.boxes:
                     if box.col == player.col and box.dungs[dung]:
                         x = curLvl.x + curLvl.dungX[dung] + box.col * TILE
@@ -1608,6 +1609,10 @@ while True:
                         curTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
                         if notCover(dung, box.col, box.row + 1, True):
                             curTileSheet.drawTile(preDisplay, (x, y + TILE), BOXSIDE, box.variant)
+
+                            if curLvl.tileAt(dung, box.col, box.row) == PLATE:
+                                rect = (x + mult, y + TILE + mult, mult*2, mult)
+                                pygame.draw.rect(preDisplay, plateLockColor, rect)
 
 
                 # draws block on next level below player
