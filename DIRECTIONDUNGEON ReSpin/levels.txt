@@ -1779,26 +1779,6 @@ EMPTY None None None DOWN
 
 SET05level??
 TESTSHEET
-          E E P E E
-          E E E E E
-          G E B E S
-          E E E E E
-          E E E E E
-E E P E E           E E P E E
-E E E E E           E E E E E
-G E B E S           G E B E S
-E E E E E           E E E E E
-E E E E E           E E E E E
-          E E P E E
-          E E E E E
-          G E B E S
-          E E E E E
-          E E E E E
-EMPTY None UP None None   EMPTY LEFT None None None   EMPTY None None RIGHT None
-EMPTY None None None DOWN
-
-SET05level??
-TESTSHEET
           E E E P E
           E E E E E
           G E B E S
@@ -1816,6 +1796,46 @@ E E E E E           E E E E E
           E E E E E
 EMPTY None UP None None   EMPTY LEFT None None None   EMPTY None None RIGHT None
 EMPTY None None None DOWN
+
+SET05level??(scrapmaybe)
+TESTSHEET
+          S E P E E
+          E W B W E
+          P B E B P
+          E W B W E
+          G E P E E
+S E E E E           S E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+          S E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+EMPTY None UP None None   EMPTY None UP None None   EMPTY None UP None None
+EMPTY None UP None None
+
+SET05level??
+TESTSHEET
+          G W W W W
+          E W W W W
+          E W W W W
+          E E S S P
+          E W W W W
+G W W W W           G W W W W
+E E S S P           E B S S P
+E W W W W           E W W W W
+E E S S P           E B S S P
+E W W W W           E W W W W
+          G W W W W
+          E E S S P
+          E W W W W
+          E E S S P
+          E W W W W
+EMPTY LEFT None RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+
 
 SET05level00(SOMEWEIRDREGULARSOKOBANLEVEL)
 TESTSHEET
