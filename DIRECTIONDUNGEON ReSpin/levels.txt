@@ -1226,9 +1226,9 @@ TESTSHEET
           W W W W W
 S S S S S           W W W W W
 S S S S S           W W W W W
-S S S S S           W W E W W
+S S G S S           W W E W W
 S S S S S           W W W W W
-G S S S S           W W W W W
+E S S S S           W W W W W
           S S S S S
           S S S S S
           S S S S S
@@ -1796,6 +1796,81 @@ E E E E E           E E E E E
           E E E E E
 EMPTY None UP None None   EMPTY LEFT None None None   EMPTY None None RIGHT None
 EMPTY None None None DOWN
+
+SET05level??(9blocks)
+TESTSHEET
+          G E E E P
+          E B B B E
+          E B B B E
+          E B B B E
+          E E E E E
+G E E E P           G E E E P
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+          G E E E P
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+EMPTY None UP RIGHT DOWN   EMPTY LEFT UP None DOWN    EMPTY LEFT UP None DOWN
+EMPTY LEFT UP RIGHT DOWN   EMPTY None None RIGHT DOWN EMPTY LEFT UP RIGHT None
+EMPTY None UP None DOWN    EMPTY LEFT UP RIGHT None   EMPTY LEFT None RIGHT DOWN
+SET05level??(9blocks2)
+TESTSHEET
+          G E E E P
+          E B B B E
+          E B B B E
+          E B B B E
+          E E E E E
+G E E E P           G E E E P
+E B B B E           E E E E E
+E B B B E           E E E E E
+E B B B E           E E E E E
+E E E E E           E E E E E
+          G E E E P
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+EMPTY LEFT UP None None    EMPTY LEFT UP None None    EMPTY LEFT UP None None
+EMPTY LEFT UP None None    EMPTY None UP RIGHT None    EMPTY LEFT UP None None
+EMPTY LEFT UP None None    EMPTY LEFT UP None None    EMPTY LEFT UP None None
+
+EMPTY None None RIGHT DOWN EMPTY None None RIGHT DOWN EMPTY None None RIGHT DOWN
+EMPTY None None RIGHT DOWN EMPTY LEFT None None DOWN EMPTY None None RIGHT DOWN
+EMPTY None None RIGHT DOWN EMPTY None None RIGHT DOWN EMPTY None None RIGHT DOWN
+
+
+SET05level??(9blocks2)
+TESTSHEET
+          G E E E P
+          E B B B E
+          E B B B E
+          E B B B E
+          E E E E E
+G E E E P           G E E E P
+E B B B E           E E E E E
+E B B B E           E E E E E
+E B B B E           E E E E E
+E E E E E           E E E E E
+          G E E E P
+          E E B E E
+          E E B E E
+          E B E E E
+          E E E E E
+EMPTY LEFT UP None DOWN    EMPTY None None RIGHT None EMPTY LEFT UP None None
+EMPTY LEFT None None None  EMPTY None None RIGHT DOWN EMPTY LEFT UP RIGHT None
+EMPTY LEFT None RIGHT None EMPTY None UP RIGHT None EMPTY None UP None None
+
+EMPTY None None RIGHT None EMPTY None UP None None    EMPTY None None RIGHT DOWN
+EMPTY None UP RIGHT DOWN   EMPTY LEFT None None None  EMPTY None None None DOWN
+EMPTY None None None DOWN  EMPTY LEFT None None DOWN    EMPTY LEFT None RIGHT DOWN
+
+                           EMPTY LEFT None None DOWN
+                           EMPTY None UP None None
+EMPTY None UP None None
 
 SET05level??(scrapmaybe)
 TESTSHEET
