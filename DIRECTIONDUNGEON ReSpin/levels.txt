@@ -1797,119 +1797,44 @@ E E E E E           E E E E E
 EMPTY None UP None None   EMPTY LEFT None None None   EMPTY None None RIGHT None
 EMPTY None None None DOWN
 
-SET05level??(9blocks)
+SET05LEVEL??(YEAH)
 TESTSHEET
-          G E E E P
-          E B B B E
-          E B B B E
-          E B B B E
-          E E E E E
-G E E E P           G E E E P
-E E E E E           E E E E E
-E E E E E           E E E E E
-E E E E E           E E E E E
-E E E E E           E E E E E
-          G E E E P
+          S E E E S
           E E E E E
           E E E E E
           E E E E E
+          S E E E S
+S E P E S           W W W W W
+E E B E E           W W W W W
+P B G B P           W W W W W
+E E B E E           W W W W W
+S E P E S           W W W W W
+          S E E E S
           E E E E E
-EMPTY None UP RIGHT DOWN   EMPTY LEFT UP None DOWN    EMPTY LEFT UP None DOWN
-EMPTY LEFT UP RIGHT DOWN   EMPTY None None RIGHT DOWN EMPTY LEFT UP RIGHT None
-EMPTY None UP None DOWN    EMPTY LEFT UP RIGHT None   EMPTY LEFT None RIGHT DOWN
-SET05level??(9blocks2)
+          E E E E E
+          E E E E E
+          S E E E S
+EMPTY LEFT None None None  EMPTY LEFT None None None  EMPTY LEFT None None None
+EMPTY LEFT None None None
+
+SET05LEVEL??
 TESTSHEET
-          G E E E P
-          E B B B E
-          E B B B E
-          E B B B E
-          E E E E E
-G E E E P           G E E E P
-E B B B E           E E E E E
-E B B B E           E E E E E
-E B B B E           E E E E E
-E E E E E           E E E E E
-          G E E E P
-          E E E E E
-          E E E E E
-          E E E E E
-          E E E E E
-EMPTY LEFT UP None None    EMPTY LEFT UP None None    EMPTY LEFT UP None None
-EMPTY LEFT UP None None    EMPTY None UP RIGHT None    EMPTY LEFT UP None None
-EMPTY LEFT UP None None    EMPTY LEFT UP None None    EMPTY LEFT UP None None
-
-EMPTY None None RIGHT DOWN EMPTY None None RIGHT DOWN EMPTY None None RIGHT DOWN
-EMPTY None None RIGHT DOWN EMPTY LEFT None None DOWN EMPTY None None RIGHT DOWN
-EMPTY None None RIGHT DOWN EMPTY None None RIGHT DOWN EMPTY None None RIGHT DOWN
-
-
-SET05level??(9blocks2)
-TESTSHEET
-          G E E E P
-          E B B B E
-          E B B B E
-          E B B B E
-          E E E E E
-G E E E P           G E E E P
-E B B B E           E E E E E
-E B B B E           E E E E E
-E B B B E           E E E E E
-E E E E E           E E E E E
-          G E E E P
-          E E B E E
-          E E B E E
-          E B E E E
-          E E E E E
-EMPTY LEFT UP None DOWN    EMPTY None None RIGHT None EMPTY LEFT UP None None
-EMPTY LEFT None None None  EMPTY None None RIGHT DOWN EMPTY LEFT UP RIGHT None
-EMPTY LEFT None RIGHT None EMPTY None UP RIGHT None EMPTY None UP None None
-
-EMPTY None None RIGHT None EMPTY None UP None None    EMPTY None None RIGHT DOWN
-EMPTY None UP RIGHT DOWN   EMPTY LEFT None None None  EMPTY None None None DOWN
-EMPTY None None None DOWN  EMPTY LEFT None None DOWN    EMPTY LEFT None RIGHT DOWN
-
-                           EMPTY LEFT None None DOWN
-                           EMPTY None UP None None
-EMPTY None UP None None
-
-SET05level??(scrapmaybe)
-TESTSHEET
-          S E P E E
-          E W B W E
-          P B E B P
-          E W B W E
-          G E P E E
-S E E E E           S E E E E
-E E E E E           E E E E E
-E E E E E           E E E E E
-E E E E E           E E E E E
-E E E E E           E E E E E
-          S E E E E
-          E E E E E
-          E E E E E
-          E E E E E
-          E E E E E
-EMPTY None UP None None   EMPTY None UP None None   EMPTY None UP None None
-EMPTY None UP None None
-
-SET05level??
-TESTSHEET
-          G W W W W
-          E W W W W
-          E W W W W
-          E E S S P
-          E W W W W
-G W W W W           G W W W W
-E E S S P           E B S S P
-E W W W W           E W W W W
-E E S S P           E B S S P
-E W W W W           E W W W W
-          G W W W W
-          E E S S P
-          E W W W W
-          E E S S P
-          E W W W W
-EMPTY LEFT None RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+          W W W W W
+          W W W W W
+          E E E E S
+          W W W W W
+          W W W W W
+W W W W W           W W W W W
+W W W W W           W W W W W
+G B E E S           E E E E S
+W W W W W           W W W W W
+W W W W W           W W W W W
+          W W W W W
+          W W W W W
+          E E E E S
+          W W W W W
+          W W W W W
+EMPTY LEFT None None None
 
 
 SET05level00(SOMEWEIRDREGULARSOKOBANLEVEL)
@@ -1931,6 +1856,26 @@ W W W W W           W W W W W
           W W W W W
 EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
 EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+
+SET05level??
+TESTSHEET
+          E E E E E
+          E E E E E
+          G E E E E
+          E E E E E
+          E E P E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+G E E E E           G E E E E
+E E E E E           E E E E E
+E E P E E           E E P E E
+          E E P E E
+          E E B E E
+          G E E E E
+          E E B E E
+          E E P E E
+EMPTY None None None DOWN   EMPTY LEFT UP RIGHT DOWN
+
 
 SET05level00
 TESTSHEET
@@ -1956,66 +1901,6 @@ SET05level??
 TESTSHEET
           E E E E E
           E E E E E
-          G E E E E
-          E E E E E
-          E E P E E
-E E E E E           E E E E E
-E E E E E           E E E E E
-G E E E E           G E E E E
-E E E E E           E E E E E
-E E P E E           E E P E E
-          E E P E E
-          E E B E E
-          G E E E E
-          E E B E E
-          E E P E E
-EMPTY None None None DOWN   EMPTY LEFT UP RIGHT DOWN
-
-
-SET05level??
-TESTSHEET
-          E E E E E
-          E W E W E
-          P E E E E
-          E W E W E
-          E E G E E
-E E E E E           E E E E E
-E W E W E           E W E W E
-P E E E E           P B E B P
-E W E W E           E W E W E
-E E G E E           E E G E E
-          E E E E E
-          E W E W E
-          P E E E E
-          E W E W E
-          E E G E E
-EMPTY None None RIGHT None   EMPTY LEFT UP RIGHT DOWN
-
-
-SET05level??
-TESTSHEET
-          E E E E E
-          E W E W E
-          P E E E E
-          E W E W E
-          E E G E E
-E E E E E           E E E E E
-E W E W E           E W E W E
-E E E E E           P B E B P
-E W E W E           E W E W E
-E E G E E           E E G E E
-          E E E E E
-          E W E W E
-          E E E E E
-          E W E W E
-          E E G E E
-EMPTY None None RIGHT None   EMPTY LEFT UP None None
-
-
-SET05level??
-TESTSHEET
-          E E E E E
-          E E E E E
           E B E B G
           E E E E E
           E E E E E
@@ -2031,6 +1916,26 @@ E E E E E           E E E E E
           E E E E E
 EMPTY None UP None DOWN   EMPTY LEFT None None DOWN
 
+
+SET??LEVEL??(GOODBUTEASY,NEEDSTOBEEARLIER)
+TESTSHEET
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+E E E E E           E E E P E
+E E E E E           P E B E E
+E E E E E           E B G B E
+E E E E E           E E B E P
+E E E E E           E P E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+EMPTY None None RIGHT DOWN EMPTY None None RIGHT None EMPTY LEFT None RIGHT None
+EMPTY None UP RIGHT None
 
 SET05level??(hard)
 TESTSHEET
@@ -2052,6 +1957,46 @@ E E E E E           E P E E E
 EMPTY None UP RIGHT DOWN   EMPTY LEFT UP RIGHT None
 
 
+SET05level??(9blocks)(good)
+TESTSHEET
+          G E E E P
+          E B B B E
+          E B B B E
+          E B B B E
+          E E E E E
+G E E E P           G E E E P
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+          G E E E P
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+EMPTY None UP RIGHT DOWN   EMPTY LEFT UP None DOWN    EMPTY LEFT UP None DOWN
+EMPTY LEFT UP RIGHT DOWN   EMPTY None None RIGHT DOWN EMPTY LEFT UP RIGHT None
+EMPTY None UP None DOWN    EMPTY LEFT UP RIGHT None   EMPTY LEFT None RIGHT DOWN
+SET05level??(9blocks4)(POSSIBLE)(ACTUALLY,IFOUNDTWOSOLUTIONS)
+TESTSHEET
+          G E E E P
+          E B B B E
+          E B B B E
+          E B B B E
+          E E E E E
+G E E E P           G E E E P
+E E E E E           E E E E E
+E E B E E           E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+          G E E E P
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+EMPTY LEFT None RIGHT DOWN EMPTY LEFT UP None DOWN    EMPTY None UP RIGHT DOWN
+EMPTY LEFT UP None DOWN    EMPTY LEFT None None DOWN  EMPTY LEFT None RIGHT DOWN
+EMPTY LEFT UP RIGHT None   EMPTY None UP RIGHT DOWN   EMPTY LEFT UP None DOWN   EMPTY None UP RIGHT None
 
 
 
@@ -2729,3 +2674,140 @@ S S S S S           S S S S S
           S S S S S
           S S S S S
           S S S S S
+
+
+
+SET05level??(scrapmaybe)
+TESTSHEET
+          E E P E S
+          E W B W E
+          E B E B E
+          E W B W E
+          G E E E E
+E E E E S           E E E E S
+E E E E E           E E E E E
+P E E E E           E E E E P
+E E E E E           E E E E E
+E E E E E           E E E E E
+          E E E E S
+          E E E E E
+          E E E E E
+          E E E E E
+          E E P E E
+EMPTY LEFT UP None None   EMPTY LEFT UP None None   EMPTY LEFT UP None None
+EMPTY LEFT UP None None
+
+SET05level??
+TESTSHEET
+          G W W W W
+          E W W W W
+          E W W W W
+          E E S S P
+          E W W W W
+G W W W W           G W W W W
+E E S S P           E B S S P
+E W W W W           E W W W W
+E E S S P           E B S S P
+E W W W W           E W W W W
+          G W W W W
+          E E S S P
+          E W W W W
+          E E S S P
+          E W W W W
+EMPTY LEFT None RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level??
+TESTSHEET
+          E E E E E
+          E W E W E
+          P E E E E
+          E W E W E
+          E E G E E
+E E E E E           E E E E E
+E W E W E           E W E W E
+P E E E E           P B E B P
+E W E W E           E W E W E
+E E G E E           E E G E E
+          E E E E E
+          E W E W E
+          P E E E E
+          E W E W E
+          E E G E E
+EMPTY None None RIGHT None   EMPTY LEFT UP RIGHT DOWN
+
+
+SET05level??
+TESTSHEET
+          E E E E E
+          E W W W E
+          P E E E E
+          E W W W E
+          E E G E E
+E E E E E           E E E E E
+E W W W E           E W W W E
+E E E E E           P B E B P
+E W W W E           E W W W E
+E E G E E           E E G E E
+          E E E E E
+          E W W W E
+          E E E E E
+          E W W W E
+          E E G E E
+EMPTY None None RIGHT None   EMPTY LEFT UP None None
+
+
+SET05level??(9blocks3)
+TESTSHEET
+          G E E E P
+          E B B B E
+          E B B B E
+          E B B B E
+          E E E E E
+G E E E P           G E E E P
+E B B B E           E E E E E
+E B B B E           E E E E E
+E B B B E           E E E E E
+E E E E E           E E E E E
+          G E E E P
+          E E B E E
+          E E B E E
+          E B E E E
+          E E E E E
+EMPTY LEFT UP None DOWN    EMPTY None None RIGHT None EMPTY LEFT UP None None
+EMPTY LEFT None None None  EMPTY None None RIGHT DOWN EMPTY LEFT UP RIGHT None
+EMPTY LEFT None RIGHT None EMPTY None UP RIGHT None   EMPTY None UP None None
+
+EMPTY None None RIGHT None EMPTY None UP None None    EMPTY None None RIGHT DOWN
+EMPTY None UP RIGHT DOWN   EMPTY LEFT None None None  EMPTY None None None DOWN
+EMPTY None None None DOWN  EMPTY LEFT None None DOWN  EMPTY LEFT None RIGHT DOWN
+
+                           EMPTY LEFT None None DOWN
+                           EMPTY None UP None None
+EMPTY None UP None None
+
+
+SET05level??(9blocks2)
+TESTSHEET
+          G E E E P
+          E B B B E
+          E B B B E
+          E B B B E
+          E E E E E
+G E E E P           G E E E P
+E B B B E           E E E E E
+E B B B E           E E E E E
+E B B B E           E E E E E
+E E E E E           E E E E E
+          G E E E P
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+EMPTY LEFT UP None None    EMPTY LEFT UP None None    EMPTY None UP RIGHT None
+EMPTY LEFT UP None None    EMPTY LEFT UP None None    EMPTY LEFT UP None None
+EMPTY LEFT UP None None    EMPTY LEFT UP None None    EMPTY LEFT UP None None
+
+EMPTY None None RIGHT DOWN EMPTY None None RIGHT DOWN EMPTY LEFT None None DOWN
+EMPTY None None RIGHT DOWN EMPTY None None RIGHT DOWN EMPTY None None RIGHT DOWN
+EMPTY None None RIGHT DOWN EMPTY None None RIGHT DOWN EMPTY None None RIGHT DOWN

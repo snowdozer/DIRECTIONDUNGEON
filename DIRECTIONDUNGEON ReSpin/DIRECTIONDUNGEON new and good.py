@@ -827,7 +827,7 @@ postDisplay.fill((0, 255, 0))
 
 
 # levelNum can be changed later with the level select
-levelNum = 91
+levelNum = 0
 if levelNum == 0:
     initPlayer(RIGHT, 0, 2)
 
