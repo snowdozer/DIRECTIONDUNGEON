@@ -164,8 +164,10 @@ class Tilesheet:
         surf.blit(self.surface, pos, tileRect)
 
 # a test tilesheet.  multiple can be made
-TESTSHEET = Tilesheet("images\\testSheet.png", mult, (0, 2, 0, 2, 0, 0, 3, 3, 0, 0))
-
+TESTSHEET = Tilesheet(os.path.join("images", "testSheet.png"), mult, (0, 1, 3, 3, 1, 1, 4, 4, 1, 1))
+# intro levels.
+INTROSHEET = Tilesheet(os.path.join("images", "00 introSheet.png"), mult, (0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0))
+DIRECTIONSHEET = Tilesheet(os.path.join("images", "01 directionSheet.png"), mult, (0, 4, 1, 1, 1, 0, 0, 0, 0, 0, 0))
 
 
 ##################
@@ -314,7 +316,7 @@ animGoalLock = Animation(7, RQUADRATIC, SIDE)
 ### PLAYER ANIMATIONS ###
 
 # sliding boxes (should actually be 6 frames but that breaks it kinda
-animBoxSlide = Animation(7, RQUADRATIC, TILE)
+animBoxSlide = Animation(8, LINEAR, TILE)
 # you can change this to RQUADRATIC if you think it looks better
 
 # creates and loads all the ghost/player animations from file
@@ -507,7 +509,8 @@ class Level:
             for col in range(WIDTH):
                 for row in range(HEIGHT):
                     tile = self.tileAt(dung, col, row)
-                    variant = random.randint(0, tileSheet.varCount[tile])
+
+                    variant = random.randint(0, tileSheet.varCount[tile] - 1)
                     tileVars[dung][col][row] = variant
 
         self.origTileVars = tileVars
@@ -642,7 +645,7 @@ while levelFile:   # stops loading once there is nothing to load
                 buildLayout[ DOWN][col][row] = (levelFile.pop(0))
 
     for box in boxPositions:
-        boxVar = (boxVar + 1) % (buildSheet.varCount[BOX] + 1)
+        boxVar = (boxVar + 1) % (buildSheet.varCount[BOX])
         buildDungs = []
         buildLayout[box[0]][box[1]][box[2]] = levelFile.pop(0)
         for dung in range(4):
@@ -827,7 +830,7 @@ postDisplay.fill((0, 255, 0))
 
 
 # levelNum can be changed later with the level select
-levelNum = 0
+levelNum = 95
 if levelNum == 0:
     initPlayer(RIGHT, 0, 2)
 
@@ -1382,7 +1385,7 @@ while True:
                         y = curLvl.dungY[dung]
 
                         # fix for extra pixels appearing above level
-                        pygame.draw.rect(preDisplay, (0, 0, 0), (x, y - SIDE, DUNGW, SIDE))
+                        pygame.draw.rect(preDisplay, (0, 0, 0), (x, y - SIDE, DUNGW, TILE))
 
                         preDisplay.blit(curDungs, (x, y), alignRects[dung])
                         drawObjs(preDisplay, dung, x, y, True)
@@ -1944,7 +1947,7 @@ while True:
         postDisplay.blit(debug4, (10, 50))
 
         if debugPressed:
-            clockTick = 5   # slow down game when the debug button is pressed
+            clockTick = 2   # slow down game when the debug button is pressed
         else:
             clockTick = 60
 
