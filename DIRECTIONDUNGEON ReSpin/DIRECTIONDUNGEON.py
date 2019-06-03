@@ -328,7 +328,7 @@ for direction in directionStrings:
 
     # creates ghost animation, equal to the player animation except transparent
     tempGhostAnim = Animation(6, SPRITE, path, 12, 14, mult)
-    tempGhostAnim.surface.set_alpha(100)
+    tempGhostAnim.surface.set_alpha(50)
     ghostMovement.append(tempGhostAnim)
 
     # the ghost animation is then tied to the player animation
@@ -338,7 +338,7 @@ for direction in directionStrings:
 # idle doesn't have to be animation, but it just makes things easier
 playIdle = Animation(0, SPRITE, "images\\playIdle.png",  12, 14, mult)
 ghostIdle = Animation(0, SPRITE, "images\\playIdle.png",  12, 14, mult)
-ghostIdle.surface.set_alpha(100)
+ghostIdle.surface.set_alpha(50)
 playAnim = playIdle
 ghostAnim = ghostIdle
 
@@ -830,7 +830,7 @@ postDisplay.fill((0, 255, 0))
 
 
 # levelNum can be changed later with the level select
-levelNum = 95
+levelNum = 88
 if levelNum == 0:
     initPlayer(RIGHT, 0, 2)
 
