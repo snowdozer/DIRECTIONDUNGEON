@@ -168,7 +168,9 @@ TESTSHEET = Tilesheet(os.path.join("images", "testSheet.png"), mult, (0, 1, 3, 3
 # intro levels.
 INTROSHEET = Tilesheet(os.path.join("images", "00 introSheet.png"), mult, (0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0))
 DIRECTIONSHEET = Tilesheet(os.path.join("images", "01 directionSheet.png"), mult, (0, 4, 1, 1, 1, 0, 0, 0, 0, 0, 0))
-
+SWIRLSHEET = Tilesheet(os.path.join("images", "02 swirlSheet.png"), mult, (0, 3, 4, 4, 1, 3, 0, 0, 0, 0, 0))
+DIZZYSHEET = Tilesheet(os.path.join("images", "03 dizzySheet.png"), mult, (0, 3, 4, 4, 1, 3, 0, 0, 0, 0, 0))
+BOXSHEET = Tilesheet(os.path.join("images", "04 boxSheet.png"), mult, (0, 3, 3, 3, 1, 3, 4, 4, 0, 0, 0))
 
 ##################
 ### ANIMATIONS ###
@@ -328,7 +330,7 @@ for direction in directionStrings:
 
     # creates ghost animation, equal to the player animation except transparent
     tempGhostAnim = Animation(6, SPRITE, path, 12, 14, mult)
-    tempGhostAnim.surface.set_alpha(50)
+    tempGhostAnim.surface.set_alpha(100)
     ghostMovement.append(tempGhostAnim)
 
     # the ghost animation is then tied to the player animation
@@ -338,7 +340,7 @@ for direction in directionStrings:
 # idle doesn't have to be animation, but it just makes things easier
 playIdle = Animation(0, SPRITE, "images\\playIdle.png",  12, 14, mult)
 ghostIdle = Animation(0, SPRITE, "images\\playIdle.png",  12, 14, mult)
-ghostIdle.surface.set_alpha(50)
+ghostIdle.surface.set_alpha(100)
 playAnim = playIdle
 ghostAnim = ghostIdle
 
@@ -830,7 +832,7 @@ postDisplay.fill((0, 255, 0))
 
 
 # levelNum can be changed later with the level select
-levelNum = 88
+levelNum = 64
 if levelNum == 0:
     initPlayer(RIGHT, 0, 2)
 
