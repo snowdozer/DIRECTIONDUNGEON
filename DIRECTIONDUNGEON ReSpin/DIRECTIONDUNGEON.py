@@ -86,7 +86,7 @@ SCREENSIZE = (SCREENLENGTH, SCREENLENGTH)
 # initializes the display so that sprites can be loaded
 postDisplay = pygame.display.set_mode(SCREENSIZE)
 
-plateLockColor = (200, 0, 0)
+plateLockColor = (238, 0, 0)
 
 
 
@@ -171,6 +171,8 @@ DIRECTIONSHEET = Tilesheet(os.path.join("images", "01 directionSheet.png"), mult
 SWIRLSHEET = Tilesheet(os.path.join("images", "02 swirlSheet.png"), mult, (0, 3, 4, 4, 1, 3, 0, 0, 0, 0, 0))
 DIZZYSHEET = Tilesheet(os.path.join("images", "03 dizzySheet.png"), mult, (0, 3, 4, 4, 1, 3, 0, 0, 0, 0, 0))
 BOXSHEET = Tilesheet(os.path.join("images", "04 boxSheet.png"), mult, (0, 3, 3, 3, 1, 3, 4, 4, 0, 0, 0))
+PLATESHEET = Tilesheet(os.path.join("images", "05 plateSheet.png"), mult, (0, 3, 4, 4, 1, 3, 4, 4, 1, 1))
+ENDSHEET = Tilesheet(os.path.join("images", "06 endSheet.png"), mult, (0, 6, 6, 6, 1, 6, 6, 4, 1, 1))
 
 ##################
 ### ANIMATIONS ###
@@ -832,7 +834,7 @@ postDisplay.fill((0, 255, 0))
 
 
 # levelNum can be changed later with the level select
-levelNum = 64
+levelNum = 87
 if levelNum == 0:
     initPlayer(RIGHT, 0, 2)
 

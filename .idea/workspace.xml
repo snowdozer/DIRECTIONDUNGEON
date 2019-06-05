@@ -2,20 +2,18 @@
 <project version="4">
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" line="169" />
-    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" line="2079" />
-    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" line="1059" />
+    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" line="1079" />
+    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" line="1819" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b473aad1-d247-4772-a8e5-fe79a4a57641" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/00 introSheet.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/01 directionSheet.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/02 swirlSheet.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/03 dizzySheet.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/04 boxSheet.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/05 plateSheet.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/06 endSheet.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/ZIP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ZIP.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/04 boxSheet.png" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/04 boxSheet.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,8 +27,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="282">
-              <caret line="834" column="10" selection-start-line="834" selection-end-line="834" selection-end-column="10" />
+            <state relative-caret-position="175">
+              <caret line="836" column="13" selection-start-line="836" selection-start-column="13" selection-end-line="836" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -38,8 +36,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="430">
-              <caret line="992" column="19" lean-forward="true" selection-start-line="992" selection-start-column="19" selection-end-line="992" selection-end-column="19" />
+            <state relative-caret-position="198">
+              <caret line="1620" column="8" selection-start-line="1620" selection-start-column="8" selection-end-line="1620" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -47,8 +45,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/leveltemplates.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="10" selection-start-line="2" selection-start-column="10" selection-end-line="6" selection-end-column="19" />
+            <state relative-caret-position="434">
+              <caret line="31" column="10" selection-start-line="31" selection-start-column="10" selection-end-line="36" />
             </state>
           </provider>
         </entry>
@@ -421,13 +419,13 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="66" y="-7" width="1221" height="735" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17430703" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18173988" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="0" sideWeight="0.49947312" weight="0.3206934" />
+      <window_info anchor="bottom" id="Version Control" order="0" sideWeight="0.49947312" weight="0.32006633" />
       <window_info anchor="bottom" id="Python Console" order="1" />
       <window_info anchor="bottom" id="Terminal" order="2" />
       <window_info anchor="bottom" id="Event Log" order="3" sideWeight="0.50052685" side_tool="true" weight="0.30552545" />
@@ -440,7 +438,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info active="true" anchor="right" id="Run" order="3" visible="true" weight="0.18923241" />
+      <window_info active="true" anchor="right" id="Run" order="3" visible="true" weight="0.18863049" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17829457" />
@@ -557,22 +555,25 @@
     <entry file="file://$PROJECT_DIR$/../Moon Project/moon.py" />
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/leveltemplates.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="10" selection-start-line="2" selection-start-column="10" selection-end-line="6" selection-end-column="19" />
+        <state relative-caret-position="434">
+          <caret line="31" column="10" selection-start-line="31" selection-start-column="10" selection-end-line="36" />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/05 plateSheet.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="992" column="19" lean-forward="true" selection-start-line="992" selection-start-column="19" selection-end-line="992" selection-end-column="19" />
+        <state relative-caret-position="198">
+          <caret line="1620" column="8" selection-start-line="1620" selection-start-column="8" selection-end-line="1620" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="834" column="10" selection-start-line="834" selection-end-line="834" selection-end-column="10" />
+        <state relative-caret-position="175">
+          <caret line="836" column="13" selection-start-line="836" selection-start-column="13" selection-end-line="836" selection-end-column="13" />
         </state>
       </provider>
     </entry>

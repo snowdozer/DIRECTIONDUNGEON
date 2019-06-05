@@ -163,37 +163,17 @@ INTROSHEET
           E E E E E
           W W W W W
           E E E E E
-          E E G E E
+          G E E E E
 E E E E E           E E E E E
 E E E E E           E E E E E
 W W W W W           W W W W W
 E E E E E           E E E E E
-E E G E E           E E G E E
+G E E E E           G E E E E
           E E E E E
           E E E E E
           E E E E E
           E E E E E
-          E E G E E
-
-
-
-SET02level06
-INTROSHEET
-          W W W W E
-          W W W W E
-          W W W W E
-          W W W W E
-          W W W W E
-W W E E E           W W W W W
-W W W W W           W W W W W
-E E E W W           W W W W W
-W W W W W           W W W W W
-W W W W W           W W E E E
-          W W E W W
-          W W E W W
-          E W E W W
-          E W W W W
-          G W W W W
+          G E E E E
 
 
 
@@ -220,9 +200,9 @@ E E W E G           E E W E G
 SET00level09
 INTROSHEET
           G E E E E
-          E W W W W
-          E W W W W
-          E W W W W
+          W W E W W
+          W W E W W
+          W W E W W
           E E E E E
 G E E E E           G E E E E
 E E E E E           E E E E E
@@ -243,17 +223,57 @@ INTROSHEET
           E E E E E
           E E E E E
           E E E E E
-          E G E E E
+          G E E E E
 E E E E E           E E E E E
 E E E E E           E E E E E
 E E E E E           E E E E E
 E E E E E           E E E E E
-E G E E E           E G E E E
+G E E E E           G E E E E
+          W E W W W
+          W W E W W
           W W W W E
           W W W E W
+          G W W W W
+
+
+
+SET02level06
+INTROSHEET
           E W W W W
+          E W W W W
+          E W W W W
+          E W W W W
+          E W W W W
+W W W W W           E E E W W
+W W W W W           W W W W W
+W W W W W           W W E E E
+W W W W W           W W W W W
+W W W W W           W W W W W
           W W E W W
-          W G W W W
+          W W E W W
+          W W E W E
+          W W W W E
+          W W W W G
+
+
+
+SET02level06
+INTROSHEET
+          E E E E E
+          E E E E E
+          W W W E E
+          W W W E E
+          W W W E E
+E E E E E           W W W E E
+E E E E E           W W W E E
+E E W W W           W W W E E
+E E W W W           E E E E E
+G E W W W           G E E E E
+          E E W W W
+          E E W W W
+          E E W W W
+          E E E E E
+          G E E E E
 
 
 
@@ -274,9 +294,9 @@ E E E E E           E E E E E
           W W W W E
           W W W W E
           E E E E E
-		
 
-		
+
+
 SET00level12
 INTROSHEET
           W W W W W
@@ -539,21 +559,21 @@ E E E W W           E E E W W
 
 SET02level03
 DIRECTIONSHEET
-          E W E W E
           W E W E W
           E W E W E
           W E W E W
           E W E W E
-W E W E W           W E W E W
-E W E W E           E W E W E
-W E W E W           W E W E G
+          W E W E W
 E W E W E           E W E W E
 W E W E W           W E W E W
-          E W E W E
+E W E W E           E W E W G
+W E W E W           W E W E W
+E W E W E           E W E W E
           W E W E W
           E W E W E
           W E W E W
           E W E W E
+          W E W E W
 
 
 
@@ -1338,7 +1358,7 @@ EMPTY LEFT UP RIGHT DOWN
 
 
 SET05level00
-TESTSHEET
+PLATESHEET
           W W E E E
           W E E E E
           G E E E P
@@ -1358,7 +1378,7 @@ EMPTY LEFT UP RIGHT DOWN
 
 
 SET05level00
-TESTSHEET
+PLATESHEET
           W W E E E
           W E E E E
           G E E E P
@@ -1378,7 +1398,7 @@ EMPTY LEFT UP RIGHT DOWN
 
 
 SET05level00
-TESTSHEET
+PLATESHEET
           W W E E S
           W E E E E
           G E E E E
@@ -1398,7 +1418,7 @@ EMPTY None None RIGHT None
 
 
 SET05level00
-TESTSHEET
+PLATESHEET
           W W E E E
           W E E E E
           G E E E E
@@ -1418,7 +1438,7 @@ EMPTY None None RIGHT None
 
 
 SET05level00
-TESTSHEET
+PLATESHEET
           S E E E E
           W E E E E
           G E B W P
@@ -1438,7 +1458,7 @@ EMPTY None UP None None   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
 
 
 SET05level00(maybedelete)
-TESTSHEET
+PLATESHEET
           S E E E E
           W E E E E
           G E B W P
@@ -1458,7 +1478,7 @@ EMPTY LEFT UP None DOWN   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
 
 
 SET05level00
-TESTSHEET
+PLATESHEET
           E E E E E
           W E E E E
           G E B W P
@@ -1478,7 +1498,7 @@ EMPTY LEFT UP None DOWN   EMPTY LEFT UP RIGHT DOWN
 
 
 SET05level00
-TESTSHEET
+PLATESHEET
           S E E E E
           W E E E E
           G E E E E
@@ -1498,7 +1518,7 @@ EMPTY LEFT None None DOWN   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
 
 
 SET05level??
-TESTSHEET
+PLATESHEET
           G E E E P
           E E E E E
           E E B E E
@@ -1518,7 +1538,7 @@ EMPTY None UP RIGHT None   EMPTY LEFT None None DOWN
 
 
 SET05level??
-TESTSHEET
+PLATESHEET
           G E E E E
           E E E E E
           E E B E E
@@ -1538,7 +1558,7 @@ EMPTY LEFT None None DOWN   EMPTY None UP RIGHT None
 
 
 SET05level??
-TESTSHEET
+PLATESHEET
           G E E E E
           E E E E E
           E E B E E
@@ -1558,7 +1578,7 @@ EMPTY None UP None None   EMPTY LEFT None None None   EMPTY None None RIGHT None
 EMPTY None None None DOWN
 
 SET05level??
-TESTSHEET
+PLATESHEET
           E E E P E
           E E E E E
           G E B E S
@@ -1578,7 +1598,7 @@ EMPTY None UP None None   EMPTY LEFT None None None   EMPTY None None RIGHT None
 EMPTY None None None DOWN
 
 SET05LEVEL??(YEAH)
-TESTSHEET
+PLATESHEET
           S E E E S
           E E E E E
           E E E E E
@@ -1598,7 +1618,7 @@ EMPTY LEFT None None None  EMPTY LEFT None None None  EMPTY LEFT None None None
 EMPTY LEFT None None None
 
 SET05LEVEL??
-TESTSHEET
+ENDSHEET
           W W W W W
           W W W W W
           E E E E S
@@ -1618,7 +1638,7 @@ EMPTY LEFT None None None
 
 
 SET05level00(SOMEWEIRDREGULARSOKOBANLEVEL)
-TESTSHEET
+ENDSHEET
           W W W W W
           E B B E E
           E B B E E
@@ -1638,7 +1658,7 @@ EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
 EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
 
 SET05level??
-TESTSHEET
+ENDSHEET
           E E E E E
           E E E E E
           G E E E E
@@ -1658,7 +1678,7 @@ EMPTY None None None DOWN   EMPTY LEFT UP RIGHT DOWN
 
 
 SET05level00
-TESTSHEET
+ENDSHEET
           P E E E E
           E E E E E
           G E B W P
@@ -1678,7 +1698,7 @@ EMPTY None UP None None   EMPTY LEFT UP RIGHT DOWN
 
 
 SET05level??
-TESTSHEET
+ENDSHEET
           E E E E E
           E E E E E
           E B E B G
@@ -1697,28 +1717,8 @@ E E E E E           E E E E E
 EMPTY None UP None DOWN   EMPTY LEFT None None DOWN
 
 
-SET??LEVEL??(GOODBUTEASY,NEEDSTOBEEARLIER)(NEVERMIND,TESTERSAREBOGGLED)
-TESTSHEET
-          E E E E E
-          E E E E E
-          E E E E E
-          E E E E E
-          E E E E E
-E E E E E           E E E P E
-E E E E E           P E B E E
-E E E E E           E B G B E
-E E E E E           E E B E P
-E E E E E           E P E E E
-          E E E E E
-          E E E E E
-          E E E E E
-          E E E E E
-          E E E E E
-EMPTY None None RIGHT DOWN EMPTY None None RIGHT None EMPTY LEFT None RIGHT None
-EMPTY None UP RIGHT None
-
 SET05level??(hard)
-TESTSHEET
+ENDSHEET
           E E E E E
           E E B E E
           E E E E G
@@ -1737,8 +1737,28 @@ E E E E E           E P E E E
 EMPTY None UP RIGHT DOWN   EMPTY LEFT UP RIGHT None
 
 
+SET??LEVEL??(GOODBUTEASY,NEEDSTOBEEARLIER)(NEVERMIND,TESTERSAREBOGGLED)
+ENDSHEET
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+E E E E E           E E E P E
+E E E E E           P E B E E
+E E E E E           E B G B E
+E E E E E           E E B E P
+E E E E E           E P E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+          E E E E E
+EMPTY None None RIGHT DOWN EMPTY None None RIGHT None EMPTY LEFT None RIGHT None
+EMPTY None UP RIGHT None
+
 SET05level??(9blocks)(good)(waitactuallymightbetooconfusing)
-TESTSHEET
+ENDSHEET
           G E E E P
           E B B B E
           E B B B E
@@ -1758,7 +1778,7 @@ EMPTY None UP RIGHT DOWN   EMPTY LEFT UP None DOWN    EMPTY LEFT UP None DOWN
 EMPTY LEFT UP RIGHT DOWN   EMPTY None None RIGHT DOWN EMPTY LEFT UP RIGHT None
 EMPTY None UP None DOWN    EMPTY LEFT UP RIGHT None   EMPTY LEFT None RIGHT DOWN
 SET05level??(9blocks4)(POSSIBLE)(ACTUALLY,IFOUNDTWOSOLUTIONS)
-TESTSHEET
+ENDSHEET
           G E E E P
           E B B B E
           E B B B E
