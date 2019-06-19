@@ -2,40 +2,8 @@
 ###                            DIRECTIONDUNGEON!                             ###
 ################################################################################
 
-### LIST OF THINGS TO DO ###
-
-# sokoban blocks, except they can be in less than 4 dungeons
-# also need plate for them to go on.  or maybe drop them into holes?
-
-# levels
-# (probably 64, since it's 4 cubed, and because of 4 button menu)
-# i have decided that 64 is too short....
-
-# optimize - don't draw nexlvl unless animRotate or animNextLevel
-# optimize - don't draw layers to preDisplay every single frame
-
-# figure out how to slowly fade the player over time
-# (probably by taking the pixel array and recoloring it every few levels or so)
-# (or having an original cube spritesheet and drawing a black surface over it
-# with changing opacity)
-
-# create the gemstone/star in the center of the dungeons
-
-# main menu
-# that sick level select i thought of
-# pause function...?  probably not necessary since everything is
-#     silent and there's not much action
-
-# sounds, ambient and raindrop-py
-# music should be minimal and only at the start/end
-# if not, though, outsource music to mustardflu?
-
-
-### RANDOM IDEAS ###
-# should the void cover the bottom tile halfway? to hint at a wall being there?
-# different perspectives for each dungeon?
-# keys/locks?
-# pushable blocks?
+# sorry for the code anarchy but when I started this I didn't
+# even know what an object was
 
 
 ################################################################################
@@ -332,7 +300,7 @@ for direction in directionStrings:
 
     # creates ghost animation, equal to the player animation except transparent
     tempGhostAnim = Animation(6, SPRITE, path, 12, 14, mult)
-    tempGhostAnim.surface.set_alpha(100)
+    tempGhostAnim.surface.set_alpha(50)
     ghostMovement.append(tempGhostAnim)
 
     # the ghost animation is then tied to the player animation
@@ -342,7 +310,7 @@ for direction in directionStrings:
 # idle doesn't have to be animation, but it just makes things easier
 playIdle = Animation(0, SPRITE, "images\\playIdle.png",  12, 14, mult)
 ghostIdle = Animation(0, SPRITE, "images\\playIdle.png",  12, 14, mult)
-ghostIdle.surface.set_alpha(100)
+ghostIdle.surface.set_alpha(50)
 playAnim = playIdle
 ghostAnim = ghostIdle
 
@@ -354,7 +322,7 @@ ROTATERADIUS = DUNGW + MARG
 ROTATEMIDX = DUNGW + MARG*2 + SIDE // 2
 ROTATEMIDY = DUNGH + MARG*2
 
-animPlayDrop = Animation(16, QUADRATIC, SIDE)
+animPlayDrop = Animation(6, QUADRATIC, SIDE)
 
 
 
@@ -807,10 +775,11 @@ def drawObjs(surf, dung, x, y, drawPlayer):
 
                 # LOCKS
                 if obj.locked[dung] and notCover(dung, obj.col, obj.row + 1):
-                    lockX = x + obj.col * TILE + mult
-                    lockY = y + obj.row * TILE + TILE + SIDE - mult
+                    if obj is not player:
+                        lockX = x + obj.col * TILE + mult
+                        lockY = y + obj.row * TILE + TILE + SIDE - mult
 
-                    pygame.draw.rect(surf, plateLockColor, (lockX, lockY, mult * 2, mult))
+                        pygame.draw.rect(surf, plateLockColor, (lockX, lockY, mult * 2, mult))
 
         for wall in walls:
             if curLvl.tileAt(dung, wall[0], wall[1]) == WALL:
@@ -822,19 +791,85 @@ def drawObjs(surf, dung, x, y, drawPlayer):
                 curTileSheet.drawTile(surf, (wallX, wallY), WALL, var)
 
 
+def notCover(dung, col, row, skipPlayer = False):
+
+    if row == HEIGHT:
+        return True
+
+    if curLvl.tileAt(dung, col, row) == WALL:
+        return False
+
+    for box in curLvl.boxes:
+        if box.dungs[dung] and box.col == col and box.row == row:
+            return False
+
+    if not skipPlayer:
+        if player.dung == dung and player.col == col and player.row == row:
+            return False
+
+    return True
+
+
+def debugCircle(surf, x, y, col):
+    if col == 0:
+        color = (255, 255, 0)
+    elif col == 1:
+        color = (255, 0, 255)
+    else:
+        color = (0, 255, 255)
+
+    pygame.draw.circle(surf, color, (int(x), int(y)), 5)
+
+def debugRect(surf, rect, col):
+    if col == 0:
+        color = (255, 255, 0)
+    elif col == 1:
+        color = (255, 0, 255)
+    else:
+        color = (0, 255, 255)
+
+    pygame.draw.rect(surf, color, rect)
+
+
+SHOW = 1
+FADE = 2
+titleState = SHOW
+titleAlpha = 255
+
+titleX = mult * 3
+titleY = mult * 5
+
+titleKeysAlpha = 0
+titleKeysDelay = 300
+titleKeysX = 24 * mult - mult // 2
+titleKeysY = 42 * mult
+
+resetDisplayAlpha = 0
+resetDisplayCounter = 0
+resetDisplayWait = 600
+resetDisplayX = 32 * mult - mult // 2
+resetDisplayY = 30 * mult
+resetActivated = False
 
 ################################################################################
-###                                MENU ..?                                  ###
+###                           ALMOST DONE SETUP                              ###
 ################################################################################
+# (ruins all the comments)
+
+title = loadSprite(os.path.join("images", "title.png"), mult)
+titleKeys = loadSprite(os.path.join("images", "keys.png"), mult)
+resetDisplay = loadSprite(os.path.join("images", "rKey.png"), mult)
+blackScreen = pygame.Surface(SCREENSIZE)
+fadeAlpha = 255
+
+### MENU LOOP ###
 # the main display, pre-camera
 preDisplay = newSurf((SCREENLENGTH, SCREENLENGTH + CAMLIMIT))
 
 # the main display, post-camera
 postDisplay.fill((0, 255, 0))
 
-
-# levelNum can be changed later with the level select
-levelNum = 87
+levelNum = 0
 if levelNum == 0:
     initPlayer(RIGHT, 0, 2)
 
@@ -887,46 +922,9 @@ for level in reversed(levels):
                                    mult * 2, mult)
                         pygame.draw.rect(sideSurfs, plateLockColor, covRect)
 
-def notCover(dung, col, row, skipPlayer = False):
-
-    if row == HEIGHT:
-        return True
-
-    if curLvl.tileAt(dung, col, row) == WALL:
-        return False
-
-    for box in curLvl.boxes:
-        if box.dungs[dung] and box.col == col and box.row == row:
-            return False
-
-    if not skipPlayer:
-        if player.dung == dung and player.col == col and player.row == row:
-            return False
-
-    return True
 
 
-def debugCircle(surf, x, y, col):
-    if col == 0:
-        color = (255, 255, 0)
-    elif col == 1:
-        color = (255, 0, 255)
-    else:
-        color = (0, 255, 255)
-
-    pygame.draw.circle(surf, color, (int(x), int(y)), 5)
-
-def debugRect(surf, rect, col):
-    if col == 0:
-        color = (255, 255, 0)
-    elif col == 1:
-        color = (255, 0, 255)
-    else:
-        color = (0, 255, 255)
-
-    pygame.draw.rect(surf, color, rect)
-
-### PER-LEVEL LOOP ###
+### GAMEPLAY LOOP ###
 while True:
 
     ############################################################################
@@ -1040,9 +1038,10 @@ while True:
                         nexTileSheet.drawTile(postDisplay, (x, y + TILE), BOXSIDE, box.variant)
 
                         if nexLvl.tileAt(dung, box.col, box.row) == PLATE:
-                            covRect = (x + mult, y + TILE + SIDE - mult,
-                                       mult * 2, mult)
-                            pygame.draw.rect(postDisplay, plateLockColor, covRect)
+                            if box is not player:
+                                covRect = (x + mult, y + TILE + SIDE - mult,
+                                           mult * 2, mult)
+                                pygame.draw.rect(postDisplay, plateLockColor, covRect)
 
         nexDungs.blit(postDisplay, (dung * DUNGW, 0), normRects[dung])
         postDisplay.fill((0, 255, 0))
@@ -1087,6 +1086,8 @@ while True:
     platesToLock = []
     platesToUnlock = []
 
+    resetDisplayCounter = 0
+
 
 
 
@@ -1120,6 +1121,8 @@ while True:
 
                 # resets level
                 elif event.key == pygame.K_r and animQueue == []:
+                    resetActivated = True
+
                     # resets camera
                     camXLock = 0
                     camYLock = 0
@@ -1475,7 +1478,7 @@ while True:
                                     if nexLvl.tileAt(dung, box.col, box.row + 1) != WALL:
                                         nexTileSheet.drawTile(postDisplay, (x, y + TILE), BOXSIDE, box.variant)
 
-                                        if nexLvl.tileAt(dung, box.col, box.row) == PLATE:
+                                        if nexLvl.tileAt(dung, box.col, box.row) == PLATE and box is not player:
                                             covRect = (x + mult, y + TILE + SIDE - mult,
                                                        mult * 2, mult)
                                             pygame.draw.rect(postDisplay, plateLockColor, covRect)
@@ -1618,8 +1621,9 @@ while True:
                             curTileSheet.drawTile(preDisplay, (x, y + TILE), BOXSIDE, box.variant)
 
                             if curLvl.tileAt(dung, box.col, box.row) == PLATE:
-                                rect = (x + mult, y + TILE + mult, mult*2, mult)
-                                pygame.draw.rect(preDisplay, plateLockColor, rect)
+                                if box is not player:
+                                    rect = (x + mult, y + TILE + mult, mult*2, mult)
+                                    pygame.draw.rect(preDisplay, plateLockColor, rect)
 
 
                 # draws block on next level below player
@@ -1741,12 +1745,6 @@ while True:
                                 nexTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
                                 break
 
-                        else:
-                            if nexLvl.tileAt(dung, player.col, player.row) == PLATE:
-                                x = nexLvl.x + nexLvl.dungX[dung] + player.col * TILE + mult
-                                y = nexLvl.y + nexLvl.dungY[dung] + player.row * TILE + TILE + SIDE - mult
-
-                                pygame.draw.rect(preDisplay, plateLockColor, (x, y, mult * 2, mult))
 
 
                 # COLUMN OF TILES BELOW PLAYER IN CUR LEVEL
@@ -1791,7 +1789,7 @@ while True:
                 for plate in platesToLock:
                     box = plate[1]
 
-                    if box not in moveBoxes:
+                    if box not in moveBoxes and box is not player:
                         h = math.ceil(anim.value)
 
                         x = curLvl.x + curLvl.dungX[plate[0]] + box.col * TILE + mult
@@ -1931,7 +1929,63 @@ while True:
 
 
         ### POST CAMERA ###
-        # there's nothing here lol
+        # TITLE
+        if titleState == SHOW:
+            postDisplay.blit(title, (titleX, titleY))
+            if moveQueue:
+                titleState = FADE
+
+            # TUTORIAL KEYS
+            if titleKeysDelay == 0:
+                titleKeys.set_alpha(titleKeysAlpha)
+                postDisplay.blit(titleKeys, (titleKeysX, titleKeysY))
+                if titleKeysAlpha < 255:
+                    titleKeysAlpha += 6
+                else:
+                    titleKeysAlpha = 255
+            else:
+                titleKeysDelay -= 1
+
+        elif titleState == FADE:
+            if titleAlpha >= 0:
+
+                titleAlpha -= 20
+                title.set_alpha(titleAlpha)
+                postDisplay.blit(title, (titleX, titleY))
+
+                titleKeysAlpha -= 20
+                titleKeys.set_alpha(titleKeysAlpha)
+                postDisplay.blit(titleKeys, (titleKeysX, titleKeysY))
+            else:
+                titleState = 0
+
+        # RESET KEY
+        if not resetActivated:
+            # sorry, reset is timer-based
+            if resetDisplayCounter < resetDisplayWait:
+                if levelNum != 0:
+                    resetDisplayCounter += 1
+
+                # fades if you beat the level after the reset display shows up
+                if resetDisplayAlpha > 0:
+                    resetDisplayAlpha -= 20
+                    resetDisplay.set_alpha(resetDisplayAlpha)
+                    postDisplay.blit(resetDisplay, (resetDisplayX, resetDisplayY))
+            else:
+                if resetDisplayAlpha < 255:
+                    resetDisplayAlpha += 6
+                    resetDisplay.set_alpha(resetDisplayAlpha)
+                else:
+                    resetDisplayAlpha = 255
+                    resetDisplay.set_alpha(255)
+                postDisplay.blit(resetDisplay, (resetDisplayX, resetDisplayY))
+
+        # FADE IN
+        if fadeAlpha >= 0:
+            blackScreen.set_alpha(fadeAlpha)
+            postDisplay.blit(blackScreen, (0, 0))
+            fadeAlpha -= 2
+
 
 
         ### DEBUGGING ###
@@ -1972,7 +2026,5 @@ while True:
 
     if not running:
         break
-
-
 
 pygame.quit()
