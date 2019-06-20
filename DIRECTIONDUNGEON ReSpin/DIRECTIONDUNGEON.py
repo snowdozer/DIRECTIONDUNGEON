@@ -879,14 +879,15 @@ preDisplay = newSurf((SCREENLENGTH, SCREENLENGTH + CAMLIMIT))
 # the main display, post-camera
 postDisplay.fill((0, 255, 0))
 
-levelNum = 0
-lastLevel = 87
+levelNum = 83
+lastLevel = 91
 levelsLeft = lastLevel - levelNum
 if levelNum == 0:
     initPlayer(RIGHT, 0, 2)
 
 # find the goal in the previous level and start the player from there
 else:
+    resetActivated = True
     goalExists = False
     for dungNum, dung in enumerate(levels[levelNum - 1].layout):
         for colNum, col in enumerate(dung):

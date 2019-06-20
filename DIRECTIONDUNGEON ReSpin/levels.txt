@@ -1697,6 +1697,86 @@ E E E E E           E E E E E
 EMPTY None UP None None   EMPTY LEFT UP RIGHT DOWN
 
 
+SET05level00
+ENDSHEET
+          E E P E E
+          E E B E E
+          G E E E E
+          E E B E E
+          E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+G E E E E           G E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+          E E E E E
+          E E E E E
+          G E E E E
+          E E E E E
+          E E P E E
+EMPTY None None None DOWN   EMPTY None UP None None
+
+
+SET05level00
+ENDSHEET
+          E E P E E
+          E E B E E
+          G E E E S
+          E E B E E
+          E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+G E E E S           G E E E S
+E E E E E           E E E E E
+E E E E E           E E E E E
+          E E E E E
+          E E E E E
+          G E E E S
+          E E E E E
+          E E P E E
+EMPTY LEFT None None DOWN   EMPTY LEFT UP None None
+
+
+SET05level00
+ENDSHEET
+          E E P E E
+          E E B E E
+          G E E E E
+          E E B E E
+          E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+G E E E E           G E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+          E E E E E
+          E E E E E
+          G E E E E
+          E E E E E
+          E E P E E
+EMPTY LEFT None None DOWN   EMPTY None UP RIGHT None
+
+
+SET05level00
+ENDSHEET
+          E E P E E
+          E E B E E
+          G E E E E
+          E E B E E
+          E E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+G E E E E           G E E E E
+E E E E E           E E E E E
+E E E E E           E E E E E
+          E E E E E
+          E E E E E
+          G E E E E
+          E E E E E
+          E E P E E
+EMPTY LEFT None RIGHT DOWN   EMPTY None UP RIGHT None
+
+
 SET05level??
 ENDSHEET
           E E E E E
@@ -1757,6 +1837,26 @@ E E E E E           E P E E E
 EMPTY None None RIGHT DOWN EMPTY None None RIGHT None EMPTY LEFT None RIGHT None
 EMPTY None UP RIGHT None
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 SET05level??(9blocks)(good)(waitactuallymightbetooconfusing)
 ENDSHEET
           G E E E P
@@ -1797,24 +1897,44 @@ E E E E E           E E E E E
 EMPTY LEFT None RIGHT DOWN EMPTY LEFT UP None DOWN    EMPTY None UP RIGHT DOWN
 EMPTY LEFT UP None DOWN    EMPTY LEFT None None DOWN  EMPTY LEFT None RIGHT DOWN
 EMPTY LEFT UP RIGHT None   EMPTY None UP RIGHT DOWN   EMPTY LEFT UP None DOWN   EMPTY None UP RIGHT None
+SET05level00(kindawild)(conceptmightbetooadvanced?)
+ENDSHEET
+          E E E E E
+          E E B E E
+          P B E E G
+          E E B E W
+          E E E E S
+E E E E E           E E E E P
+E E E E E           E E E E E
+G E E E E           G E E E E
+E E E E W           E E E E W
+E E E B S           E E E E S
+          E E E E E
+          E E E E E
+          G E E E E
+          E E E E W
+          E E E E S
+EMPTY None None RIGHT DOWN   EMPTY None UP None None   EMPTY None UP None DOWN
+EMPTY LEFT UP RIGHT DOWN
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+SET05level00(checkfirstinstinct)
+ENDSHEET
+          E E E E E
+          E B E E E
+          G B E E E
+          E B E E E
+          E E E E E
+E E E E E           E E P E E
+E E E E E           E E E E E
+G E E E E           G E E P E
+E E E E E           E E E E E
+E E E E E           E E P E E
+          E E E E E
+          E E E E E
+          G E E E E
+          E E E E E
+          E E E E E
+EMPTY None None RIGHT None  EMPTY None UP RIGHT DOWN  EMPTY None None RIGHT None
 
 
 SET02level??
