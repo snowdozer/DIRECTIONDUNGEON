@@ -300,7 +300,7 @@ for direction in directionStrings:
 
     # creates ghost animation, equal to the player animation except transparent
     tempGhostAnim = Animation(6, SPRITE, path, 12, 14, mult)
-    tempGhostAnim.surface.set_alpha(50)
+    tempGhostAnim.surface.set_alpha(75)
     ghostMovement.append(tempGhostAnim)
 
     # the ghost animation is then tied to the player animation
@@ -310,7 +310,7 @@ for direction in directionStrings:
 # idle doesn't have to be animation, but it just makes things easier
 playIdle = Animation(0, SPRITE, "images\\playIdle.png",  12, 14, mult)
 ghostIdle = Animation(0, SPRITE, "images\\playIdle.png",  12, 14, mult)
-ghostIdle.surface.set_alpha(50)
+ghostIdle.surface.set_alpha(75)
 playAnim = playIdle
 ghostAnim = ghostIdle
 
@@ -362,8 +362,13 @@ for dung in range(4):
 
 # BLITS DUNGEON SIDES FROM SIDESURFS
 def blitSide(surf, dung, x, y):
-    segment = (dung * DUNGW, (levelNum + 3) * SIDE, DUNGW, SIDE * LEVELSDOWN)
-    surf.blit(sideSurfs, (x, y), segment)
+    if levelsLeft != 0:
+        if levelsLeft <= LEVELSDOWN:
+            height = SIDE * (LEVELSDOWN - (LEVELSDOWN - levelsLeft) - 1)
+        else:
+            height = SIDE * LEVELSDOWN
+        segment = (dung * DUNGW, (levelNum + 3) * SIDE, DUNGW, height)
+        surf.blit(sideSurfs, (x, y), segment)
 
 
 
@@ -414,6 +419,8 @@ def initPlayer(dung, col, row):
     player.dungs[dung] = True
     player.dung = dung
     player.origDung = dung
+    player.fallOff = 0
+    player.fallDiff = 8
 
 # checks, recursively, if boxes are valid to push
 def checkBox(direction, dung, col, row):
@@ -662,12 +669,12 @@ debugPressed = False  # tracks if the debug button is being pressed
 
 # DRAWS SHADOW ON THE NEXT LAYER & SIDES
 def drawNextShadow(surf, dung, x, y, shadowOffset):
-    # blit over entire dungeon first
     shadowAlpha = shadowOffset
     shadowAlpha += SHADOWINTERVAL
-
-    shadow.set_alpha(shadowAlpha)
-    surf.blit(shadow, (x, y))
+    if levelsLeft != 0:
+        # blit over entire dungeon first
+        shadow.set_alpha(shadowAlpha)
+        surf.blit(shadow, (x, y))
 
     # chops off the darkened green above non-wall tiles
     for col in range(WIDTH):
@@ -679,6 +686,9 @@ def drawNextShadow(surf, dung, x, y, shadowOffset):
 
     # blit each side shadow with a different opacity
     for layer in range(1, LEVELSDOWN + 2):
+        if levelsLeft - layer <= 0:
+            break
+
         shadowAlpha += SHADOWINTERVAL
 
         shadow.set_alpha(shadowAlpha)
@@ -870,6 +880,8 @@ preDisplay = newSurf((SCREENLENGTH, SCREENLENGTH + CAMLIMIT))
 postDisplay.fill((0, 255, 0))
 
 levelNum = 0
+lastLevel = 87
+levelsLeft = lastLevel - levelNum
 if levelNum == 0:
     initPlayer(RIGHT, 0, 2)
 
@@ -924,8 +936,9 @@ for level in reversed(levels):
 
 
 
+beatTheGame = False
 ### GAMEPLAY LOOP ###
-while True:
+while not beatTheGame:
 
     ############################################################################
     ###                   STUFF THAT RESETS EACH LEVEL                       ###
@@ -1059,6 +1072,9 @@ while True:
         curDungs.blit(postDisplay, (dung * DUNGW, 0), normRects[dung])
 
         postDisplay.fill((0, 0, 0))
+
+        if levelsLeft == 0:
+            nexDungs.fill((0, 0, 0))
 
         preDisplay.blit(nexDungs, (nexLvl.dungX[dung], nexLvl.dungY[dung] + nexLvl.y), nextRects[dung])
         preDisplay.blit(curDungs, (curLvl.dungX[dung], curLvl.dungY[dung]), alignRects[dung])
@@ -1493,6 +1509,10 @@ while True:
 
                 ### SPECIFIC TO NEXT LEVEL TRANSITION ###
                 elif animCur is animCurLvlUp:
+                    if levelsLeft == 0:
+                        beatTheGame = True
+                        break
+                    levelsLeft -= 1
                     levelNum += 1
                     nextLevel = True
 
@@ -1687,11 +1707,16 @@ while True:
             # DRAWS EVERYTHING MOVED UP
             preDisplay.fill((0, 0, 0))
 
+            if levelsLeft == 0:
+                player.fallOff += player.fallDiff
+                player.fallDiff += mult / 6
+
             for dung in range(4):
-                # NEXT LEVEL
-                x = nexLvl.dungX[dung]
-                y = nexLvl.dungY[dung] + nexLvl.y
-                preDisplay.blit(nexDungs, (x, y), nextRects[dung])
+                if levelsLeft != 0:
+                    # NEXT LEVEL
+                    x = nexLvl.dungX[dung]
+                    y = nexLvl.dungY[dung] + nexLvl.y
+                    preDisplay.blit(nexDungs, (x, y), nextRects[dung])
 
                 # SHADOWS
                 x = nexLvl.dungX[dung]
@@ -1699,11 +1724,12 @@ while True:
                 drawNextShadow(preDisplay, dung, x, y, shadowOff)
 
                 # FIXES BOXES BEING CUT OFF BY SHADOW
-                for box in nexLvl.boxes:
-                    if box.row == 0 and box.dungs[dung]:
-                        x = nexLvl.dungX[dung] + box.col * TILE
-                        y = nexLvl.dungY[dung] + nexLvl.y
-                        nexTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
+                if levelsLeft != 0:
+                    for box in nexLvl.boxes:
+                        if box.row == 0 and box.dungs[dung]:
+                            x = nexLvl.dungX[dung] + box.col * TILE
+                            y = nexLvl.dungY[dung] + nexLvl.y
+                            nexTileSheet.drawTile(preDisplay, (x, y), BOX, box.variant)
 
                 # FIXES GREEN APPEARING BEHIND PLAYER
                 if player.row == 0:
@@ -1719,14 +1745,14 @@ while True:
 
                 # PLAYER
                 x = nexLvl.dungX[dung] + player.col * TILE - TILE + player.xOff
-                y = nexLvl.dungY[dung] + player.row * TILE - TILE + player.yOff
+                y = nexLvl.dungY[dung] + player.row * TILE - TILE + player.yOff + player.fallOff
                 if player.dung == dung:
                     playAnim.blitFrame(preDisplay, (x, y))
                 else:
                     ghostAnim.blitFrame(preDisplay, (x, y))
 
                 # WALL BENEATH PLAYER AT NEXT LEVEL
-                if player.row != HEIGHT - 1:
+                if player.row != HEIGHT - 1 and levelsLeft != 0:
                     x = nexLvl.x + nexLvl.dungX[dung] + player.col * TILE
                     y = nexLvl.y + nexLvl.dungY[dung] + (player.row + 1) * TILE
 
@@ -2027,4 +2053,38 @@ while True:
     if not running:
         break
 
+
+endCredit = loadSprite(os.path.join("images", "credits.png"), mult)
+dialogue1 = loadSprite(os.path.join("images", "dialogue1.png"), mult)
+dialogue2 = loadSprite(os.path.join("images", "dialogue2.png"), mult)
+endFrame = 0
+if beatTheGame:
+    # END SCREEN LOOP
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        if endFrame < 601:
+            endFrame += 1
+
+        if endFrame == 180:
+            title.set_alpha(255)
+            postDisplay.blit(title, (titleX, titleY))
+            postDisplay.blit(endCredit, (13 * mult, 36 * mult))
+
+        elif endFrame == 360:
+            postDisplay.blit(dialogue1, (4 * mult, 53 * mult))
+
+        elif endFrame == 540:
+            postDisplay.fill((0, 0, 0), (4 * mult, 53 * mult, 63 * mult, 13 * mult))
+
+        elif endFrame == 600:
+            postDisplay.blit(dialogue2, (6 * mult, 53 * mult))
+
+        pygame.display.flip()
+        clock.tick(60)
+
 pygame.quit()
+sys.exit()
