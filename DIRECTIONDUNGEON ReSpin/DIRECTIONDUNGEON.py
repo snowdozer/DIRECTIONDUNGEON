@@ -30,6 +30,7 @@ import pygame
 # INITIAL WINDOW SETUP
 os.environ['SDL_VIDEO_CENTERED'] = '1'           # centers window
 
+pygame.mixer.init(22050, -16, 8, 64)
 pygame.init()
 pygame.display.set_caption('DIRECTIONDUNGEON!')  # gives window a title
 
@@ -879,7 +880,7 @@ preDisplay = newSurf((SCREENLENGTH, SCREENLENGTH + CAMLIMIT))
 # the main display, post-camera
 postDisplay.fill((0, 255, 0))
 
-levelNum = 83
+levelNum = 33
 lastLevel = 91
 levelsLeft = lastLevel - levelNum
 if levelNum == 0:
@@ -935,6 +936,48 @@ for level in reversed(levels):
                                    mult * 2, mult)
                         pygame.draw.rect(sideSurfs, plateLockColor, covRect)
 
+
+
+def loadSound(path):
+    return pygame.mixer.Sound(os.path.join("sounds", path))
+
+
+def loadSounds(path, count):
+    return [loadSound(path % x) for x in range(1, count + 1)]
+
+
+class Soundset:
+    def __init__(self, path, variants):
+        self.sounds = loadSounds(path, variants)
+        self.variants = variants
+        self.lastPlayed = 0
+
+    def playRandom(self):
+        id = random.randint(0, self.variants - 1)
+        while id == self.lastPlayed:
+            id = random.randint(0, self.variants - 1)
+        self.sounds[id].play()
+        self.lastPlayed = id
+
+    def setVolumes(self, volume):
+        for sound in self.sounds:
+            sound.set_volume(volume)
+
+
+musicChannel = pygame.mixer.Channel(0)
+
+soundNextLevel = Soundset("levelUp%i.wav", 3)
+soundNextLevel.sounds[0].set_volume(0.2)
+soundNextLevel.sounds[1].set_volume(0.3)
+soundNextLevel.sounds[2].set_volume(0.1)
+
+soundMove = Soundset("move%i.wav", 9)
+
+soundSwirl = Soundset("swirl%i.wav", 7)
+soundSwirl.setVolumes(0.02)
+
+soundSwirlWoosh = Soundset("swirlWoosh%i.wav", 6)
+soundSwirlWoosh.setVolumes(0.02)
 
 
 beatTheGame = False
@@ -1235,6 +1278,7 @@ while not beatTheGame:
 
             moveBoxes = []
             if checkBox(moveQueue[0], moveQueue[0], player.col, player.row):
+                soundMove.playRandom()
                 moveBoxes.append(player)
 
                 for box in moveBoxes:
@@ -1338,6 +1382,8 @@ while not beatTheGame:
                                             drawObjs(curDungs, dung, dung * DUNGW, 0, False)
 
                                         animQueue.append(animRotate)
+                                        soundSwirl.playRandom()
+                                        soundSwirlWoosh.playRandom()
 
                                         break
 
@@ -1394,6 +1440,8 @@ while not beatTheGame:
 
                     ### STARTS THE WINNING OF THE LEVEL ###
                     if tile == GOAL and not curLvl.locked:
+                        soundNextLevel.playRandom()
+
                         if animRotate in animQueue:
                             animQueue.remove(animRotate)
 

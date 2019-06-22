@@ -2,17 +2,26 @@
 <project version="4">
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" line="1079" />
+    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" line="864" />
+    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" line="2037" />
     <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" line="1819" />
-    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" line="863" />
-    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" line="1988" />
+    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" line="968" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b473aad1-d247-4772-a8e5-fe79a4a57641" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/credits.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/dialogue1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/dialogue2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/Sounds Used.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move1.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move2.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move3.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move4.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move5.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move6.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move7.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move8.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move9.wav" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,20 +31,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="312" column="30" selection-start-line="312" selection-start-column="30" selection-end-line="312" selection-end-column="30" />
+            <state relative-caret-position="231">
+              <caret line="979" column="31" selection-start-line="979" selection-start-column="31" selection-end-line="979" selection-end-column="31" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="840">
-              <caret line="1739" column="7" selection-start-line="1739" selection-start-column="7" selection-end-line="1739" selection-end-column="7" />
+            <state relative-caret-position="24752">
+              <caret line="1768" column="3" selection-start-line="1768" selection-start-column="3" selection-end-line="1768" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -43,8 +52,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/leveltemplates.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="434">
-              <caret line="31" column="10" selection-start-line="31" selection-start-column="10" selection-end-line="36" />
+            <state relative-caret-position="294">
+              <caret line="21" selection-start-line="21" selection-end-line="35" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -60,12 +69,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>TESTSHE</find>
-      <find>drawTile</find>
-      <find>levelnum</find>
-      <find>levelnum = 0</find>
-      <find>levelnum =</find>
-      <find>shadow =</find>
       <find>screensize</find>
       <find>clockTick</find>
       <find>goal</find>
@@ -90,6 +93,12 @@
       <find>fallDiff ++</find>
       <find>fallOff</find>
       <find>50</find>
+      <find>levelNum =</find>
+      <find>last</find>
+      <find>== goal</find>
+      <find>sound</find>
+      <find>soundnextLevel</find>
+      <find>rand</find>
     </findStrings>
     <replaceStrings>
       <replace>SET0</replace>
@@ -129,7 +138,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -146,30 +154,19 @@
               <item name="DIRECTIONDUNGEON" type="b2602c69:ProjectViewProjectNode" />
               <item name="DIRECTIONDUNGEON" type="462c0819:PsiDirectoryNode" />
               <item name="DIRECTIONDUNGEON ReSpin" type="462c0819:PsiDirectoryNode" />
-              <item name=".idea" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DIRECTIONDUNGEON" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DIRECTIONDUNGEON" type="462c0819:PsiDirectoryNode" />
-              <item name="DIRECTIONDUNGEON ReSpin" type="462c0819:PsiDirectoryNode" />
-              <item name=".vs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DIRECTIONDUNGEON" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DIRECTIONDUNGEON" type="462c0819:PsiDirectoryNode" />
-              <item name="DIRECTIONDUNGEON ReSpin" type="462c0819:PsiDirectoryNode" />
-              <item name="images" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DIRECTIONDUNGEON" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DIRECTIONDUNGEON" type="462c0819:PsiDirectoryNode" />
-              <item name="DIRECTIONDUNGEON ReSpin" type="462c0819:PsiDirectoryNode" />
               <item name="levels" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DIRECTIONDUNGEON" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DIRECTIONDUNGEON" type="462c0819:PsiDirectoryNode" />
+              <item name="DIRECTIONDUNGEON ReSpin" type="462c0819:PsiDirectoryNode" />
+              <item name="sounds" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -437,7 +434,21 @@
       <option name="project" value="LOCAL" />
       <updated>1560912821364</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="end screen">
+      <created>1561060880255</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1561060880255</updated>
+    </task>
+    <task id="LOCAL-00019" summary="A FEW LEVELS TO EASE THE DIFFICULTY OF THE LAST FEW LEVELS???">
+      <created>1561064100794</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1561064100794</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TodoView">
@@ -453,7 +464,7 @@
     <frame x="66" y="-7" width="1221" height="735" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18830611" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19518487" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="0" sideWeight="0.49947312" weight="0.31953642" />
@@ -549,7 +560,9 @@
     <MESSAGE value="literally two levels that aren't even good" />
     <MESSAGE value="two more tilesets" />
     <MESSAGE value="new animation and a startup screen" />
-    <option name="LAST_COMMIT_MESSAGE" value="new animation and a startup screen" />
+    <MESSAGE value="end screen" />
+    <MESSAGE value="A FEW LEVELS TO EASE THE DIFFICULTY OF THE LAST FEW LEVELS???" />
+    <option name="LAST_COMMIT_MESSAGE" value="A FEW LEVELS TO EASE THE DIFFICULTY OF THE LAST FEW LEVELS???" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON level class attempt.py" />
@@ -589,24 +602,24 @@
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/05 plateSheet.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/leveltemplates.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="434">
-          <caret line="31" column="10" selection-start-line="31" selection-start-column="10" selection-end-line="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="312" column="30" selection-start-line="312" selection-start-column="30" selection-end-line="312" selection-end-column="30" />
+        <state relative-caret-position="231">
+          <caret line="979" column="31" selection-start-line="979" selection-start-column="31" selection-end-line="979" selection-end-column="31" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
-          <caret line="1739" column="7" selection-start-line="1739" selection-start-column="7" selection-end-line="1739" selection-end-column="7" />
+        <state relative-caret-position="24752">
+          <caret line="1768" column="3" selection-start-line="1768" selection-start-column="3" selection-end-line="1768" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/leveltemplates.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="21" selection-start-line="21" selection-end-line="35" selection-end-column="19" />
         </state>
       </provider>
     </entry>
