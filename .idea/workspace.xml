@@ -3,53 +3,14 @@
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" line="1079" />
     <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" line="864" />
-    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" line="2069" />
+    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" line="2076" />
     <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" line="1819" />
-    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" line="968" />
-    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" line="1301" />
+    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" line="971" />
+    <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" line="1308" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b473aad1-d247-4772-a8e5-fe79a4a57641" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/boxSlide1.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/boxSlide2.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/boxSlide3.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/boxSlide4.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/boxSlide5.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/boxSlide6.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/goalClose1.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/goalClose2.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/goalClose3.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/goalClose4.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/goalOpen1.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/goalOpen2.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/goalOpen3.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/goalOpen4.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/herraportti zipper.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/lamamakesmusic various buttons.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/switchOff1.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/switchOff2.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/switchOff3.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/switchOff4.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/switchOn1.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/switchOn2.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/switchOn3.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/switchOn4.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ZIP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ZIP.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/Sounds Used.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/Sounds Used.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/04 boxSheet.png" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/04 boxSheet.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/levelUp3.wav" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/levelUp3.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move1.wav" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move1.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move2.wav" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move2.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move3.wav" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move3.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move4.wav" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move4.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move5.wav" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move5.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move6.wav" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move6.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move7.wav" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move7.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move8.wav" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move8.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move9.wav" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move9.wav" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -62,8 +23,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="486">
-              <caret line="993" column="26" selection-start-line="993" selection-start-column="26" selection-end-line="993" selection-end-column="26" />
+            <state relative-caret-position="27">
+              <caret line="857" column="5" selection-start-line="857" selection-start-column="5" selection-end-line="857" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -177,12 +138,6 @@
               <item name="DIRECTIONDUNGEON" type="b2602c69:ProjectViewProjectNode" />
               <item name="DIRECTIONDUNGEON" type="462c0819:PsiDirectoryNode" />
               <item name="DIRECTIONDUNGEON ReSpin" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DIRECTIONDUNGEON" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DIRECTIONDUNGEON" type="462c0819:PsiDirectoryNode" />
-              <item name="DIRECTIONDUNGEON ReSpin" type="462c0819:PsiDirectoryNode" />
-              <item name="sounds" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -470,7 +425,14 @@
       <option name="project" value="LOCAL" />
       <updated>1561064100794</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="more sounds.  also, i forgot to change the name of the last commit">
+      <created>1561303253545</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1561303253545</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TodoView">
@@ -484,8 +446,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17750533" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17750533" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="0" sideWeight="0.49947312" weight="0.31852654" />
@@ -501,7 +464,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Run" order="3" visible="true" weight="0.1881663" />
+      <window_info active="true" anchor="right" id="Run" order="3" visible="true" weight="0.18869936" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17829457" />
@@ -583,7 +546,8 @@
     <MESSAGE value="new animation and a startup screen" />
     <MESSAGE value="end screen" />
     <MESSAGE value="A FEW LEVELS TO EASE THE DIFFICULTY OF THE LAST FEW LEVELS???" />
-    <option name="LAST_COMMIT_MESSAGE" value="A FEW LEVELS TO EASE THE DIFFICULTY OF THE LAST FEW LEVELS???" />
+    <MESSAGE value="more sounds.  also, i forgot to change the name of the last commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="more sounds.  also, i forgot to change the name of the last commit" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON level class attempt.py" />
@@ -625,8 +589,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="993" column="26" selection-start-line="993" selection-start-column="26" selection-end-line="993" selection-end-column="26" />
+        <state relative-caret-position="27">
+          <caret line="857" column="5" selection-start-line="857" selection-start-column="5" selection-end-line="857" selection-end-column="5" />
         </state>
       </provider>
     </entry>

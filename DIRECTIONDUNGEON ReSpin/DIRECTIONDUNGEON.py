@@ -880,7 +880,10 @@ preDisplay = newSurf((SCREENLENGTH, SCREENLENGTH + CAMLIMIT))
 # the main display, post-camera
 postDisplay.fill((0, 255, 0))
 
-levelNum = 70
+saveData = open("easilyEditableSingleNumberSaveData.txt", 'r')
+levelNum = int(saveData.read().split()[0])
+saveData.close()
+
 lastLevel = 91
 levelsLeft = lastLevel - levelNum
 if levelNum == 0:
@@ -995,13 +998,17 @@ soundGoalClose = Soundset("goalClose%i.wav", 4)
 soundGoalOpen.setVolumes(0.2)
 soundGoalClose.setVolumes(0.2)
 
-beatTheGame = False
+beatTheGame = levelNum > lastLevel
 ### GAMEPLAY LOOP ###
 while not beatTheGame:
 
     ############################################################################
     ###                   STUFF THAT RESETS EACH LEVEL                       ###
     ############################################################################
+
+    saveData = open("easilyEditableSingleNumberSaveData.txt", 'w')
+    saveData.write(str(levelNum))
+    saveData.close()
 
     ### DRAWING LEVELS ###
     curLvl = levels[levelNum]  # stores reference to current level
@@ -2140,6 +2147,11 @@ dialogue1 = loadSprite(os.path.join("images", "dialogue1.png"), mult)
 dialogue2 = loadSprite(os.path.join("images", "dialogue2.png"), mult)
 endFrame = 0
 if beatTheGame:
+    saveData = open("easilyEditableSingleNumberSaveData.txt", 'w')
+    saveData.write("0")
+    saveData.close()
+
+    postDisplay.fill((0, 0, 0))
     # END SCREEN LOOP
     while True:
         for event in pygame.event.get():
