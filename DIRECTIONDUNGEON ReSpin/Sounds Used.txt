@@ -1,6 +1,12 @@
 Here's a list of all the sounds I used from freesound:
 
 Woosh_Low_04.wav (next level going up) by moogy73 - https://freesound.org/people/moogy73/sounds/425698/
+
+MIGHT NOT BE USING THIS
 Bamboo Swing (swirl woosh) by InspectorJ - https://freesound.org/people/InspectorJ/sounds/394429/
-Stream Water (cropped to make movement souunds) by InspectorJ - https://freesound.org/people/InspectorJ/sounds/339324/
+
+Stream Water (cropped to make slimy movement) by InspectorJ - https://freesound.org/people/InspectorJ/sounds/339324/
 Timer, short windup (when you step on a rotation tile) by sounds_from_dot_me - https://freesound.org/people/sounds_from_dot_me/sounds/447556/
+Compressed air (cropped to make box sliding sounds) by the_yura - https://freesound.org/people/the_yura/sounds/240594/
+Various buttons (click when a switch is stepped on or off) by LamaMakesMusic - https://freesound.org/people/LamaMakesMusic/sounds/403556/
+Zipper (when the goal opens/closes) by herraportti - https://freesound.org/people/herraportti/sounds/436669/

@@ -880,7 +880,7 @@ preDisplay = newSurf((SCREENLENGTH, SCREENLENGTH + CAMLIMIT))
 # the main display, post-camera
 postDisplay.fill((0, 255, 0))
 
-levelNum = 33
+levelNum = 70
 lastLevel = 91
 levelsLeft = lastLevel - levelNum
 if levelNum == 0:
@@ -967,18 +967,33 @@ class Soundset:
 musicChannel = pygame.mixer.Channel(0)
 
 soundNextLevel = Soundset("levelUp%i.wav", 3)
-soundNextLevel.sounds[0].set_volume(0.2)
-soundNextLevel.sounds[1].set_volume(0.3)
-soundNextLevel.sounds[2].set_volume(0.1)
+soundNextLevel.sounds[0].set_volume(0.98)
+soundNextLevel.sounds[1].set_volume(1)
+soundNextLevel.sounds[2].set_volume(0.60)
 
 soundMove = Soundset("move%i.wav", 9)
+soundMove.setVolumes(0.3)
 
 soundSwirl = Soundset("swirl%i.wav", 7)
-soundSwirl.setVolumes(0.02)
+soundSwirl.setVolumes(0.4)
 
 soundSwirlWoosh = Soundset("swirlWoosh%i.wav", 6)
-soundSwirlWoosh.setVolumes(0.02)
+soundSwirlWoosh.setVolumes(0.4)
 
+soundBoxSlide = Soundset("boxSlide%i.wav", 6)
+soundBoxSlide.setVolumes(0.6)
+soundBoxSlide.sounds[0].set_volume(0.4)
+soundBoxSlide.sounds[1].set_volume(0.4)
+
+soundLock = Soundset("switchOn%i.wav", 4)
+soundUnlock = Soundset("switchOff%i.wav", 4)
+soundLock.setVolumes(0.8)
+soundUnlock.setVolumes(0.8)
+
+soundGoalOpen = Soundset("goalOpen%i.wav", 4)
+soundGoalClose = Soundset("goalClose%i.wav", 4)
+soundGoalOpen.setVolumes(0.2)
+soundGoalClose.setVolumes(0.2)
 
 beatTheGame = False
 ### GAMEPLAY LOOP ###
@@ -1062,6 +1077,9 @@ while not beatTheGame:
 
     plates = origPlates
     curLvl.locked = plates != totPlates
+
+    switchOn = False
+    switchOff = False
 
 
 
@@ -1281,6 +1299,9 @@ while not beatTheGame:
                 soundMove.playRandom()
                 moveBoxes.append(player)
 
+                if len(moveBoxes) > 1:
+                    soundBoxSlide.playRandom()
+
                 for box in moveBoxes:
                     box.direction = moveQueue[0]
 
@@ -1289,6 +1310,7 @@ while not beatTheGame:
                         if box.dungs[dung]:
                             if curLvl.tileAt(dung, box.col, box.row) == PLATE:
                                 plates -= 1
+                                switchOff = True
 
                                 if notCover(dung, box.col, box.row + 1):
                                     platesToUnlock.append((dung, box.col, box.row))
@@ -1383,12 +1405,12 @@ while not beatTheGame:
 
                                         animQueue.append(animRotate)
                                         soundSwirl.playRandom()
-                                        soundSwirlWoosh.playRandom()
 
                                         break
 
                                 elif tile == PLATE:
                                     plates += 1
+                                    switchOn = True
 
                                     if notCover(dung, box.col, box.row + 1):
                                         platesToLock.append((dung, box))
@@ -1400,6 +1422,8 @@ while not beatTheGame:
                     currentlyLocked = plates != totPlates
 
                     if previouslyLocked and not currentlyLocked:
+                        soundGoalOpen.playRandom()
+
                         animSameTime.append(animGoalUnlock)
                         curLvl.locked = False
 
@@ -1425,6 +1449,7 @@ while not beatTheGame:
                                 curDungs.blit(curTileSheet.surface, (x, y), rect)
 
                     elif not previouslyLocked and currentlyLocked:
+                        soundGoalClose.playRandom()
                         animSameTime.append(animGoalLock)
                         # locked only after the animation plays
 
@@ -1955,7 +1980,14 @@ while not beatTheGame:
                 anim.resetAnim()
                 animSameTime.remove(anim)
 
+        ### PLATE SOUNDS ###
+        if switchOn:
+            soundLock.playRandom()
+        elif switchOff:
+            soundUnlock.playRandom()
 
+        switchOn = False
+        switchOff = False
 
         ### CAMERA MOVEMENT ###
         # MOVES THE CAMERA ALONG X AXIS
