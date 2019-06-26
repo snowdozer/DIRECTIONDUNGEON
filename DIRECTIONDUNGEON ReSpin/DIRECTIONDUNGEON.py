@@ -880,30 +880,39 @@ preDisplay = newSurf((SCREENLENGTH, SCREENLENGTH + CAMLIMIT))
 # the main display, post-camera
 postDisplay.fill((0, 255, 0))
 
-saveData = open("easilyEditableSingleNumberSaveData.txt", 'r')
-levelNum = int(saveData.read().split()[0])
-saveData.close()
+file = open("easilyEditableSaveData.txt", 'r')
+saveData = file.read()
+file.close()
+
+saveData = saveData.split()
+saveData = [int(saveData[x]) for x in range(len(saveData))]
+levelNum = saveData[0]
 
 lastLevel = 91
 levelsLeft = lastLevel - levelNum
-if levelNum == 0:
-    initPlayer(RIGHT, 0, 2)
-
-# find the goal in the previous level and start the player from there
-else:
+if levelNum != 0:
     resetActivated = True
-    goalExists = False
-    for dungNum, dung in enumerate(levels[levelNum - 1].layout):
-        for colNum, col in enumerate(dung):
-            for rowNum, tile in enumerate(col):
-                if tile == GOAL:
-                    initPlayer(RIGHT, colNum, rowNum)
-                    goalExists = True
 
-    # if somehow no goal was found, default to the middle of the level
-    if not goalExists:
-        initPlayer(LEFT, 2, 2)
+if levelNum <= 91:
+    # in the case not all the data is present, find the start point manually
+    if len(saveData) < 4:
+        if levelNum == 0:
+            initPlayer(RIGHT, 0, 2)
+        else:
+            goalExists = False
+            for dungNum, dung in enumerate(levels[levelNum - 1].layout):
+                for colNum, col in enumerate(dung):
+                    for rowNum, tile in enumerate(col):
+                        if tile == GOAL:
+                            initPlayer(RIGHT, colNum, rowNum)
+                            goalExists = True
 
+            # if somehow no goal was found, default to the middle of the level
+            if not goalExists:
+                initPlayer(LEFT, 2, 2)
+
+    else:
+        initPlayer(saveData[1], saveData[2], saveData[3])
 
 # PREDRAWS THE SIDES OF ALL THE LEVELS
 # makes a surface that stores level sides for all four dungeons
@@ -964,7 +973,6 @@ class Soundset:
                 id = random.randint(0, self.variants - 1)
         self.sounds[id].play()
         self.lastPlayed = id
-        print(id + 1)
 
     def setVolumes(self, volume):
         for sound in self.sounds:
@@ -1010,8 +1018,12 @@ while not beatTheGame:
     ###                   STUFF THAT RESETS EACH LEVEL                       ###
     ############################################################################
 
-    saveData = open("easilyEditableSingleNumberSaveData.txt", 'w')
-    saveData.write(str(levelNum))
+    saveData = open("easilyEditableSaveData.txt", 'w')
+    for dung in range(4):
+        if player.dungs[dung]:
+            saveData.write(str(levelNum) + ' ' + str(dung) + ' ' +
+                           str(player.col) + ' ' + str(player.row))
+
     saveData.close()
 
     ### DRAWING LEVELS ###
@@ -2151,8 +2163,8 @@ dialogue1 = loadSprite(os.path.join("images", "dialogue1.png"), mult)
 dialogue2 = loadSprite(os.path.join("images", "dialogue2.png"), mult)
 endFrame = 0
 if beatTheGame:
-    saveData = open("easilyEditableSingleNumberSaveData.txt", 'w')
-    saveData.write("0")
+    saveData = open("easilyEditableSaveData.txt", 'w')
+    saveData.write("0 2 0 2")
     saveData.close()
 
     postDisplay.fill((0, 0, 0))
