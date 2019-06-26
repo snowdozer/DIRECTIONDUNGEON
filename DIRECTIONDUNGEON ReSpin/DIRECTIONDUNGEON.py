@@ -956,11 +956,15 @@ class Soundset:
         self.lastPlayed = 0
 
     def playRandom(self):
-        id = random.randint(0, self.variants - 1)
-        while id == self.lastPlayed:
+        if self.variants == 1:
+            id = 0
+        else:
             id = random.randint(0, self.variants - 1)
+            while id == self.lastPlayed:
+                id = random.randint(0, self.variants - 1)
         self.sounds[id].play()
         self.lastPlayed = id
+        print(id + 1)
 
     def setVolumes(self, volume):
         for sound in self.sounds:
@@ -975,7 +979,7 @@ soundNextLevel.sounds[1].set_volume(1)
 soundNextLevel.sounds[2].set_volume(0.60)
 
 soundMove = Soundset("move%i.wav", 9)
-soundMove.setVolumes(0.3)
+soundMove.setVolumes(0.5)
 
 soundSwirl = Soundset("swirl%i.wav", 7)
 soundSwirl.setVolumes(0.4)
