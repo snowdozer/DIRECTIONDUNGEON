@@ -987,23 +987,23 @@ soundNextLevel.sounds[1].set_volume(1)
 soundNextLevel.sounds[2].set_volume(0.60)
 
 soundMove = Soundset("move%i.wav", 9)
-soundMove.setVolumes(0.5)
+soundMove.setVolumes(0.7)
 
 soundSwirl = Soundset("swirl%i.wav", 7)
-soundSwirl.setVolumes(0.4)
+soundSwirl.setVolumes(0.3)
 
 soundSwirlWoosh = Soundset("swirlWoosh%i.wav", 6)
 soundSwirlWoosh.setVolumes(0.4)
 
 soundBoxSlide = Soundset("boxSlide%i.wav", 6)
-soundBoxSlide.setVolumes(0.6)
-soundBoxSlide.sounds[0].set_volume(0.4)
-soundBoxSlide.sounds[1].set_volume(0.4)
+soundBoxSlide.setVolumes(0.7)
+soundBoxSlide.sounds[0].set_volume(0.6)
+soundBoxSlide.sounds[1].set_volume(0.6)
 
 soundLock = Soundset("switchOn%i.wav", 4)
 soundUnlock = Soundset("switchOff%i.wav", 4)
-soundLock.setVolumes(0.8)
-soundUnlock.setVolumes(0.8)
+soundLock.setVolumes(0.7)
+soundUnlock.setVolumes(0.7)
 
 soundGoalOpen = Soundset("goalOpen%i.wav", 4)
 soundGoalClose = Soundset("goalClose%i.wav", 4)
