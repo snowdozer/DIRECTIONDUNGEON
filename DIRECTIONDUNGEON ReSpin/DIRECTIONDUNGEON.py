@@ -30,7 +30,7 @@ import pygame
 # INITIAL WINDOW SETUP
 os.environ['SDL_VIDEO_CENTERED'] = '1'           # centers window
 
-pygame.mixer.init(22050, -16, 8, 64)
+pygame.mixer.init(22050, -16, 16, 64)   # NOTE TO FIX: SOMETIMES SOUNDS CUT OFF EVEN WITH 32 CHANNELS
 pygame.init()
 pygame.display.set_caption('DIRECTIONDUNGEON!')  # gives window a title
 
@@ -135,13 +135,13 @@ class Tilesheet:
 # a test tilesheet.  multiple can be made
 TESTSHEET = Tilesheet(os.path.join("images", "testSheet.png"), mult, (0, 1, 3, 3, 1, 1, 4, 4, 1, 1))
 # intro levels.
-INTROSHEET = Tilesheet(os.path.join("images", "00 introSheet.png"), mult, (0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0))
-DIRECTIONSHEET = Tilesheet(os.path.join("images", "01 directionSheet.png"), mult, (0, 4, 1, 1, 1, 0, 0, 0, 0, 0, 0))
-SWIRLSHEET = Tilesheet(os.path.join("images", "02 swirlSheet.png"), mult, (0, 3, 4, 4, 1, 3, 0, 0, 0, 0, 0))
-DIZZYSHEET = Tilesheet(os.path.join("images", "03 dizzySheet.png"), mult, (0, 3, 4, 4, 1, 3, 0, 0, 0, 0, 0))
-BOXSHEET = Tilesheet(os.path.join("images", "04 boxSheet.png"), mult, (0, 3, 3, 3, 1, 3, 4, 4, 0, 0, 0))
-PLATESHEET = Tilesheet(os.path.join("images", "05 plateSheet.png"), mult, (0, 3, 4, 4, 1, 3, 4, 4, 1, 1))
-ENDSHEET = Tilesheet(os.path.join("images", "06 endSheet.png"), mult, (0, 6, 6, 6, 1, 6, 6, 4, 1, 1))
+INTROSHEET = Tilesheet(os.path.join("images", "00 introSheet.png"), mult, (0, 1, 1, 1, 1, 1, 4, 4, 1, 1))
+DIRECTIONSHEET = Tilesheet(os.path.join("images", "01 directionSheet.png"), mult, (0, 4, 1, 1, 1, 1, 4, 4, 1, 1))
+SWIRLSHEET = Tilesheet(os.path.join("images", "02 swirlSheet.png"), mult, (0, 3, 4, 4, 1, 3, 4, 4, 1, 1))
+DIZZYSHEET = Tilesheet(os.path.join("images", "03 dizzySheet.png"), mult, (0, 3, 3, 3, 1, 3, 4, 4, 1, 1))
+BOXSHEET = Tilesheet(os.path.join("images", "04 boxSheet.png"), mult, (0, 3, 4, 4, 1, 3, 4, 4, 1, 1))
+PLATESHEET = Tilesheet(os.path.join("images", "05 plateSheet.png"), mult, (0, 6, 6, 6, 1, 6, 6, 4, 1, 1))
+ENDSHEET = Tilesheet(os.path.join("images", "03 scrappedSheet.png"), mult, (0, 3, 4, 4, 1, 3, 1, 1, 1, 1, 1))
 
 ##################
 ### ANIMATIONS ###
@@ -580,6 +580,11 @@ for x in reversed(range(len(levelFile))):
 for x in range(len(levelFile)):
     levelFile[x] = eval(levelFile[x])
 
+# KEEPS TRACK OF LEVELS WHERE THE MUSIC CHANGES
+currentLevel = 0
+currentTileSheet = INTROSHEET
+musicChanges = []
+
 while levelFile:   # stops loading once there is nothing to load
     boxCount = 0   # counts the amount of box declarations needed
     boxVar = 0
@@ -636,8 +641,14 @@ while levelFile:   # stops loading once there is nothing to load
 
         finalBoxes.append(Box(buildDungs, box[1], box[2], boxVar))
 
+    if currentTileSheet != buildSheet:
+        musicChanges.append(currentLevel)
+        currentTileSheet = buildSheet
+
     # CREATES A LEVEL OBJECT AND ADDS IT TO THE LEVEL LIST
     levels.append(Level(buildLayout, buildSheet, finalBoxes))
+
+    currentLevel += 1
 
 
 # IMPROMPTU PLATE COUNTING
@@ -979,7 +990,31 @@ class Soundset:
             sound.set_volume(volume)
 
 
-musicChannel = pygame.mixer.Channel(0)
+def currentChannel():
+    for x in range(MUSIC_COUNT):
+        if levelNum < musicChanges[x]:
+            return x
+
+    for x in range(MUSIC_COUNT, 11):
+        if levelNum < musicChanges[x]:
+            return 11 - x - 1
+
+    return -1
+
+MUSIC_VOLUME = 0.4
+MUSIC_FADE_SPEED = 0.003
+MUSIC_COUNT = 6
+musicTracks = loadSounds("music%i.wav", MUSIC_COUNT)
+musicChannels = [pygame.mixer.Channel(x) for x in range(MUSIC_COUNT)]
+for channel in range(MUSIC_COUNT):
+    if currentChannel() == channel:
+        musicTracks[channel].set_volume(MUSIC_VOLUME)
+    else:
+        musicTracks[channel].set_volume(0)
+    musicChannels[channel].play(musicTracks[channel], -1)
+
+previousMusic = currentChannel()
+
 
 soundNextLevel = Soundset("levelUp%i.wav", 3)
 soundNextLevel.sounds[0].set_volume(0.98)
@@ -1165,6 +1200,15 @@ while not beatTheGame:
         preDisplay.blit(curDungs, (curLvl.dungX[dung], curLvl.dungY[dung]), alignRects[dung])
 
 
+
+    # MUSIC
+    musicTrack = currentChannel()
+    if previousMusic != musicTrack:
+        fadeTo = musicTrack
+        fadeProgress = 0.0
+    else:
+        fadeTo = -1
+        fadeProgress = 1.0
 
 
     # MISC
@@ -2012,6 +2056,22 @@ while not beatTheGame:
         switchOn = False
         switchOff = False
 
+
+        ### MUSIC ###
+        if fadeTo != -1:
+            fadeProgress += MUSIC_FADE_SPEED
+            if fadeProgress > MUSIC_VOLUME:
+                fadeProgress = 0.0
+                fadeTo = -1
+                musicTracks[previousMusic].set_volume(0.0)
+                musicTracks[musicTrack].set_volume(MUSIC_VOLUME)
+                previousMusic = musicTrack
+
+            else:
+                musicTracks[previousMusic].set_volume(MUSIC_VOLUME - fadeProgress)
+                musicTracks[musicTrack].set_volume(fadeProgress)
+
+
         ### CAMERA MOVEMENT ###
         # MOVES THE CAMERA ALONG X AXIS
         if camXLock:
@@ -2126,12 +2186,12 @@ while not beatTheGame:
 
         debug1 = TAHOMA.render(str(curLvl.locked), False, (255, 255, 255))
         debug2 = TAHOMA.render(repr(animUnlockBox.frame), False, (255, 255, 255))
-        #debug3 = TAHOMA.render(repr(curLvl.boxes[0].locked), False, (255, 255, 255))
-        debug4 = TAHOMA.render(str(levelNum) + " " + str(levelNum * 20), False, (255, 255, 255))
+        debug3 = TAHOMA.render(str(levelNum) + " " + str(levelNum * 20), False, (255, 255, 255))
+        debug4 = TAHOMA.render(repr([musicTracks[x].get_volume() for x in range(MUSIC_COUNT)]), False, (255, 255, 255))
 
         postDisplay.blit(debug1, (10, 20))
         postDisplay.blit(debug2, (10, 30))
-        #postDisplay.blit(debug3, (10, 40))
+        postDisplay.blit(debug3, (10, 40))
         postDisplay.blit(debug4, (10, 50))
 
         if debugPressed:
@@ -2158,6 +2218,7 @@ while not beatTheGame:
         break
 
 
+fadeProgress = 0.0
 endCredit = loadSprite(os.path.join("images", "credits.png"), mult)
 dialogue1 = loadSprite(os.path.join("images", "dialogue1.png"), mult)
 dialogue2 = loadSprite(os.path.join("images", "dialogue2.png"), mult)
@@ -2174,6 +2235,13 @@ if beatTheGame:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
+        if fadeProgress < MUSIC_VOLUME:
+            fadeProgress += MUSIC_FADE_SPEED
+            if fadeProgress >= MUSIC_VOLUME:
+                musicTracks[0].set_volume(0.0)
+            else:
+                musicTracks[0].set_volume(MUSIC_VOLUME - fadeProgress)
 
         if endFrame < 601:
             endFrame += 1

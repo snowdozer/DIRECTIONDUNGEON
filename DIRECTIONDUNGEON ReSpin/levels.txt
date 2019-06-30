@@ -1518,7 +1518,7 @@ EMPTY LEFT None None DOWN   EMPTY LEFT UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
 
 
 SET05LEVEL??
-ENDSHEET
+BOXSHEET
           W W W W W
           W W W W W
           S E E E E
@@ -1538,7 +1538,7 @@ EMPTY None None RIGHT None
 
 
 SET05level??
-ENDSHEET
+BOXSHEET
           G E E E P
           E E E E E
           E E B E E
@@ -1558,7 +1558,7 @@ EMPTY None UP RIGHT None   EMPTY LEFT None None DOWN
 
 
 SET05level??
-ENDSHEET
+BOXSHEET
           G E E E E
           E E E E E
           E E B E E
@@ -1578,7 +1578,7 @@ EMPTY LEFT None None DOWN   EMPTY None UP RIGHT None
 
 
 SET05level??
-ENDSHEET
+DIZZYSHEET
           G E E E E
           E E E E E
           E E B E E
@@ -1598,7 +1598,7 @@ EMPTY None UP None None   EMPTY LEFT None None None   EMPTY None None RIGHT None
 EMPTY None None None DOWN
 
 SET05level??
-ENDSHEET
+DIZZYSHEET
           E E E P E
           E E E E E
           G E B E S
@@ -1618,7 +1618,7 @@ EMPTY None UP None None   EMPTY LEFT None None None   EMPTY None None RIGHT None
 EMPTY None None None DOWN
 
 SET05LEVEL??(YEAH)
-ENDSHEET
+DIZZYSHEET
           S E E E S
           E E E E E
           E E E E E
@@ -1638,7 +1638,7 @@ EMPTY LEFT None None None  EMPTY LEFT None None None  EMPTY LEFT None None None
 EMPTY LEFT None None None
 
 SET05level00
-ENDSHEET
+SWIRLSHEET
           E E P E E
           E E B E E
           G E E E E
@@ -1658,7 +1658,7 @@ EMPTY None None None DOWN   EMPTY None UP None None
 
 
 SET05level00
-ENDSHEET
+SWIRLSHEET
           E E P E E
           E E B E E
           G E E E S
@@ -1678,7 +1678,7 @@ EMPTY LEFT None None DOWN   EMPTY LEFT UP None None
 
 
 SET05level00
-ENDSHEET
+SWIRLSHEET
           E E P E E
           E E B E E
           G E E E E
@@ -1698,7 +1698,7 @@ EMPTY LEFT None None DOWN   EMPTY None UP RIGHT None
 
 
 SET05level00
-ENDSHEET
+SWIRLSHEET
           E E P E E
           E E B E E
           G E E E E
@@ -1718,7 +1718,7 @@ EMPTY LEFT None RIGHT DOWN   EMPTY None UP RIGHT None
 
 
 SET05level??
-ENDSHEET
+SWIRLSHEET
           E E E E E
           E E E E E
           G E E E E
@@ -1738,7 +1738,7 @@ EMPTY None None None DOWN   EMPTY LEFT UP RIGHT DOWN
 
 
 SET05level00
-ENDSHEET
+DIRECTIONSHEET
           P E E E E
           E E E E E
           G E B W P
@@ -1758,7 +1758,7 @@ EMPTY None UP None None   EMPTY LEFT UP RIGHT DOWN
 
 
 SET05level??
-ENDSHEET
+DIRECTIONSHEET
           E E E E E
           P P E E E
           E E E E G
@@ -1778,7 +1778,7 @@ EMPTY None UP None None   EMPTY None UP RIGHT DOWN   EMPTY LEFT UP RIGHT DOWN
 
 
 SET05level??
-ENDSHEET
+INTROSHEET
           E E E E E
           E E E E E
           E B E B G
@@ -1798,7 +1798,7 @@ EMPTY None UP None DOWN   EMPTY LEFT None None DOWN
 
 
 SET05level??(hard)
-ENDSHEET
+INTROSHEET
           E E E E E
           E E B E E
           E E E E G
@@ -1818,7 +1818,7 @@ EMPTY None UP RIGHT DOWN   EMPTY LEFT UP RIGHT None
 
 
 SET??LEVEL??(GOODBUTEASY,NEEDSTOBEEARLIER)(NEVERMIND,TESTERSAREBOGGLED)
-ENDSHEET
+INTROSHEET
           E E E E E
           E E E E E
           E E E E E
