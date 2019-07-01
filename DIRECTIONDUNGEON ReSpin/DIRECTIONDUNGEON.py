@@ -31,6 +31,7 @@ import pygame
 os.environ['SDL_VIDEO_CENTERED'] = '1'           # centers window
 
 pygame.mixer.init(22050, -16, 16, 64)   # NOTE TO FIX: SOMETIMES SOUNDS CUT OFF EVEN WITH 32 CHANNELS
+pygame.mixer.set_num_channels(16)
 pygame.init()
 pygame.display.set_caption('DIRECTIONDUNGEON!')  # gives window a title
 
@@ -1044,6 +1045,8 @@ soundGoalOpen = Soundset("goalOpen%i.wav", 4)
 soundGoalClose = Soundset("goalClose%i.wav", 4)
 soundGoalOpen.setVolumes(0.2)
 soundGoalClose.setVolumes(0.2)
+
+soundWin = Soundset("win%i.wav", 3)
 
 beatTheGame = levelNum > lastLevel
 ### GAMEPLAY LOOP ###
@@ -2247,17 +2250,20 @@ if beatTheGame:
             endFrame += 1
 
         if endFrame == 180:
+            soundWin.sounds[0].play()
             title.set_alpha(255)
             postDisplay.blit(title, (titleX, titleY))
             postDisplay.blit(endCredit, (13 * mult, 36 * mult))
 
         elif endFrame == 360:
+            soundWin.sounds[1].play()
             postDisplay.blit(dialogue1, (4 * mult, 53 * mult))
 
         elif endFrame == 540:
             postDisplay.fill((0, 0, 0), (4 * mult, 53 * mult, 63 * mult, 13 * mult))
 
         elif endFrame == 600:
+            soundWin.sounds[2].play()
             postDisplay.blit(dialogue2, (6 * mult, 53 * mult))
 
         pygame.display.flip()
