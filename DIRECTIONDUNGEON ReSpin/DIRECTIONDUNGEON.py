@@ -33,7 +33,10 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'           # centers window
 pygame.mixer.init(22050, -16, 16, 64)   # NOTE TO FIX: SOMETIMES SOUNDS CUT OFF EVEN WITH 32 CHANNELS
 pygame.mixer.set_num_channels(16)
 pygame.init()
+
+icon = pygame.image.load(os.path.join("images", "icon1.png"))
 pygame.display.set_caption('DIRECTIONDUNGEON!')  # gives window a title
+pygame.display.set_icon(icon)
 
 # PIXEL SIZE CONSTANTS
 mult = 8            # pixel multiplier
@@ -854,6 +857,21 @@ def debugRect(surf, rect, col):
     pygame.draw.rect(surf, color, rect)
 
 
+################################################################################
+###                           ALMOST DONE SETUP                              ###
+################################################################################
+# (ruins all the comments)
+
+title = loadSprite(os.path.join("images", "title.png"), mult)
+titleKeys = loadSprite(os.path.join("images", "keys.png"), 4)
+rKey = loadSprite(os.path.join("images", "rKey.png"), 4)
+mKeyOn = loadSprite(os.path.join("images", "mKeyOn.png"), 4)
+mKeyOff = loadSprite(os.path.join("images", "mKeyOff.png"), 4)
+nKeyOn = loadSprite(os.path.join("images", "nKeyOn.png"), 4)
+nKeyOff = loadSprite(os.path.join("images", "nKeyOff.png"), 4)
+blackScreen = pygame.Surface(SCREENSIZE)
+fadeAlpha = 255
+
 SHOW = 1
 FADE = 2
 titleState = SHOW
@@ -864,26 +882,34 @@ titleY = mult * 5
 
 titleKeysAlpha = 0
 titleKeysDelay = 300
-titleKeysX = 24 * mult - mult // 2
-titleKeysY = 42 * mult
+titleKeysX = SCREENLENGTH // 2 - titleKeys.get_width() // 2
+titleKeysY = SCREENLENGTH // 2 - mult * 2
 
-resetDisplayAlpha = 0
-resetDisplayCounter = 0
-resetDisplayWait = 600
-resetDisplayX = 32 * mult - mult // 2
-resetDisplayY = 30 * mult
-resetActivated = False
+otherKeysAlpha = 0
+otherKeysCounter = 0
+otherKeysWait = 450
+otherKeysX = SCREENLENGTH - rKey.get_width() - mult * 5
+nKeyY = SCREENLENGTH - nKeyOn.get_height() - mult * 4
+mKeyY = nKeyY - mKeyOn.get_height()
+rKeyY = mKeyY - rKey.get_height()
 
-################################################################################
-###                           ALMOST DONE SETUP                              ###
-################################################################################
-# (ruins all the comments)
+def otherKeysSetAlpha(alpha):
+    rKey.set_alpha(alpha)
+    mKeyOn.set_alpha(alpha)
+    mKeyOff.set_alpha(alpha)
+    nKeyOn.set_alpha(alpha)
+    nKeyOff.set_alpha(alpha)
 
-title = loadSprite(os.path.join("images", "title.png"), mult)
-titleKeys = loadSprite(os.path.join("images", "keys.png"), mult)
-resetDisplay = loadSprite(os.path.join("images", "rKey.png"), mult)
-blackScreen = pygame.Surface(SCREENSIZE)
-fadeAlpha = 255
+def otherKeysDraw(surface):
+    surface.blit(rKey, (otherKeysX, rKeyY))
+    if musicMuted:
+        surface.blit(mKeyOff, (otherKeysX, mKeyY))
+    else:
+        surface.blit(mKeyOn, (otherKeysX, mKeyY))
+    if sfxMuted:
+        surface.blit(nKeyOff, (otherKeysX, nKeyY))
+    else:
+        surface.blit(nKeyOn, (otherKeysX, nKeyY))
 
 ### MENU LOOP ###
 # the main display, pre-camera
@@ -902,8 +928,6 @@ levelNum = saveData[0]
 
 lastLevel = 91
 levelsLeft = lastLevel - levelNum
-if levelNum != 0:
-    resetActivated = True
 
 if levelNum <= 91:
     # in the case not all the data is present, find the start point manually
@@ -977,6 +1001,9 @@ class Soundset:
         self.lastPlayed = 0
 
     def playRandom(self):
+        if sfxMuted:
+            return
+
         if self.variants == 1:
             id = 0
         else:
@@ -1047,6 +1074,9 @@ soundGoalOpen.setVolumes(0.2)
 soundGoalClose.setVolumes(0.2)
 
 soundWin = Soundset("win%i.wav", 3)
+
+musicMuted = False
+sfxMuted = False
 
 beatTheGame = levelNum > lastLevel
 ### GAMEPLAY LOOP ###
@@ -1234,7 +1264,7 @@ while not beatTheGame:
     platesToLock = []
     platesToUnlock = []
 
-    resetDisplayCounter = 0
+    otherKeysCounter = 0
 
 
 
@@ -1269,8 +1299,6 @@ while not beatTheGame:
 
                 # resets level
                 elif event.key == pygame.K_r and animQueue == []:
-                    resetActivated = True
-
                     # resets camera
                     camXLock = 0
                     camYLock = 0
@@ -1329,6 +1357,20 @@ while not beatTheGame:
 
                         drawObjs(preDisplay, dung, curLvl.dungX[dung], curLvl.dungY[dung], True)
 
+                # mutes music
+                elif event.key == pygame.K_m:
+                    if not musicMuted:
+                        musicMuted = True
+                        for track in musicTracks:
+                            track.set_volume(0.0)
+                    else:
+                        musicMuted = False
+                        musicTracks[musicTrack].set_volume(MUSIC_VOLUME)
+
+                elif event.key == pygame.K_n:
+                    sfxMuted = not sfxMuted
+
+
 
 
 
@@ -1366,6 +1408,7 @@ while not beatTheGame:
 
             moveBoxes = []
             if checkBox(moveQueue[0], moveQueue[0], player.col, player.row):
+                otherKeysCounter = 0
                 soundMove.playRandom()
                 moveBoxes.append(player)
 
@@ -2066,11 +2109,12 @@ while not beatTheGame:
             if fadeProgress > MUSIC_VOLUME:
                 fadeProgress = 0.0
                 fadeTo = -1
-                musicTracks[previousMusic].set_volume(0.0)
-                musicTracks[musicTrack].set_volume(MUSIC_VOLUME)
+                if not musicMuted:
+                    musicTracks[previousMusic].set_volume(0.0)
+                    musicTracks[musicTrack].set_volume(MUSIC_VOLUME)
                 previousMusic = musicTrack
 
-            else:
+            elif not musicMuted:
                 musicTracks[previousMusic].set_volume(MUSIC_VOLUME - fadeProgress)
                 musicTracks[musicTrack].set_volume(fadeProgress)
 
@@ -2152,26 +2196,25 @@ while not beatTheGame:
             else:
                 titleState = 0
 
-        # RESET KEY
-        if not resetActivated:
-            # sorry, reset is timer-based
-            if resetDisplayCounter < resetDisplayWait:
-                if levelNum != 0:
-                    resetDisplayCounter += 1
+        # OTHER KEYS DISPLAY
+        if otherKeysCounter < otherKeysWait:
+            otherKeysCounter += 1
 
-                # fades if you beat the level after the reset display shows up
-                if resetDisplayAlpha > 0:
-                    resetDisplayAlpha -= 20
-                    resetDisplay.set_alpha(resetDisplayAlpha)
-                    postDisplay.blit(resetDisplay, (resetDisplayX, resetDisplayY))
+            if otherKeysAlpha > 0:
+                otherKeysAlpha -= 20
+                otherKeysSetAlpha(otherKeysAlpha)
+                otherKeysDraw(postDisplay)
             else:
-                if resetDisplayAlpha < 255:
-                    resetDisplayAlpha += 6
-                    resetDisplay.set_alpha(resetDisplayAlpha)
-                else:
-                    resetDisplayAlpha = 255
-                    resetDisplay.set_alpha(255)
-                postDisplay.blit(resetDisplay, (resetDisplayX, resetDisplayY))
+                otherKeysAlpha = 0
+                otherKeysSetAlpha(0)
+        else:
+            if otherKeysAlpha < 255:
+                otherKeysAlpha += 20
+                otherKeysSetAlpha(otherKeysAlpha)
+            else:
+                otherKeysAlpha = 255
+                otherKeysSetAlpha(255)
+            otherKeysDraw(postDisplay)
 
         # FADE IN
         if fadeAlpha >= 0:
@@ -2182,25 +2225,25 @@ while not beatTheGame:
 
 
         ### DEBUGGING ###
-        #postDisplay.blit(nexDungs, (0, 0))
+        # postDisplay.blit(nexDungs, (0, 0))
 
-        fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
-        postDisplay.blit(fps, (10, 10))
+        # fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
+        # postDisplay.blit(fps, (10, 10))
 
-        debug1 = TAHOMA.render(str(curLvl.locked), False, (255, 255, 255))
-        debug2 = TAHOMA.render(repr(animUnlockBox.frame), False, (255, 255, 255))
-        debug3 = TAHOMA.render(str(levelNum) + " " + str(levelNum * 20), False, (255, 255, 255))
+        # debug1 = TAHOMA.render(str(curLvl.locked), False, (255, 255, 255))
+        # debug2 = TAHOMA.render(repr(animUnlockBox.frame), False, (255, 255, 255))
+        # debug3 = TAHOMA.render(str(levelNum) + " " + str(levelNum * 20), False, (255, 255, 255))
         debug4 = TAHOMA.render(repr([musicTracks[x].get_volume() for x in range(MUSIC_COUNT)]), False, (255, 255, 255))
 
-        postDisplay.blit(debug1, (10, 20))
-        postDisplay.blit(debug2, (10, 30))
-        postDisplay.blit(debug3, (10, 40))
+        # postDisplay.blit(debug1, (10, 20))
+        # postDisplay.blit(debug2, (10, 30))
+        # postDisplay.blit(debug3, (10, 40))
         postDisplay.blit(debug4, (10, 50))
 
-        if debugPressed:
-            clockTick = 2   # slow down game when the debug button is pressed
-        else:
-            clockTick = 60
+        # if debugPressed:
+        #     clockTick = 2   # slow down game when the debug button is pressed
+        # else:
+        clockTick = 60
 
 
 
@@ -2239,7 +2282,7 @@ if beatTheGame:
                 pygame.quit()
                 sys.exit()
 
-        if fadeProgress < MUSIC_VOLUME:
+        if not musicMuted and fadeProgress < MUSIC_VOLUME:
             fadeProgress += MUSIC_FADE_SPEED
             if fadeProgress >= MUSIC_VOLUME:
                 musicTracks[0].set_volume(0.0)
@@ -2250,20 +2293,23 @@ if beatTheGame:
             endFrame += 1
 
         if endFrame == 180:
-            soundWin.sounds[0].play()
+            if not sfxMuted:
+                soundWin.sounds[0].play()
             title.set_alpha(255)
             postDisplay.blit(title, (titleX, titleY))
             postDisplay.blit(endCredit, (13 * mult, 36 * mult))
 
         elif endFrame == 360:
-            soundWin.sounds[1].play()
+            if not sfxMuted:
+                soundWin.sounds[1].play()
             postDisplay.blit(dialogue1, (4 * mult, 53 * mult))
 
         elif endFrame == 540:
             postDisplay.fill((0, 0, 0), (4 * mult, 53 * mult, 63 * mult, 13 * mult))
 
         elif endFrame == 600:
-            soundWin.sounds[2].play()
+            if not sfxMuted:
+                soundWin.sounds[2].play()
             postDisplay.blit(dialogue2, (6 * mult, 53 * mult))
 
         pygame.display.flip()
