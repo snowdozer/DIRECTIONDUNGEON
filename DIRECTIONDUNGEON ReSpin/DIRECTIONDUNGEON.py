@@ -2227,18 +2227,18 @@ while not beatTheGame:
         ### DEBUGGING ###
         # postDisplay.blit(nexDungs, (0, 0))
 
-        # fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
-        # postDisplay.blit(fps, (10, 10))
+        fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
+        postDisplay.blit(fps, (10, 10))
 
         # debug1 = TAHOMA.render(str(curLvl.locked), False, (255, 255, 255))
         # debug2 = TAHOMA.render(repr(animUnlockBox.frame), False, (255, 255, 255))
         # debug3 = TAHOMA.render(str(levelNum) + " " + str(levelNum * 20), False, (255, 255, 255))
-        debug4 = TAHOMA.render(repr([musicTracks[x].get_volume() for x in range(MUSIC_COUNT)]), False, (255, 255, 255))
+        # debug4 = TAHOMA.render(repr([musicTracks[x].get_volume() for x in range(MUSIC_COUNT)]), False, (255, 255, 255))
 
         # postDisplay.blit(debug1, (10, 20))
         # postDisplay.blit(debug2, (10, 30))
         # postDisplay.blit(debug3, (10, 40))
-        postDisplay.blit(debug4, (10, 50))
+        # postDisplay.blit(debug4, (10, 50))
 
         # if debugPressed:
         #     clockTick = 2   # slow down game when the debug button is pressed
