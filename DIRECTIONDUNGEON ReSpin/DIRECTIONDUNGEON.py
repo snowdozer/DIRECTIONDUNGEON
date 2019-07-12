@@ -34,9 +34,7 @@ pygame.mixer.init(22050, -16, 16, 64)   # NOTE TO FIX: SOMETIMES SOUNDS CUT OFF 
 pygame.mixer.set_num_channels(16)
 pygame.init()
 
-icon = pygame.image.load(os.path.join("images", "icon1.png"))
 pygame.display.set_caption('DIRECTIONDUNGEON!')  # gives window a title
-pygame.display.set_icon(icon)
 
 # PIXEL SIZE CONSTANTS
 mult = 8            # pixel multiplier
@@ -318,7 +316,6 @@ ghostIdle = Animation(0, SPRITE, "images\\playIdle.png",  12, 14, mult)
 ghostIdle.surface.set_alpha(75)
 playAnim = playIdle
 ghostAnim = ghostIdle
-
 
 
 ### LEVEL ANIMATIONS ###
@@ -985,7 +982,6 @@ for level in reversed(levels):
                         pygame.draw.rect(sideSurfs, plateLockColor, covRect)
 
 
-
 def loadSound(path):
     return pygame.mixer.Sound(os.path.join("sounds", path))
 
@@ -1034,6 +1030,61 @@ MUSIC_FADE_SPEED = 0.003
 MUSIC_COUNT = 6
 musicTracks = loadSounds("music%i.wav", MUSIC_COUNT)
 musicChannels = [pygame.mixer.Channel(x) for x in range(MUSIC_COUNT)]
+
+
+# STARTUP LOGO
+animLogo = Animation(11, SPRITE, "images\\logo.png", 10, 10, mult // 2)
+animLogoDelay = 10
+animLogoCounter = 0
+logoAlpha = 0
+
+logoName = loadSprite("images\\nameWiggly.png", mult // 2)
+soundIntro = loadSound("introJingle.wav")
+soundIntro.set_volume(0.3)
+soundIntro.play()
+
+for frame in range(270):
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+    if logoAlpha < 255 and frame < 30:
+        logoAlpha += 20
+        animLogo.surface.set_alpha(logoAlpha)
+        logoName.set_alpha(logoAlpha)
+    elif logoAlpha > 0 and frame > 210:
+        logoAlpha -= 10
+        animLogo.surface.set_alpha(logoAlpha)
+        logoName.set_alpha(logoAlpha)
+    elif logoAlpha <= 0:
+        animLogo.surface.set_alpha(0)
+        logoName.set_alpha(0)
+        break
+    elif logoAlpha > 255:
+        logoAlpha = 255
+        animLogo.surface.set_alpha(255)
+        logoName.set_alpha(255)
+    elif logoAlpha < 0:
+        logoAlpha = 0
+        animLogo.surface.set_alpha(0)
+        logoName.set_alpha(0)
+
+    if animLogo.frame == animLogo.lastFrame:
+        animLogo.resetAnim()
+    animLogo.blitFrame(postDisplay, (140, 250))
+    postDisplay.blit(logoName, (200, 238))
+    if animLogoCounter == animLogoDelay:
+        animLogo.nextFrame()
+        animLogoCounter = 0
+    else:
+        animLogoCounter += 1
+
+    pygame.display.flip()
+    postDisplay.fill((0, 0, 0))
+    clock.tick(60)
+
+# MUSIC
 for channel in range(MUSIC_COUNT):
     if currentChannel() == channel:
         musicTracks[channel].set_volume(MUSIC_VOLUME)
@@ -1042,7 +1093,6 @@ for channel in range(MUSIC_COUNT):
     musicChannels[channel].play(musicTracks[channel], -1)
 
 previousMusic = currentChannel()
-
 
 soundNextLevel = Soundset("levelUp%i.wav", 3)
 soundNextLevel.sounds[0].set_volume(0.98)
@@ -1074,6 +1124,7 @@ soundGoalOpen.setVolumes(0.2)
 soundGoalClose.setVolumes(0.2)
 
 soundWin = Soundset("win%i.wav", 3)
+soundWin.setVolumes(0.3)
 
 musicMuted = False
 sfxMuted = False
@@ -2224,6 +2275,7 @@ while not beatTheGame:
 
 
 
+
         ### DEBUGGING ###
         # postDisplay.blit(nexDungs, (0, 0))
 
@@ -2265,9 +2317,9 @@ while not beatTheGame:
 
 
 fadeProgress = 0.0
-endCredit = loadSprite(os.path.join("images", "credits.png"), mult)
-dialogue1 = loadSprite(os.path.join("images", "dialogue1.png"), mult)
-dialogue2 = loadSprite(os.path.join("images", "dialogue2.png"), mult)
+endCredit = loadSprite(os.path.join("images", "credits.png"), mult // 2)
+dialogue1 = loadSprite(os.path.join("images", "dialogue1.png"), mult // 2)
+dialogue2 = loadSprite(os.path.join("images", "dialogue2.png"), mult // 2)
 endFrame = 0
 if beatTheGame:
     saveData = open("easilyEditableSaveData.txt", 'w')
@@ -2297,20 +2349,17 @@ if beatTheGame:
                 soundWin.sounds[0].play()
             title.set_alpha(255)
             postDisplay.blit(title, (titleX, titleY))
-            postDisplay.blit(endCredit, (13 * mult, 36 * mult))
+            postDisplay.blit(endCredit, (68, 280))
 
         elif endFrame == 360:
             if not sfxMuted:
                 soundWin.sounds[1].play()
-            postDisplay.blit(dialogue1, (4 * mult, 53 * mult))
+            postDisplay.blit(dialogue1, (144, 332))
 
         elif endFrame == 540:
-            postDisplay.fill((0, 0, 0), (4 * mult, 53 * mult, 63 * mult, 13 * mult))
-
-        elif endFrame == 600:
             if not sfxMuted:
                 soundWin.sounds[2].play()
-            postDisplay.blit(dialogue2, (6 * mult, 53 * mult))
+            postDisplay.blit(dialogue2, (76, 428))
 
         pygame.display.flip()
         clock.tick(60)
