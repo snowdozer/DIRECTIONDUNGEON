@@ -886,7 +886,7 @@ titleKeysY = SCREENLENGTH // 2 - mult * 2
 
 otherKeysAlpha = 0
 otherKeysCounter = 0
-otherKeysWait = 450
+otherKeysWait = 300
 otherKeysX = SCREENLENGTH - rKey.get_width() - mult * 5
 nKeyY = SCREENLENGTH - nKeyOn.get_height() - mult * 4
 mKeyY = nKeyY - mKeyOn.get_height()
@@ -2262,7 +2262,7 @@ while not beatTheGame:
                 otherKeysSetAlpha(0)
         else:
             if otherKeysAlpha < 255:
-                otherKeysAlpha += 20
+                otherKeysAlpha += 6
                 otherKeysSetAlpha(otherKeysAlpha)
             else:
                 otherKeysAlpha = 255
@@ -2281,8 +2281,8 @@ while not beatTheGame:
         ### DEBUGGING ###
         # postDisplay.blit(nexDungs, (0, 0))
 
-        fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
-        postDisplay.blit(fps, (10, 10))
+        # fps = TAHOMA.render(str(round(clock.get_fps())), False, (255, 255, 255))
+        # postDisplay.blit(fps, (10, 10))
 
         # debug1 = TAHOMA.render(str(curLvl.locked), False, (255, 255, 255))
         # debug2 = TAHOMA.render(repr(animUnlockBox.frame), False, (255, 255, 255))
