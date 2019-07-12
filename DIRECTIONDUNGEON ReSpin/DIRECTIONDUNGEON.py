@@ -34,7 +34,9 @@ pygame.mixer.init(22050, -16, 16, 64)   # NOTE TO FIX: SOMETIMES SOUNDS CUT OFF 
 pygame.mixer.set_num_channels(16)
 pygame.init()
 
+icon = pygame.image.load("images\\icon1.png")
 pygame.display.set_caption('DIRECTIONDUNGEON!')  # gives window a title
+pygame.display.set_icon(icon)
 
 # PIXEL SIZE CONSTANTS
 mult = 8            # pixel multiplier
