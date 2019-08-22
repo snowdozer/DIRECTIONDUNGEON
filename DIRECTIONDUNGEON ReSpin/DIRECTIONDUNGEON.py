@@ -408,6 +408,7 @@ class Box:
         self.yOff = 0
         self.variant = variant
         self.direction = None
+        self.undos = []
 
         # only if it is visually locked (as in no wall / other box covers it)
         self.locked = [False, False, False, False]
@@ -1297,6 +1298,14 @@ while not beatTheGame:
         fadeProgress = 1.0
 
 
+    # UNDOS
+    undoStates = []
+    undoVars = []
+    undoPlayer = []
+    undoPlates = []
+    undoGoals = []
+
+
     # MISC
     objBuff = [[] for x in range(HEIGHT)]
     for box in curLvl.boxes:
@@ -1352,6 +1361,14 @@ while not beatTheGame:
 
                 # resets level
                 elif event.key == pygame.K_r and animQueue == []:
+                    undoStates.append(copy.deepcopy(curLvl.layout))
+                    undoVars.append(copy.deepcopy(curLvl.tileVars))
+                    for box in curLvl.boxes:
+                        box.undos.append((box.col, box.row, copy.copy(box.dungs), copy.copy(box.locked)))
+                    undoPlayer.append((player.dung, player.col, player.row, copy.copy(player.dungs)))
+                    undoPlates.append(plates)
+                    undoGoals.append(goals)
+
                     # resets camera
                     camXLock = 0
                     camYLock = 0
@@ -1410,6 +1427,59 @@ while not beatTheGame:
 
                         drawObjs(preDisplay, dung, curLvl.dungX[dung], curLvl.dungY[dung], True)
 
+                # undo
+                elif event.key == pygame.K_z and animQueue == []:
+                    if undoStates:
+                        curLvl.layout = undoStates.pop()
+                        curLvl.tileVars = undoVars.pop()
+                        for box in curLvl.boxes:
+                            boxInfo = box.undos.pop()
+                            box.col = boxInfo[0]
+                            box.row = boxInfo[1]
+                            box.dungs = boxInfo[2]
+                            box.locked = boxInfo[3]
+                        playerInfo = undoPlayer.pop()
+
+                        player.dung = playerInfo[0]
+                        player.col = playerInfo[1]
+                        player.row = playerInfo[2]
+                        player.dungs = playerInfo[3]
+
+                        goals = undoGoals.pop()
+                        plates = undoPlates.pop()
+                        curLvl.locked = plates != totPlates
+
+                        curDungs.fill((0, 255, 0))
+                        postDisplay.fill((0, 255, 0))
+                        # postDisplay is used as a temporary surface
+
+                        for dung in range(4):
+                            rect = (curLvl.dungX[dung], curLvl.dungY[dung], DUNGW, DUNGH + TILE)
+                            curLvl.drawDung(postDisplay, dung)
+                            curDungs.blit(postDisplay, (dung * DUNGW, 0), rect)
+
+                        postDisplay.fill((0, 0, 0))
+
+                        objBuff = [[] for x in range(HEIGHT)]
+                        for box in curLvl.boxes:
+                            objBuff[box.row].append(box)
+
+                        objBuff[player.row].append(player)
+
+                        for dung in range(4):
+                            for tile in range(WIDTH):
+                                if curLvl.layout[dung][tile][0] != WALL:
+                                    x = curLvl.dungX[dung] + tile * TILE
+                                    y = curLvl.dungY[dung]
+                                    preDisplay.fill((0, 0, 0), (x, y, TILE, SIDE))
+
+                            preDisplay.blit(curDungs, (curLvl.dungX[dung], curLvl.dungY[dung]), alignRects[dung])
+
+                            drawObjs(preDisplay, dung, curLvl.dungX[dung], curLvl.dungY[dung], True)
+
+                        otherKeysCounter = 0
+
+
                 # mutes music
                 elif event.key == pygame.K_m:
                     if not musicMuted:
@@ -1461,6 +1531,14 @@ while not beatTheGame:
 
             moveBoxes = []
             if checkBox(moveQueue[0], moveQueue[0], player.col, player.row):
+                undoStates.append(copy.deepcopy(curLvl.layout))
+                undoVars.append(copy.deepcopy(curLvl.tileVars))
+                for box in curLvl.boxes:
+                    box.undos.append((box.col, box.row, copy.copy(box.dungs), copy.copy(box.locked)))
+                undoPlayer.append((player.dung, player.col, player.row, copy.copy(player.dungs)))
+                undoPlates.append(plates)
+                undoGoals.append(goals)
+
                 otherKeysCounter = 0
                 soundMove.playRandom()
                 moveBoxes.append(player)
