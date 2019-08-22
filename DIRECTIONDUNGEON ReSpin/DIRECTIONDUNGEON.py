@@ -864,6 +864,7 @@ def debugRect(surf, rect, col):
 
 title = loadSprite(os.path.join("images", "title.png"), mult)
 titleKeys = loadSprite(os.path.join("images", "keys.png"), 4)
+zKey = loadSprite(os.path.join("images", "zKey.png"), 4)
 rKey = loadSprite(os.path.join("images", "rKey.png"), 4)
 mKeyOn = loadSprite(os.path.join("images", "mKeyOn.png"), 4)
 mKeyOff = loadSprite(os.path.join("images", "mKeyOff.png"), 4)
@@ -892,8 +893,10 @@ otherKeysX = SCREENLENGTH - rKey.get_width() - mult * 5
 nKeyY = SCREENLENGTH - nKeyOn.get_height() - mult * 4
 mKeyY = nKeyY - mKeyOn.get_height()
 rKeyY = mKeyY - rKey.get_height()
+zKeyY = rKeyY - zKey.get_height()
 
 def otherKeysSetAlpha(alpha):
+    zKey.set_alpha(alpha)
     rKey.set_alpha(alpha)
     mKeyOn.set_alpha(alpha)
     mKeyOff.set_alpha(alpha)
@@ -901,6 +904,7 @@ def otherKeysSetAlpha(alpha):
     nKeyOff.set_alpha(alpha)
 
 def otherKeysDraw(surface):
+    surface.blit(zKey, (otherKeysX, zKeyY))
     surface.blit(rKey, (otherKeysX, rKeyY))
     if musicMuted:
         surface.blit(mKeyOff, (otherKeysX, mKeyY))
