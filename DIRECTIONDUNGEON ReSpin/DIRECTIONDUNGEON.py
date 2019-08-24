@@ -1308,6 +1308,9 @@ while not beatTheGame:
     undoPlayer = []
     undoPlates = []
     undoGoals = []
+    holdingUndoKey = False
+    undoTimer = 0
+    UNDODELAY = 8
 
 
     # MISC
@@ -1431,58 +1434,8 @@ while not beatTheGame:
 
                         drawObjs(preDisplay, dung, curLvl.dungX[dung], curLvl.dungY[dung], True)
 
-                # undo
-                elif event.key == pygame.K_z and animQueue == []:
-                    if undoStates:
-                        curLvl.layout = undoStates.pop()
-                        curLvl.tileVars = undoVars.pop()
-                        for box in curLvl.boxes:
-                            boxInfo = box.undos.pop()
-                            box.col = boxInfo[0]
-                            box.row = boxInfo[1]
-                            box.dungs = boxInfo[2]
-                            box.locked = boxInfo[3]
-                        playerInfo = undoPlayer.pop()
-
-                        player.dung = playerInfo[0]
-                        player.col = playerInfo[1]
-                        player.row = playerInfo[2]
-                        player.dungs = playerInfo[3]
-
-                        goals = undoGoals.pop()
-                        plates = undoPlates.pop()
-                        curLvl.locked = plates != totPlates
-
-                        curDungs.fill((0, 255, 0))
-                        postDisplay.fill((0, 255, 0))
-                        # postDisplay is used as a temporary surface
-
-                        for dung in range(4):
-                            rect = (curLvl.dungX[dung], curLvl.dungY[dung], DUNGW, DUNGH + TILE)
-                            curLvl.drawDung(postDisplay, dung)
-                            curDungs.blit(postDisplay, (dung * DUNGW, 0), rect)
-
-                        postDisplay.fill((0, 0, 0))
-
-                        objBuff = [[] for x in range(HEIGHT)]
-                        for box in curLvl.boxes:
-                            objBuff[box.row].append(box)
-
-                        objBuff[player.row].append(player)
-
-                        for dung in range(4):
-                            for tile in range(WIDTH):
-                                if curLvl.layout[dung][tile][0] != WALL:
-                                    x = curLvl.dungX[dung] + tile * TILE
-                                    y = curLvl.dungY[dung]
-                                    preDisplay.fill((0, 0, 0), (x, y, TILE, SIDE))
-
-                            preDisplay.blit(curDungs, (curLvl.dungX[dung], curLvl.dungY[dung]), alignRects[dung])
-
-                            drawObjs(preDisplay, dung, curLvl.dungX[dung], curLvl.dungY[dung], True)
-
-                        otherKeysCounter = 0
-
+                elif event.key == pygame.K_z:
+                    holdingUndoKey = True
 
                 # mutes music
                 elif event.key == pygame.K_m:
@@ -1517,6 +1470,9 @@ while not beatTheGame:
                 elif event.key == pygame.K_f:
                     debugPressed = False
 
+                elif event.key == pygame.K_z:
+                    holdingUndoKey = False
+
                 if liftedKey in moveQueue:
                     moveQueue.remove(liftedKey)
 
@@ -1528,6 +1484,71 @@ while not beatTheGame:
         #############
         ### INPUT ###
         #############
+
+        ### UNDOS ###
+        if holdingUndoKey and animQueue == []:
+            if undoStates and undoTimer <= 0:
+                undoTimer = UNDODELAY
+
+                curLvl.layout = undoStates.pop()
+                curLvl.tileVars = undoVars.pop()
+                for box in curLvl.boxes:
+                    boxInfo = box.undos.pop()
+                    box.col = boxInfo[0]
+                    box.row = boxInfo[1]
+                    box.dungs = boxInfo[2]
+                    box.locked = boxInfo[3]
+                playerInfo = undoPlayer.pop()
+
+                player.dung = playerInfo[0]
+                player.col = playerInfo[1]
+                player.row = playerInfo[2]
+                player.dungs = playerInfo[3]
+
+                goals = undoGoals.pop()
+                plates = undoPlates.pop()
+                curLvl.locked = plates != totPlates
+
+                curDungs.fill((0, 255, 0))
+                postDisplay.fill((0, 255, 0))
+                # postDisplay is used as a temporary surface
+
+                for dung in range(4):
+                    rect = (curLvl.dungX[dung], curLvl.dungY[dung], DUNGW, DUNGH + TILE)
+                    curLvl.drawDung(postDisplay, dung)
+                    curDungs.blit(postDisplay, (dung * DUNGW, 0), rect)
+
+                postDisplay.fill((0, 0, 0))
+
+                objBuff = [[] for x in range(HEIGHT)]
+                for box in curLvl.boxes:
+                    objBuff[box.row].append(box)
+
+                objBuff[player.row].append(player)
+
+                for dung in range(4):
+                    for tile in range(WIDTH):
+                        if curLvl.layout[dung][tile][0] != WALL:
+                            x = curLvl.dungX[dung] + tile * TILE
+                            y = curLvl.dungY[dung]
+                            preDisplay.fill((0, 0, 0), (x, y, TILE, SIDE))
+
+                    preDisplay.blit(curDungs, (curLvl.dungX[dung], curLvl.dungY[dung]), alignRects[dung])
+
+                    drawObjs(preDisplay, dung, curLvl.dungX[dung], curLvl.dungY[dung], True)
+
+                otherKeysCounter = 0
+
+            elif not undoStates:
+                undoTimer = 0
+
+            elif undoTimer > 0:
+                undoTimer -= 1
+
+        else:
+            undoTimer = 0
+
+
 
         ### MOVEMENT ###
         # if an input was made and no animation is currently playing
