@@ -5,11 +5,10 @@
     <bookmark url="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" line="1959" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b473aad1-d247-4772-a8e5-fe79a4a57641" name="Default Changelist" comment="minor changes">
-      <change beforePath="$PROJECT_DIR$/.idea/ZIP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ZIP.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="b473aad1-d247-4772-a8e5-fe79a4a57641" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/easilyEditableSaveData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/easilyEditableSaveData.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,8 +21,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3422">
-              <caret line="1546" lean-forward="true" selection-start-line="1546" selection-end-line="1546" />
+            <state relative-caret-position="613">
+              <caret line="1507" selection-start-line="1507" selection-end-line="1507" />
             </state>
           </provider>
         </entry>
@@ -32,7 +31,7 @@
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/easilyEditableSaveData.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state>
-              <caret column="2" selection-start-column="2" selection-end-column="2" />
+              <caret column="1" selection-start-column="1" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -66,8 +65,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>levels</find>
-      <find>for level in</find>
       <find>while</find>
       <find>levelNum =</find>
       <find>tilesheet = 0</find>
@@ -96,6 +93,8 @@
       <find>logo</find>
       <find>k_r</find>
       <find>undoBoxes</find>
+      <find>undo</find>
+      <find>print(</find>
     </findStrings>
     <replaceStrings>
       <replace>SET0</replace>
@@ -482,7 +481,14 @@
       <option name="project" value="LOCAL" />
       <updated>1562626701579</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="You can now hold the undo key">
+      <created>1566612670916</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1566612670916</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TodoView">
@@ -498,7 +504,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18230277" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18443497" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="0" sideWeight="0.49947312" weight="0.31527627" />
@@ -577,7 +583,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Cleanup Feb 10" />
     <MESSAGE value="Levels: Introduction Refurbishing Part 1" />
     <MESSAGE value="Various Visual Fixes Feb 13" />
     <MESSAGE value="Levels: Swirl Basics" />
@@ -602,7 +607,8 @@
     <MESSAGE value="MUSIC!!!  (not final)" />
     <MESSAGE value="Updated music, also winning sound effects" />
     <MESSAGE value="New key displays" />
-    <option name="LAST_COMMIT_MESSAGE" value="New key displays" />
+    <MESSAGE value="You can now hold the undo key" />
+    <option name="LAST_COMMIT_MESSAGE" value="You can now hold the undo key" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON level class attempt.py" />
@@ -633,15 +639,15 @@
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/06 endSheet.png" />
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3422">
-          <caret line="1546" lean-forward="true" selection-start-line="1546" selection-end-line="1546" />
+        <state relative-caret-position="613">
+          <caret line="1507" selection-start-line="1507" selection-end-line="1507" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/easilyEditableSaveData.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="2" selection-start-column="2" selection-end-column="2" />
+          <caret column="1" selection-start-column="1" selection-end-column="1" />
         </state>
       </provider>
     </entry>

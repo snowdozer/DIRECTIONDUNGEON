@@ -1310,6 +1310,7 @@ while not beatTheGame:
     undoGoals = []
     holdingUndoKey = False
     undoTimer = 0
+    undoGoalWait = False
     UNDODELAY = 8
 
 
@@ -1374,7 +1375,7 @@ while not beatTheGame:
                         box.undos.append((box.col, box.row, copy.copy(box.dungs), copy.copy(box.locked)))
                     undoPlayer.append((player.dung, player.col, player.row, copy.copy(player.dungs)))
                     undoPlates.append(plates)
-                    undoGoals.append(goals)
+                    undoGoalWait = True
 
                     # resets camera
                     camXLock = 0
@@ -1562,7 +1563,7 @@ while not beatTheGame:
                     box.undos.append((box.col, box.row, copy.copy(box.dungs), copy.copy(box.locked)))
                 undoPlayer.append((player.dung, player.col, player.row, copy.copy(player.dungs)))
                 undoPlates.append(plates)
-                undoGoals.append(goals)
+                undoGoalWait = True
 
                 otherKeysCounter = 0
                 soundMove.playRandom()
@@ -2249,6 +2250,11 @@ while not beatTheGame:
                 anim.resetAnim()
                 animSameTime.remove(anim)
 
+        ### UNDO GOAL FIX ###
+        if undoGoalWait:
+            undoGoalWait = False
+            undoGoals.append(goals)
+
         ### PLATE SOUNDS ###
         if switchOn:
             soundLock.playRandom()
@@ -2410,8 +2416,6 @@ while not beatTheGame:
         postDisplay.fill((0, 0, 0))  # clear the screen
 
         clock.tick(clockTick)        # keeps the FPS at a consistent 60
-
-
 
         # exits loops when window is closed
         if not running:
