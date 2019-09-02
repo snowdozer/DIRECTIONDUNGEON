@@ -1035,7 +1035,7 @@ def currentChannel():
 MUSIC_VOLUME = 0.4
 MUSIC_FADE_SPEED = 0.003
 MUSIC_COUNT = 6
-musicTracks = loadSounds("music%i.wav", MUSIC_COUNT)
+musicTracks = loadSounds("music%i.ogg", MUSIC_COUNT)
 musicChannels = [pygame.mixer.Channel(x) for x in range(MUSIC_COUNT)]
 
 
@@ -1046,7 +1046,7 @@ animLogoCounter = 0
 logoAlpha = 0
 
 logoName = loadSprite("images\\nameWiggly.png", mult // 2)
-soundIntro = loadSound("introJingle.wav")
+soundIntro = loadSound("introJingle.ogg")
 soundIntro.set_volume(0.3)
 soundIntro.play()
 
@@ -1101,36 +1101,36 @@ for channel in range(MUSIC_COUNT):
 
 previousMusic = currentChannel()
 
-soundNextLevel = Soundset("levelUp%i.wav", 3)
+soundNextLevel = Soundset("levelUp%i.ogg", 3)
 soundNextLevel.sounds[0].set_volume(0.98)
 soundNextLevel.sounds[1].set_volume(1)
 soundNextLevel.sounds[2].set_volume(0.60)
 
-soundMove = Soundset("move%i.wav", 9)
+soundMove = Soundset("move%i.ogg", 9)
 soundMove.setVolumes(0.7)
 
-soundSwirl = Soundset("swirl%i.wav", 7)
+soundSwirl = Soundset("swirl%i.ogg", 7)
 soundSwirl.setVolumes(0.3)
 
-soundSwirlWoosh = Soundset("swirlWoosh%i.wav", 6)
+soundSwirlWoosh = Soundset("swirlWoosh%i.ogg", 6)
 soundSwirlWoosh.setVolumes(0.4)
 
-soundBoxSlide = Soundset("boxSlide%i.wav", 6)
+soundBoxSlide = Soundset("boxSlide%i.ogg", 6)
 soundBoxSlide.setVolumes(0.7)
 soundBoxSlide.sounds[0].set_volume(0.6)
 soundBoxSlide.sounds[1].set_volume(0.6)
 
-soundLock = Soundset("switchOn%i.wav", 4)
-soundUnlock = Soundset("switchOff%i.wav", 4)
+soundLock = Soundset("switchOn%i.ogg", 4)
+soundUnlock = Soundset("switchOff%i.ogg", 4)
 soundLock.setVolumes(0.7)
 soundUnlock.setVolumes(0.7)
 
-soundGoalOpen = Soundset("goalOpen%i.wav", 4)
-soundGoalClose = Soundset("goalClose%i.wav", 4)
+soundGoalOpen = Soundset("goalOpen%i.ogg", 4)
+soundGoalClose = Soundset("goalClose%i.ogg", 4)
 soundGoalOpen.setVolumes(0.2)
 soundGoalClose.setVolumes(0.2)
 
-soundWin = Soundset("win%i.wav", 3)
+soundWin = Soundset("win%i.ogg", 3)
 soundWin.setVolumes(0.3)
 
 musicMuted = False

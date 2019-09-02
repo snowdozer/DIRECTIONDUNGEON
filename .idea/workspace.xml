@@ -8,7 +8,71 @@
     <list default="true" id="b473aad1-d247-4772-a8e5-fe79a4a57641" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/easilyEditableSaveData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/easilyEditableSaveData.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/InspectorJ Bamboo.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/InspectorJ water.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/boxSlide1.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/boxSlide2.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/boxSlide3.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/boxSlide4.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/boxSlide5.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/boxSlide6.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/goalClose1.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/goalClose2.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/goalClose3.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/goalClose4.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/goalOpen1.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/goalOpen2.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/goalOpen3.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/goalOpen4.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/herraportti zipper.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/introjingle.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/lamamakesmusic various buttons.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/levelUp1.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/levelUp2.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/levelUp3.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/lostphosphene splashing bath.aiff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/moogy73 woosh.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move1.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move2.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move3.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move4.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move5.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move6.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move7.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move8.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/move9.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/music1.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/music2.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/music3.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/music4.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/music5.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/music6.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/sounds_from_dot_me windup.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/swirl1.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/swirl1.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/swirl2.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/swirl3.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/swirl4.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/swirl5.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/swirl6.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/swirl7.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/swirlWoosh1.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/swirlWoosh2.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/swirlWoosh3.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/swirlWoosh4.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/swirlWoosh5.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/swirlWoosh6.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/switchOff1.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/switchOff2.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/switchOff3.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/switchOff4.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/switchOn1.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/switchOn2.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/switchOn3.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/switchOn4.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/win1.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/win2.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/sounds/win3.wav" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,16 +82,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="613">
-              <caret line="1507" selection-start-line="1507" selection-end-line="1507" />
+            <state relative-caret-position="503">
+              <caret line="1116" lean-forward="true" selection-start-line="1116" selection-end-line="1116" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/easilyEditableSaveData.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state>
@@ -65,7 +129,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>while</find>
       <find>levelNum =</find>
       <find>tilesheet = 0</find>
       <find>currentmusic</find>
@@ -95,6 +158,7 @@
       <find>undoBoxes</find>
       <find>undo</find>
       <find>print(</find>
+      <find>.wav</find>
     </findStrings>
     <replaceStrings>
       <replace>SET0</replace>
@@ -118,8 +182,8 @@
         <option value="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/leveltemplates.txt" />
         <option value="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON new and good.py" />
         <option value="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt" />
-        <option value="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/easilyEditableSaveData.txt" />
         <option value="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py" />
+        <option value="$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/easilyEditableSaveData.txt" />
       </list>
     </option>
   </component>
@@ -153,6 +217,12 @@
               <item name="DIRECTIONDUNGEON" type="462c0819:PsiDirectoryNode" />
               <item name="DIRECTIONDUNGEON ReSpin" type="462c0819:PsiDirectoryNode" />
               <item name="DIRECTIONDUNGEON" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DIRECTIONDUNGEON" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DIRECTIONDUNGEON" type="462c0819:PsiDirectoryNode" />
+              <item name="DIRECTIONDUNGEON ReSpin" type="462c0819:PsiDirectoryNode" />
+              <item name="sounds" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -488,7 +558,14 @@
       <option name="project" value="LOCAL" />
       <updated>1566612670916</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Fixed bug where undoing could make a fake goal">
+      <created>1567397091432</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1567397091432</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TodoView">
@@ -583,7 +660,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Levels: Introduction Refurbishing Part 1" />
     <MESSAGE value="Various Visual Fixes Feb 13" />
     <MESSAGE value="Levels: Swirl Basics" />
     <MESSAGE value="Boxes Part 6 wew neato" />
@@ -608,7 +684,8 @@
     <MESSAGE value="Updated music, also winning sound effects" />
     <MESSAGE value="New key displays" />
     <MESSAGE value="You can now hold the undo key" />
-    <option name="LAST_COMMIT_MESSAGE" value="You can now hold the undo key" />
+    <MESSAGE value="Fixed bug where undoing could make a fake goal" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed bug where undoing could make a fake goal" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON level class attempt.py" />
@@ -637,17 +714,17 @@
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/images/06 endSheet.png" />
-    <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py">
+    <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="613">
-          <caret line="1507" selection-start-line="1507" selection-end-line="1507" />
+        <state relative-caret-position="27523">
+          <caret line="1619" selection-start-line="1619" selection-end-line="1637" selection-end-column="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/easilyEditableSaveData.txt">
+    <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/DIRECTIONDUNGEON.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="1" selection-start-column="1" selection-end-column="1" />
+        <state relative-caret-position="503">
+          <caret line="1116" lean-forward="true" selection-start-line="1116" selection-end-line="1116" />
         </state>
       </provider>
     </entry>
@@ -658,10 +735,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/levels.txt">
+    <entry file="file://$PROJECT_DIR$/DIRECTIONDUNGEON ReSpin/easilyEditableSaveData.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27523">
-          <caret line="1619" selection-start-line="1619" selection-end-line="1637" selection-end-column="25" />
+        <state>
+          <caret column="1" selection-start-column="1" selection-end-column="1" />
         </state>
       </provider>
     </entry>
