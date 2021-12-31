@@ -14,6 +14,7 @@ This is one of the first games I ever made, so the code is especially sloppy. In
 ## To run this code, you'll need
  - Python 3.5+
  - PyGame 1.9.4+
+
 Run DIRECTIONDUNGEON/DIRECTIONDUNGEON.py to start the game.
 
 ## More GIFs
